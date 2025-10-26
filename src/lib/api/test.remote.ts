@@ -1,9 +1,10 @@
 import { query } from '$app/server';
-import type { Employee } from '$lib/types';
-import { db } from '../database';
+import { getDB } from '$lib/database';
+import { type Employee } from '$lib/types';
 
 export const getEmployees = query<Employee[]>(async () => {
-	const employees = await db.selectFrom('employee').selectAll().execute();
+  const db = getDB();
+  const employees = await db.selectFrom('employee').selectAll().execute();
 
-	return employees;
+  return employees;
 });
