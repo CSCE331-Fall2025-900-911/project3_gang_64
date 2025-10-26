@@ -2,11 +2,13 @@
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
+  import UserModal from '$lib/shared/UserModal.svelte';
   import {
     AppShell,
     AppShellHeader,
     Avatar,
     initializeTheme,
+    modalManager,
     Select,
     ThemeSwitcher,
     type SelectItem,
@@ -27,6 +29,10 @@
   function handleModeChange(selected: SelectItem) {
     window.location.href = `/kitchen/${selected.value}/`;
   }
+
+  function openUserProfile() {
+    modalManager.show(UserModal);
+  }
 </script>
 
 <svelte:head>
@@ -41,9 +47,9 @@
       <div class="flex items-center gap-4">
         <Select data={modes} onChange={handleModeChange} bind:value={mode} />
         <ThemeSwitcher />
-        <div>
+        <button onclick={openUserProfile}>
           <Avatar name="Share Tea" />
-        </div>
+        </button>
       </div>
     </div>
   </AppShellHeader>
