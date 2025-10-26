@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
+  import logo from '$lib/assets/logo.png';
   import {
     AppShell,
     AppShellHeader,
     Avatar,
-    Heading,
     initializeTheme,
     Select,
     ThemeSwitcher,
@@ -37,7 +37,7 @@
 <AppShell>
   <AppShellHeader>
     <div class="flex w-full items-center justify-between p-4">
-      <Heading size="medium">ShareTea</Heading>
+      <img src={logo} alt="ShareTea Logo" class="h-6" />
       <div class="flex items-center gap-4">
         <Select data={modes} onChange={handleModeChange} bind:value={mode} />
         <ThemeSwitcher />

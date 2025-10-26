@@ -12,7 +12,7 @@
     <NavbarItem href="/kitchen/manager/reports" title="Reports" icon={mdiCurrencyUsd} />
   </AppShellSidebar>
 
-  <div class="flex-grow p-4">
+  <div class="grow p-4">
     {@render children?.()}
   </div>
 </div>

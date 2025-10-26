@@ -30,8 +30,8 @@
 </script>
 
 <Modal title="Create Employee" icon={mdiAccountPlus} {onClose}>
-  <form>
-    <ModalBody>
+  <ModalBody>
+    <form>
       <Stack gap={4}>
         <Field label="Name">
           <Input placeholder="John Doe" bind:value={username} />
@@ -45,11 +45,11 @@
           <Select data={roleOptions} bind:value={selectedRole} />
         </Field>
       </Stack>
-    </ModalBody>
-    <ModalFooter>
-      <div class="grid w-full grid-cols-1 gap-2">
-        <Button onclick={submit} shape="round" color="primary" disabled={!valid}>Create</Button>
-      </div>
-    </ModalFooter>
-  </form>
+    </form>
+  </ModalBody>
+  <ModalFooter>
+    <div class="grid w-full grid-cols-1 gap-2">
+      <Button onclick={submit} shape="round" color="primary" disabled={!valid}>Create</Button>
+    </div>
+  </ModalFooter>
 </Modal>

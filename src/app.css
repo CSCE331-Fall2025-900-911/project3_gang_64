@@ -48,3 +48,20 @@ html {
 body {
   margin: 0;
 }
+
+/* View Hierarchy Colors */
+.bg-level-1 {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.bg-level-2 {
+  @apply bg-gray-200 dark:bg-gray-600;
+}
+
+.bg-level-3 {
+  @apply bg-gray-300 dark:bg-gray-500;
+}
+
+.bg-level-4 {
+  @apply bg-gray-400 dark:bg-gray-400;
+}
