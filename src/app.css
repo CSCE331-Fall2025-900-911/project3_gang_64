@@ -1,1 +1,50 @@
 @import 'tailwindcss';
+@import '@immich/ui/theme/default.css';
+@source '../node_modules/@immich/ui';
+
+@custom-variant dark (&:where(.dark, .dark *):not(.light));
+
+@theme inline {
+  --color-immich-primary: rgb(var(--immich-primary));
+
+  --color-immich-dark-primary: rgb(var(--immich-dark-primary));
+}
+
+@theme {
+  --font-immich-title: Snowburst One, cursive;
+  --font-immich-mono: Overpass Mono, monospace;
+
+  --spacing-18: 4.5rem;
+
+  --breakpoint-tall: 800px;
+}
+
+@layer base {
+  :root {
+    /* light */
+    --immich-primary: 66 80 175;
+
+    /* dark */
+    --immich-dark-primary: 172 203 250;
+  }
+}
+
+:root.dark,
+body.dark {
+  color-scheme: dark;
+}
+
+:root:not(.dark),
+body:not(.dark) {
+  color-scheme: light;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  font-size: 17px;
+}
+
+body {
+  margin: 0;
+}
