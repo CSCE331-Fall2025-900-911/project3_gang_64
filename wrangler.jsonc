@@ -1,0 +1,20 @@
+{
+  "name": "project-3-gang-64",
+  "main": ".svelte-kit/cloudflare/_worker.js",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".svelte-kit/cloudflare"
+  },
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    }
+  }
+}
