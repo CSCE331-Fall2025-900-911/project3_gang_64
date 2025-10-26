@@ -6,15 +6,5 @@
     "binding": "ASSETS",
     "directory": ".svelte-kit/cloudflare"
   },
-  "compatibility_flags": ["nodejs_compat"],
-  "observability": {
-    "enabled": false,
-    "head_sampling_rate": 1,
-    "logs": {
-      "enabled": true,
-      "head_sampling_rate": 1,
-      "persist": true,
-      "invocation_logs": true
-    }
-  }
+  "compatibility_flags": ["nodejs_compat"]
 }
