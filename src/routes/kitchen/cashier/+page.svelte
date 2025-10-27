@@ -5,7 +5,6 @@
   import MenuGroup from './MenuGroup.svelte';
 
   let categories = await getMenuCategories();
-  console.log(page.url.hash.replace('#', ''));
   let currentCategory = $derived(
     categories.find((cat) => cat === decodeURI(page.url.hash).replace('#', '')) ?? categories[0],
   );

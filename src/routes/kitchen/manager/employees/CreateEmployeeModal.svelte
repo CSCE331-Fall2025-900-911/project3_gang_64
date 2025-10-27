@@ -12,8 +12,6 @@
   let { onClose }: Props = $props();
 
   async function submit(event: Event) {
-    event.preventDefault();
-
     await createEmployee({ id: 100, username, password, role: selectedRole.value });
     onClose();
   }
@@ -31,21 +29,19 @@
 
 <Modal title="Create Employee" icon={mdiAccountPlus} {onClose}>
   <ModalBody>
-    <form>
-      <Stack gap={4}>
-        <Field label="Name">
-          <Input placeholder="John Doe" bind:value={username} />
-        </Field>
+    <Stack gap={4}>
+      <Field label="Name">
+        <Input placeholder="John Doe" bind:value={username} />
+      </Field>
 
-        <Field label="Password">
-          <PasswordInput placeholder="Enter password" bind:value={password} />
-        </Field>
+      <Field label="Password">
+        <PasswordInput placeholder="Enter password" bind:value={password} />
+      </Field>
 
-        <Field label="Role">
-          <Select data={roleOptions} bind:value={selectedRole} />
-        </Field>
-      </Stack>
-    </form>
+      <Field label="Role">
+        <Select data={roleOptions} bind:value={selectedRole} />
+      </Field>
+    </Stack>
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">

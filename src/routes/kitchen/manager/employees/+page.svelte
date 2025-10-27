@@ -8,9 +8,7 @@
 
   let employees = getEmployees();
   let searchTerm = $state('');
-  let searchedEmployees = $derived.by(() => {
-    return employees.current?.filter((employee) => employee.username.includes(searchTerm));
-  });
+  let searchedEmployees = $derived(employees.current?.filter((employee) => employee.username.includes(searchTerm)));
 
   function showCreateModal() {
     modalManager.show(CreateEmployeeModal);
