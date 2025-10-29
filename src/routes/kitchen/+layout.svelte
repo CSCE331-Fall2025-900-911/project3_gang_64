@@ -2,7 +2,7 @@
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
-  import UserModal from '$lib/shared/UserModal.svelte';
+  import UserModal from '$lib/components/UserModal.svelte';
   import {
     AppShell,
     AppShellHeader,

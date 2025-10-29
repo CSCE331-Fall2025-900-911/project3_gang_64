@@ -5,3 +5,17 @@ export function titleCase(s: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+export function groupedItems<T>(items: T[], key: (item: T) => string): Record<string, T[]> {
+  return items.reduce(
+    (acc, item) => {
+      const groupKey = key(item);
+      if (!acc[groupKey]) {
+        acc[groupKey] = [];
+      }
+      acc[groupKey].push(item);
+      return acc;
+    },
+    {} as Record<string, T[]>,
+  );
+}
