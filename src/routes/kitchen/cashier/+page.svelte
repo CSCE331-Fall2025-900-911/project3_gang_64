@@ -8,23 +8,31 @@
   let menu = await getMenu();
   let currentCategory = $derived.by(() => {
     const hash = decodeURI(page.url.hash);
-    return hash ? hash.substring(1) : Object.keys(menu)[0];
+    const title = hash ? hash.substring(1) : Object.keys(menu)[0];
+
+    return {
+      title,
+      items: menu[title] ?? [],
+    };
   });
-  let currentCategoryItems = $derived(menu[currentCategory]);
 </script>
 
 <div class="flex h-full overflow-hidden">
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
-      <NavbarItem href={`/kitchen/cashier#${category}`} title={category ?? ''} active={category === currentCategory} />
+      <NavbarItem
+        href={`/kitchen/cashier#${category}`}
+        title={category ?? ''}
+        active={category === currentCategory.title}
+      />
     {/each}
   </AppShellSidebar>
 
   <div class="flex h-full w-full pb-2">
     <!-- Item View -->
     <div class="w-2/3 overflow-y-auto p-4">
-      {#if currentCategoryItems}
-        <MenuGroup items={currentCategoryItems} title={currentCategory} />
+      {#if currentCategory.items}
+        <MenuGroup {...currentCategory} />
       {/if}
     </div>
 
