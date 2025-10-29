@@ -1,3 +1,5 @@
 import { redirect } from '@sveltejs/kit';
 
-redirect(302, '/kitchen/cashier');
+export function load() {
+  redirect(302, '/kitchen/cashier');
+}
