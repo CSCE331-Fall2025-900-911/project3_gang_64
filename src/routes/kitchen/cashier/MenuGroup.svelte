@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { MenuItem } from '$lib/db/types';
-  import { cashierManager } from '$lib/managers/cashier.svelte';
-  import { Button, Heading } from '@immich/ui';
+  import { Heading } from '@immich/ui';
+  import MenuItemTile from './MenuItemTile.svelte';
 
   interface Props {
     items: MenuItem[];
@@ -16,13 +16,7 @@
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
     {#each items as item}
-      <div class="flex flex-col justify-between rounded-lg border p-4">
-        <Heading size="medium" class="mb-2">{item.name}</Heading>
-        <div class="mt-4 flex items-center justify-between">
-          <Heading size="small" fontWeight="normal">${Number.parseFloat(item.price).toFixed(2)}</Heading>
-          <Button onclick={() => cashierManager.addToOrder(item)}>Add to Order</Button>
-        </div>
-      </div>
+      <MenuItemTile {item} />
     {/each}
   </div>
 </div>
