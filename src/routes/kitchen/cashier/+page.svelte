@@ -2,8 +2,9 @@
   import { page } from '$app/state';
   import { getMenu } from '$lib/api/menu.remote';
   import { cashierManager } from '$lib/managers/cashier.svelte';
-  import { AppShellSidebar, Button, Heading, HStack, NavbarItem, Text } from '@immich/ui';
+  import { AppShellSidebar, Button, Heading, HStack, modalManager, NavbarItem, Text } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
+  import OrderSubmitDialog from './OrderSubmitDialog.svelte';
 
   let menu = await getMenu();
   let currentCategory = $derived.by(() => {
@@ -15,6 +16,10 @@
       items: menu[title] ?? [],
     };
   });
+
+  function showSubmitDialog() {
+    modalManager.show(OrderSubmitDialog);
+  }
 </script>
 
 <div class="flex h-full overflow-hidden">
@@ -76,7 +81,9 @@
           <Heading size="small">Total</Heading>
           <p>${cashierManager.total.toFixed(2)}</p>
         </HStack>
-        <Button class="mt-4 w-full" color="success">Submit Order</Button>
+        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!cashierManager.isValidOrder}
+          >Submit Order</Button
+        >
       </div>
     </div>
   </div>
