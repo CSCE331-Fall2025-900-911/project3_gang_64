@@ -49,6 +49,7 @@ export const order = pgTable(
 
 export const employee = pgTable('employee', {
   id: uuid('id').defaultRandom().primaryKey().notNull(),
+  name: varchar({ length: 100 }).notNull(),
   email: varchar({ length: 100 }).notNull(),
   role: role().notNull(),
   archived: boolean().default(false).notNull(),
