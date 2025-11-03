@@ -1,26 +1,11 @@
 import { sql } from 'drizzle-orm';
-import {
-  boolean,
-  foreignKey,
-  integer,
-  numeric,
-  pgEnum,
-  pgTable,
-  serial,
-  timestamp,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { boolean, foreignKey, integer, numeric, pgEnum, pgTable, timestamp, varchar, uuid } from 'drizzle-orm/pg-core';
 
 export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
 export const role = pgEnum('role', ['manager', 'staff']);
 
-export const products = pgTable('products', {
-  productName: varchar('product_name', { length: 255 }),
-  price: integer(),
-});
-
 export const menu = pgTable('menu', {
-  id: serial().primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   name: varchar({ length: 100 }),
   category: varchar({ length: 100 }),
   price: numeric().notNull(),
@@ -28,14 +13,14 @@ export const menu = pgTable('menu', {
 });
 
 export const customer = pgTable('customer', {
-  id: serial().primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   name: varchar({ length: 100 }),
 });
 
 export const order = pgTable(
   'order',
   {
-    id: serial().primaryKey().notNull(),
+    id: uuid('id').defaultRandom().primaryKey().notNull(),
     customerId: integer('customer_id').notNull(),
     employeeId: integer('employee_id'),
     subtotal: numeric().notNull(),
@@ -62,7 +47,7 @@ export const order = pgTable(
 );
 
 export const employee = pgTable('employee', {
-  id: serial().primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   username: varchar({ length: 100 }).notNull(),
   password: varchar({ length: 100 }).notNull(),
   role: role().notNull(),
@@ -97,7 +82,7 @@ export const orderContent = pgTable(
 );
 
 export const ingredient = pgTable('ingredient', {
-  id: serial().primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   name: varchar({ length: 100 }),
   currentStock: integer('current_stock').notNull(),
   orderStock: integer('order_stock').notNull(),
@@ -126,7 +111,7 @@ export const recipe = pgTable(
 );
 
 export const zReport = pgTable('z_report', {
-  id: serial().primaryKey().notNull(),
+  id: uuid('id').defaultRandom().primaryKey().notNull(),
   timestamp: timestamp({ mode: 'string' })
     .default(sql`(CURRENT_TIMESTAMP - '1 day'::interval)`)
     .notNull(),
