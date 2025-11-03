@@ -118,3 +118,37 @@ export const zReport = pgTable('z_report', {
     .default(sql`(CURRENT_TIMESTAMP - '1 day'::interval)`)
     .notNull(),
 });
+
+export const nutrition = pgTable(
+  'nutrition',
+  {
+    ingredientId: uuid('ingredient_id').notNull(),
+    calories: integer().notNull(),
+    fat_g: integer().notNull(),
+    sodium_g: integer().notNull(),
+    carbs_g: integer().notNull(),
+    caffiene_mg: integer().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ingredientId],
+      foreignColumns: [ingredient.id],
+      name: 'recipe_ingredient_id_fkey',
+    }),
+  ],
+);
+
+export const allergen = pgTable(
+  'allergen',
+  {
+    ingredientId: uuid('ingredient_id').notNull(),
+    allergen: varchar({ length: 255 }).notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.ingredientId],
+      foreignColumns: [ingredient.id],
+      name: 'recipe_ingredient_id_fkey',
+    }),
+  ],
+);
