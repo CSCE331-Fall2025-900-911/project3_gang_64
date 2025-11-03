@@ -4,7 +4,7 @@ import { ingredient, menu, recipe } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
 
-export const getIngredientsForMenuItem = query(v.number(), async (menuItemId: number) => {
+export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: string) => {
   const db = getDB();
 
   const ingredients = await db
