@@ -9,6 +9,7 @@ export const menu = pgTable('menu', {
   name: varchar({ length: 100 }).notNull(),
   category: varchar({ length: 100 }).notNull(),
   price: numeric().notNull(),
+  imageUrl: varchar({ length: 255 }).notNull(),
   archived: boolean().default(false).notNull(),
 });
 
