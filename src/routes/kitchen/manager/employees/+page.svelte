@@ -8,7 +8,13 @@
 
   let employees = getEmployees();
   let searchTerm = $state('');
-  let searchedEmployees = $derived(employees.current?.filter((employee) => employee.email.includes(searchTerm)));
+  let searchedEmployees = $derived(
+    employees.current?.filter(
+      (employee) =>
+        employee.email.toUpperCase().includes(searchTerm.toUpperCase()) ||
+        employee.name.toUpperCase().includes(searchTerm.toUpperCase()),
+    ) || [],
+  );
 
   function showCreateModal() {
     modalManager.show(CreateEmployeeModal);
@@ -33,8 +39,8 @@
   <table class="mt-4 w-full text-start">
     <thead class="mb-4 flex h-12 w-full rounded-md border bg-subtle">
       <tr class="flex w-full place-items-center text-center text-sm font-medium">
-        <th class="w-3/12">ID</th>
-        <th class="w-6/12 text-left">Username</th>
+        <th class="w-3/12">Name</th>
+        <th class="w-6/12 text-left">Email</th>
         <th class="w-3/12">Role</th>
       </tr>
     </thead>
@@ -44,7 +50,7 @@
           transition:fade={{ duration: 400, easing: cubicInOut }}
           class="dark:text-immich-dark-fg flex w-full place-items-center py-2 text-center odd:bg-subtle/80 even:bg-subtle/20"
         >
-          <td class="w-3/12">{employee.id}</td>
+          <td class="w-3/12">{employee.name}</td>
           <td class="w-6/12 text-left">{employee.email}</td>
           <td class="w-3/12">{employee.role}</td>
         </tr>
