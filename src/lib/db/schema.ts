@@ -6,8 +6,8 @@ export const role = pgEnum('role', ['manager', 'staff']);
 
 export const menu = pgTable('menu', {
   id: uuid('id').defaultRandom().primaryKey().notNull(),
-  name: varchar({ length: 100 }),
-  category: varchar({ length: 100 }),
+  name: varchar({ length: 100 }).notNull(),
+  category: varchar({ length: 100 }).notNull(),
   price: numeric().notNull(),
   archived: boolean().default(false).notNull(),
 });
