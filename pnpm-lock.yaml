@@ -20,6 +20,9 @@ importers:
       drizzle-valibot:
         specifier: ^0.4.2
         version: 0.4.2(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20251014.0)(@types/pg@8.15.5)(kysely@0.28.8)(pg@8.16.3))(valibot@1.1.0(typescript@5.9.3))
+      uuid:
+        specifier: ^13.0.0
+        version: 13.0.0
     devDependencies:
       '@eslint/compat':
         specifier: ^1.4.0
@@ -87,9 +90,6 @@ importers:
       typescript-eslint:
         specifier: ^8.44.1
         version: 8.46.2(eslint@9.38.0(jiti@2.6.1))(typescript@5.9.3)
-      uuid:
-        specifier: ^13.0.0
-        version: 13.0.0
       valibot:
         specifier: ^1.1.0
         version: 1.1.0(typescript@5.9.3)

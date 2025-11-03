@@ -8,7 +8,7 @@
 
   let employees = getEmployees();
   let searchTerm = $state('');
-  let searchedEmployees = $derived(employees.current?.filter((employee) => employee.username.includes(searchTerm)));
+  let searchedEmployees = $derived(employees.current?.filter((employee) => employee.email.includes(searchTerm)));
 
   function showCreateModal() {
     modalManager.show(CreateEmployeeModal);
@@ -45,7 +45,7 @@
           class="dark:text-immich-dark-fg flex w-full place-items-center py-2 text-center odd:bg-subtle/80 even:bg-subtle/20"
         >
           <td class="w-3/12">{employee.id}</td>
-          <td class="w-6/12 text-left">{employee.username}</td>
+          <td class="w-6/12 text-left">{employee.email}</td>
           <td class="w-3/12">{employee.role}</td>
         </tr>
       {/each}
