@@ -4,7 +4,6 @@
   import { titleCase } from '$lib/utils';
   import { Button, Field, Input, Modal, ModalBody, ModalFooter, PasswordInput, Select, Stack } from '@immich/ui';
   import { mdiAccountPlus } from '@mdi/js';
-  import { v4 as uuidv4 } from 'uuid';
 
   interface Props {
     onClose: () => void;
@@ -12,8 +11,8 @@
 
   let { onClose }: Props = $props();
 
-  async function submit(event: Event) {
-    await createEmployee({ id: uuidv4(), email, name, role: selectedRole.value });
+  async function submit() {
+    await createEmployee({ email, name, role: selectedRole.value });
     onClose();
   }
 

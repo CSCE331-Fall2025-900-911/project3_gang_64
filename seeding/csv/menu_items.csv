@@ -1,0 +1,17 @@
+id,name,category,price,imageUrl,archived
+e4f37f2c-00c6-4324-84d9-6eb716556c03,Classic Pearl Milk Tea,Milky Series,5.8,,False
+4930d62b-df84-48cc-8df2-242bbf94c7ed,Taro Pearl Milk Tea,Milky Series,6.25,,False
+e91c9aa3-c43a-4e07-8a69-90f146003bb7,Classic Tea,Fresh Brew,4.65,,False
+350b3f00-c11f-422c-b7dc-1777dfe98de1,Honey Tea,Fresh Brew,4.85,,False
+c8671b3a-f59f-4cda-8cac-e5f71d3ecdb2,Mango Green Tea,Fruity Beverage,5.8,,False
+a5704dd4-8a8d-4dac-9adb-7a22f1056a55,Passion Chess,Fruity Beverage,6.25,,False
+d590fc7f-e708-4539-90d8-5080ccb0da62,Peach Tea w/ Honey Jelly,Fruity Beverage,6.25,,False
+857df24f-bd3e-440e-ad4b-74a79eae3612,Tiger Boba,Non-Caffeinated,6.5,,False
+edeb0f7f-142b-419d-b97e-26b0e73aa247,Halo Halo,Non-Caffeinated,6.95,,False
+3dd4c139-5923-4c02-9e4f-2beef6537098,Matcha Pearl Milk Tea,New Matcha Series,6.5,,False
+8dde876c-2faf-4a03-8dd9-159e16db808b,Strawberry Matcha Fresh Milk,New Matcha Series,6.5,,False
+0e69d67f-051a-4579-b75a-e016340aa5df,Mango Matcha Fresh Milk,New Matcha Series,6.5,,False
+434df5af-cfbd-4c1b-9937-694a3aa6a889,Oreo w/ Pearl,Ice-Blended,6.75,,False
+3bb0dd66-dd96-4c60-94b9-32f46e299604,Coffee w/ Ice Cream,Ice-Blended,6.75,,False
+ed5bd4a8-347f-423b-8a70-824a245136b5,Strawberry w/ Lychee Jelly & Ice Cream,Ice-Blended,6.75,,False
+42a16406-17ea-4974-97c3-fc7a38b5df44,Lava Flow,Ice-Blended,6.95,,False

@@ -1,0 +1,37 @@
+id,name,category,current_stock,order_stock,unit_price
+f4dfff36-4788-4ea5-b568-4fd1dbd2d67d,Black Tea,Tea,100,0,0.1
+72123fe4-0bc3-483b-91f5-0c0b699264fa,Green Tea,Tea,100,0,0.12
+6962bd24-731f-47e6-a8ec-7d634d3451c6,Oolong Tea,Tea,100,0,0.15
+2d59b0cc-7da6-4e67-92c3-c6f8f7d3583c,Thai Tea Mix,Tea,100,0,0.2
+b279abe0-e289-4767-a06e-e0257989deb6,Matcha Powder,Tea,100,0,0.5
+b1e53d47-023c-4e27-aed0-e6a2cc456fb8,Coffee,Coffee,100,0,0.25
+ed53d5c7-8f2a-4e3e-98b1-5ff9550b2824,Whole Milk,Dairy,100,0,0.3
+a9117da2-76d2-45b7-a005-2edca068e45b,Sweetened Condensed Milk,Dairy,100,0,0.4
+a29852d6-7385-4ef0-acc0-6b0a500e6a7b,Coconut Milk,Dairy,100,0,0.35
+8e591734-bd59-4090-9a2e-730ba59c8f3f,Heavy Cream,Dairy,100,0,0.45
+1e5da5c2-9a76-4b36-88a5-80ec7d34b682,Cream Cheese,Dairy,100,0,0.6
+e12b8797-565d-40ac-83c3-4a143217c432,Vanilla Ice Cream,Dairy,100,0,0.75
+41e7f8c3-feb6-487b-88d1-a0e3f6afea7e,Ube Ice Cream,Dairy,100,0,0.9
+9dc9d062-d56e-4d81-8687-2976f9da0460,Simple Syrup,Syrup,100,0,0.05
+fa3ff145-5cb0-451e-a48a-8a34ec899baa,Honey,Syrup,100,0,0.2
+5a966620-8926-4f9c-8871-6687e3a87607,Brown Sugar Syrup,Syrup,100,0,0.25
+50fbb942-653c-4dab-a3ca-ce0d89c4df53,Caramel Syrup,Syrup,100,0,0.3
+8c5675ac-850c-46be-a616-01fae534e97e,Mango Purée,Fruit,100,0,0.4
+f27e74c2-d07e-42fa-886b-810b5f8b70ea,Passion Fruit Syrup,Fruit,100,0,0.45
+6af91929-fa1c-4913-8c8d-4a74ad8e2ba8,Peach Syrup,Fruit,100,0,0.35
+9a42a7b5-bae3-422a-9ccf-2f312935e57e,Strawberry Purée,Fruit,100,0,0.4
+02482ceb-b5c4-44e8-9041-32487de8ad20,Pineapple Juice,Fruit,100,0,0.3
+8de0f113-56c9-4f45-ad79-97a7b6c5b0d1,Taro Powder,Taro,100,0,0.5
+34330df5-0037-43c3-8dce-e0228866e894,Black Tapioca Pearls,Tapioca,100,0,0.15
+6966cee6-f00e-4296-85f4-2d7d746cf420,Brown Sugar Pearls,Tapioca,100,0,0.2
+bbf26037-f86f-4e3e-8548-7ce865a57a8b,Coffee Jelly,Jelly,100,0,0.25
+2c79bf87-3d86-44f7-b9bd-94023c2aea76,Honey Jelly,Jelly,100,0,0.25
+2c42f3e3-58bc-47c8-9c7a-cf3ccd523c13,Lychee Jelly,Jelly,100,0,0.25
+e86417a7-160f-4f3d-888c-d7e98b3bec73,Grass Jelly,Jelly,100,0,0.25
+a9297183-59b7-4e12-835a-a51104cea8c3,Red Beans (Sweetened),Beans,100,0,0.2
+cb93c69c-b610-4ab3-86c6-a2c76be4632c,Nata de Coco,Coconut,100,0,0.25
+767f98e2-b7c2-42b2-a830-80ee0f84dd08,Oreo Cookies,Cookies,100,0,0.1
+39a89bb3-bbcb-43f7-b4a5-5c01f7783994,Lemon Juice,Fruit,100,0,0.15
+d9caa62a-3f5b-449f-8088-4aab2706631f,Salt,Seasoning,100,0,0.02
+953cd203-bd01-4e89-ba72-565a68adb82a,Ice Cubes,Ice,100,0,0.01
+2707f84e-3550-4511-bd78-d28c1409ad1c,Crushed Ice,Ice,100,0,0.01

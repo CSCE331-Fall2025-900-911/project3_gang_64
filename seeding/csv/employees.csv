@@ -1,0 +1,8 @@
+id,name,email,role,archived
+e8d2d38e-2014-4e05-a290-22febff0884d,Luis Sanders,gtrevino@example.org,manager,False
+e684be35-46da-4d66-9675-07d1e6a7fdcc,Alyssa Watson,patriciabutler@example.net,staff,False
+77fb278c-5da9-491b-8896-7884e1c63c68,Dr. Alicia Ryan,pmurphy@example.net,staff,False
+54b42d7e-e772-4e5f-8824-40f90efcbc40,Patricia Lloyd,morrisonbrian@example.net,staff,False
+55bdbd30-3a5b-410c-b085-2448d16ee8ad,Joshua Lucas,rwoods@example.net,staff,False
+41eb92b7-3a3a-4819-b773-e74d1d4c9bba,manager,manager@example.com,manager,False
+98ccba2d-9a0c-4233-90a4-98f2214458ca,staff,staff@example.com,staff,False

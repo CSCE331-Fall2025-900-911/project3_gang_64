@@ -3,5 +3,6 @@
   "files.autoSave": "onFocusChange",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "git.branchProtectionPrompt": "alwaysCommit",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "python.analysis.typeCheckingMode": "strict"
 }
