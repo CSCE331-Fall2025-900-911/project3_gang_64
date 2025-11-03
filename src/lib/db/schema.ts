@@ -9,7 +9,7 @@ export const menu = pgTable('menu', {
   name: varchar({ length: 100 }).notNull(),
   category: varchar({ length: 100 }).notNull(),
   price: numeric().notNull(),
-  imageUrl: varchar({ length: 255 }).notNull(),
+  imageUrl: varchar({ length: 255 }),
   archived: boolean().default(false).notNull(),
 });
 
@@ -84,6 +84,7 @@ export const orderContent = pgTable(
 export const ingredient = pgTable('ingredient', {
   id: uuid('id').defaultRandom().primaryKey().notNull(),
   name: varchar({ length: 100 }),
+  category: varchar({ length: 100 }).notNull(),
   currentStock: integer('current_stock').notNull(),
   orderStock: integer('order_stock').notNull(),
   unitPrice: numeric('unit_price').notNull(),
