@@ -13,18 +13,18 @@
   let { onClose }: Props = $props();
 
   async function submit(event: Event) {
-    await createEmployee({ id: uuidv4(), email, password, role: selectedRole.value });
+    await createEmployee({ id: uuidv4(), email, name, role: selectedRole.value });
     onClose();
   }
 
   let email = $state('');
-  let password = $state('');
+  let name = $state('');
 
   const roleOptions = role.enumValues.map((r) => ({ label: titleCase(r), value: r }));
   let selectedRole = $state(roleOptions[0]);
 
   let valid = $derived.by(() => {
-    return username.trim().length > 0 && password.trim().length >= 8;
+    return email.trim().length > 0 && name.trim().length >= 0;
   });
 </script>
 
@@ -32,11 +32,11 @@
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="John Doe" bind:value={username} />
+        <Input placeholder="John Doe" bind:value={name} />
       </Field>
 
-      <Field label="Password">
-        <PasswordInput placeholder="Enter password" bind:value={password} />
+      <Field label="Email">
+        <PasswordInput placeholder="johndoe@example.com" bind:value={email} />
       </Field>
 
       <Field label="Role">
