@@ -8,7 +8,7 @@
 
 <div class="flex justify-center">
   <div class="bg-black align-center mx-5 my-3 size-fit">
-    <img class = "w-100 my-10" src={logo}/>
+    <img class = "w-100 my-10" src={logo} alt= "Share Tea"/>
   <Card >
     <CardHeader>
       <CardTitle>Login to Sharetea:</CardTitle>
