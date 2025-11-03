@@ -21,8 +21,8 @@ export const order = pgTable(
   'order',
   {
     id: uuid('id').defaultRandom().primaryKey().notNull(),
-    customerId: integer('customer_id').notNull(),
-    employeeId: integer('employee_id'),
+    customerId: uuid('customer_id').notNull(),
+    employeeId: uuid('employee_id'),
     subtotal: numeric().notNull(),
     tax: numeric().notNull(),
     total: numeric().notNull(),
@@ -56,10 +56,10 @@ export const employee = pgTable('employee', {
 export const orderContent = pgTable(
   'order_content',
   {
-    orderId: integer('order_id').notNull(),
-    menuItemId: integer('menu_item_id').notNull(),
-    ingredientId: integer('ingredient_id').notNull(),
-    orderEntryId: integer('order_entry_id').notNull(),
+    orderId: uuid('order_id').notNull(),
+    menuItemId: uuid('menu_item_id').notNull(),
+    ingredientId: uuid('ingredient_id').notNull(),
+    orderEntryId: uuid('order_entry_id').notNull(),
   },
   (table) => [
     foreignKey({
@@ -91,8 +91,8 @@ export const ingredient = pgTable('ingredient', {
 export const recipe = pgTable(
   'recipe',
   {
-    menuItemId: integer('menu_item_id').notNull(),
-    ingredientId: integer('ingredient_id').notNull(),
+    menuItemId: uuid('menu_item_id').notNull(),
+    ingredientId: uuid('ingredient_id').notNull(),
     quantity: integer().notNull(),
   },
   (table) => [
