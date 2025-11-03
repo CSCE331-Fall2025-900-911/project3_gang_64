@@ -15,7 +15,7 @@
     </CardHeader>
     <CardBody>
         <Button class = "h-25 justify-self-center">
-          <img class = "h-24" src = {google} alt= "google logo" />
+          <img class = "h-20" src = {google} alt= "google logo" />
           Continue with Google
         </Button>
     </CardBody>
