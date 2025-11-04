@@ -1,6 +1,19 @@
 import { sql } from 'drizzle-orm';
-import { boolean, foreignKey, integer, numeric, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  foreignKey,
+  primaryKey,
+  integer,
+  numeric,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+  text,
+} from 'drizzle-orm/pg-core';
 import { v4 as uuidv4 } from 'uuid';
+import type { AdapterAccountType } from '@auth/core/adapters';
 
 export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
 export const role = pgEnum('role', ['manager', 'staff']);
@@ -51,7 +64,7 @@ export const order = pgTable(
 export const employee = pgTable('employee', {
   id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
   name: varchar({ length: 100 }).notNull(),
-  email: varchar({ length: 100 }).notNull(),
+  email: varchar({ length: 100 }).unique().notNull(),
   role: role().notNull(),
   archived: boolean().default(false).notNull(),
 });
@@ -151,5 +164,78 @@ export const allergens = pgTable(
       foreignColumns: [ingredient.id],
       name: 'recipe_ingredient_id_fkey',
     }),
+  ],
+);
+
+export const accounts = pgTable(
+  'account',
+  {
+    employeeId: uuid('employee_id')
+      .notNull()
+      .references(() => employee.id, { onDelete: 'cascade' }),
+    type: text('type').$type<AdapterAccountType>().notNull(),
+    provider: text('provider').notNull(),
+    providerAccountId: text('providerAccountId').notNull(),
+    refresh_token: text('refresh_token'),
+    access_token: text('access_token'),
+    expires_at: integer('expires_at'),
+    token_type: text('token_type'),
+    scope: text('scope'),
+    id_token: text('id_token'),
+    session_state: text('session_state'),
+  },
+  (table) => [
+    {
+      compoundKey: primaryKey({
+        columns: [table.provider, table.providerAccountId],
+      }),
+    },
+  ],
+);
+
+export const sessions = pgTable('session', {
+  sessionToken: text('sessionToken').primaryKey(),
+  userId: text('userId')
+    .notNull()
+    .references(() => employee.id, { onDelete: 'cascade' }),
+  expires: timestamp('expires', { mode: 'date' }).notNull(),
+});
+
+export const verificationTokens = pgTable(
+  'verificationToken',
+  {
+    identifier: text('identifier').notNull(),
+    token: text('token').notNull(),
+    expires: timestamp('expires', { mode: 'date' }).notNull(),
+  },
+  (verificationToken) => [
+    {
+      compositePk: primaryKey({
+        columns: [verificationToken.identifier, verificationToken.token],
+      }),
+    },
+  ],
+);
+
+export const authenticators = pgTable(
+  'authenticator',
+  {
+    credentialID: text('credentialID').notNull().unique(),
+    userId: text('userId')
+      .notNull()
+      .references(() => employee.id, { onDelete: 'cascade' }),
+    providerAccountId: text('providerAccountId').notNull(),
+    credentialPublicKey: text('credentialPublicKey').notNull(),
+    counter: integer('counter').notNull(),
+    credentialDeviceType: text('credentialDeviceType').notNull(),
+    credentialBackedUp: boolean('credentialBackedUp').notNull(),
+    transports: text('transports'),
+  },
+  (authenticator) => [
+    {
+      compositePK: primaryKey({
+        columns: [authenticator.userId, authenticator.credentialID],
+      }),
+    },
   ],
 );
