@@ -5,5 +5,8 @@
 \copy recipe from 'seeding/csv/recipes.csv' with (format csv, header);
 \copy "order" from 'seeding/csv/orders.csv' with (format csv, header);
 \copy order_content from 'seeding/csv/order_contents.csv' with (format csv, header);
+\copy nutrition_info from 'seeding/csv/nutrition_info.csv' with (format csv, header);
+\copy allergens from 'seeding/csv/allergens.csv' with (format csv, header);
+
 
 INSERT INTO z_report (timestamp) VALUES (CURRENT_TIMESTAMP - INTERVAL '1 day');

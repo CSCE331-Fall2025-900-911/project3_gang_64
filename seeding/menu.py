@@ -176,3 +176,83 @@ recipes = [
     Recipe(items[15].id, ingredients[20].id, 1),  # Strawberry Purée
     Recipe(items[15].id, ingredients[35].id, 1),  # Crushed Ice
 ]
+
+nutrition = [
+    NutritionInfo(ingredients[0].id, 2, 0, 0, 0, 0, 50),   # Black Tea
+    NutritionInfo(ingredients[1].id, 2, 0, 0, 0, 0, 35),   # Green Tea
+    NutritionInfo(ingredients[2].id, 2, 0, 0, 0, 0, 40),   # Oolong Tea
+    NutritionInfo(ingredients[3].id, 120, 0, 50, 28, 24, 40), # Thai Tea Mix
+    NutritionInfo(ingredients[4].id, 5, 0, 0, 1, 0, 35),   # Matcha Powder
+    NutritionInfo(ingredients[5].id, 2, 0, 0, 0, 0, 95),   # Coffee
+    NutritionInfo(ingredients[6].id, 150, 8, 120, 12, 12, 0), # Whole Milk
+    NutritionInfo(ingredients[7].id, 130, 3, 50, 22, 22, 0), # Sweetened Condensed Milk
+    NutritionInfo(ingredients[8].id, 45, 4, 15, 2, 1, 0),  # Coconut Milk
+    NutritionInfo(ingredients[9].id, 200, 22, 40, 2, 1, 0), # Heavy Cream
+    NutritionInfo(ingredients[10].id, 80, 8, 90, 1, 1, 0),  # Cream Cheese
+    NutritionInfo(ingredients[11].id, 210, 11, 80, 24, 20, 0), # Vanilla Ice Cream
+    NutritionInfo(ingredients[12].id, 220, 11, 80, 26, 22, 0), # Ube Ice Cream
+    NutritionInfo(ingredients[13].id, 50, 0, 0, 14, 14, 0), # Simple Syrup
+    NutritionInfo(ingredients[14].id, 64, 0, 1, 17, 17, 0), # Honey
+    NutritionInfo(ingredients[15].id, 60, 0, 0, 16, 16, 0), # Brown Sugar Syrup
+    NutritionInfo(ingredients[16].id, 70, 0, 5, 18, 17, 0), # Caramel Syrup
+    NutritionInfo(ingredients[17].id, 60, 0, 1, 15, 13, 0), # Mango Purée
+    NutritionInfo(ingredients[18].id, 50, 0, 1, 13, 12, 0), # Passion Fruit Syrup
+    NutritionInfo(ingredients[19].id, 45, 0, 1, 12, 11, 0), # Peach Syrup
+    NutritionInfo(ingredients[20].id, 50, 0, 1, 12, 10, 0), # Strawberry Purée
+    NutritionInfo(ingredients[21].id, 60, 0, 2, 15, 13, 0), # Pineapple Juice
+    NutritionInfo(ingredients[22].id, 100, 0, 10, 24, 6, 0), # Taro Powder
+    NutritionInfo(ingredients[23].id, 100, 0, 5, 26, 15, 0), # Black Tapioca Pearls
+    NutritionInfo(ingredients[24].id, 110, 0, 5, 28, 18, 0), # Brown Sugar Pearls
+    NutritionInfo(ingredients[25].id, 20, 0, 5, 5, 3, 10),  # Coffee Jelly
+    NutritionInfo(ingredients[26].id, 40, 0, 5, 10, 8, 0),  # Honey Jelly
+    NutritionInfo(ingredients[27].id, 35, 0, 5, 9, 7, 0),   # Lychee Jelly
+    NutritionInfo(ingredients[28].id, 30, 0, 5, 8, 6, 0),   # Grass Jelly
+    NutritionInfo(ingredients[29].id, 120, 0, 5, 24, 12, 0), # Red Beans (Sweetened)
+    NutritionInfo(ingredients[30].id, 40, 0, 10, 11, 9, 0), # Nata de Coco
+    NutritionInfo(ingredients[31].id, 53, 3, 40, 8, 4, 0),  # Oreo Cookies (per cookie)
+    NutritionInfo(ingredients[32].id, 7, 0, 1, 2, 1, 0),    # Lemon Juice
+    NutritionInfo(ingredients[33].id, 0, 0, 0, 0, 0, 0),    # Salt
+    NutritionInfo(ingredients[34].id, 0, 0, 0, 0, 0, 0),    # Ice Cubes
+    NutritionInfo(ingredients[35].id, 0, 0, 0, 0, 0, 0),    # Crushed Ice
+]
+
+allergens = [
+    AllergenInfo(ingredients[0].id, "None"),                     # Black Tea
+    AllergenInfo(ingredients[1].id, "None"),                     # Green Tea
+    AllergenInfo(ingredients[2].id, "None"),                     # Oolong Tea
+    AllergenInfo(ingredients[3].id, "None"),                     # Thai Tea Mix
+    AllergenInfo(ingredients[4].id, "None"),                     # Matcha Powder
+    AllergenInfo(ingredients[5].id, "None"),                     # Coffee
+    AllergenInfo(ingredients[6].id, "Milk"),                     # Whole Milk
+    AllergenInfo(ingredients[7].id, "Milk"),                     # Sweetened Condensed Milk
+    AllergenInfo(ingredients[8].id, "Tree nuts (Coconut)"),      # Coconut Milk
+    AllergenInfo(ingredients[9].id, "Milk"),                     # Heavy Cream
+    AllergenInfo(ingredients[10].id, "Milk"),                    # Cream Cheese
+    AllergenInfo(ingredients[11].id, "Milk"),                    # Vanilla Ice Cream
+    AllergenInfo(ingredients[12].id, "Milk"),                    # Ube Ice Cream
+    AllergenInfo(ingredients[13].id, "None"),                    # Simple Syrup
+    AllergenInfo(ingredients[14].id, "None"),                    # Honey
+    AllergenInfo(ingredients[15].id, "None"),                    # Brown Sugar Syrup
+    AllergenInfo(ingredients[16].id, "None"),                    # Caramel Syrup
+    AllergenInfo(ingredients[17].id, "Mango"),                   # Mango Purée
+    AllergenInfo(ingredients[18].id, "Passion Fruit"),           # Passion Fruit Syrup
+    AllergenInfo(ingredients[19].id, "Peach"),                   # Peach Syrup
+    AllergenInfo(ingredients[20].id, "Strawberry"),              # Strawberry Purée
+    AllergenInfo(ingredients[21].id, "Pineapple"),               # Pineapple Juice
+    AllergenInfo(ingredients[22].id, "None"),                    # Taro Powder
+    AllergenInfo(ingredients[23].id, "None"),                    # Black Tapioca Pearls
+    AllergenInfo(ingredients[24].id, "None"),                    # Brown Sugar Pearls
+    AllergenInfo(ingredients[25].id, "None"),                    # Coffee Jelly
+    AllergenInfo(ingredients[26].id, "None"),                    # Honey Jelly
+    AllergenInfo(ingredients[27].id, "Lychee"),                  # Lychee Jelly
+    AllergenInfo(ingredients[28].id, "None"),                    # Grass Jelly
+    AllergenInfo(ingredients[29].id, "None"),                    # Red Beans (Sweetened)
+    AllergenInfo(ingredients[30].id, "Tree nuts (Coconut)"),     # Nata de Coco
+    AllergenInfo(ingredients[31].id, "Wheat"),                   # Oreo Cookies (per cookie)
+    AllergenInfo(ingredients[31].id, "Milk"),                    # Oreo Cookies (per cookie)
+    AllergenInfo(ingredients[31].id, "Soybeans"),                # Oreo Cookies (per cookie)
+    AllergenInfo(ingredients[32].id, "None"),                    # Lemon Juice
+    AllergenInfo(ingredients[33].id, "None"),                    # Salt
+    AllergenInfo(ingredients[34].id, "None"),                    # Ice Cubes
+    AllergenInfo(ingredients[35].id, "None"),                    # Crushed Ice
+]

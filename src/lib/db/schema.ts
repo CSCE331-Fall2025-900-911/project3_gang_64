@@ -119,14 +119,15 @@ export const zReport = pgTable('z_report', {
     .notNull(),
 });
 
-export const nutrition = pgTable(
-  'nutrition',
+export const nutrition_info = pgTable(
+  'nutrition_info',
   {
     ingredientId: uuid('ingredient_id').notNull(),
     calories: integer().notNull(),
     fat_g: integer().notNull(),
     sodium_g: integer().notNull(),
     carbs_g: integer().notNull(),
+    sugar_g: integer().notNull(),
     caffiene_mg: integer().notNull(),
   },
   (table) => [
@@ -138,8 +139,8 @@ export const nutrition = pgTable(
   ],
 );
 
-export const allergen = pgTable(
-  'allergen',
+export const allergens = pgTable(
+  'allergens',
   {
     ingredientId: uuid('ingredient_id').notNull(),
     allergen: varchar({ length: 255 }).notNull(),

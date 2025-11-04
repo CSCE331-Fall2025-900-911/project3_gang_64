@@ -36,6 +36,18 @@ def export_menu_csv():
         for ingredient in menu.ingredients:
             writer.writerow([ingredient.id, ingredient.name, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price])
 
+    with open("csv/nutrition_info.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ingredient_id", "calories", "fat_g", "sodium_g", "carbs_g", "sugar_g", "caffiene_mg"])
+        for nutrition in menu.nutrition:
+            writer.writerow([nutrition.ingredient_id, nutrition.calories, nutrition.fat_g, nutrition.sodium_g, nutrition.carbs_g, nutrition.sugar_g, nutrition.caffiene_mg])
+
+    with open("csv/allergens.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ingredient_id", "allergen"])
+        for allergen in menu.allergens:
+            writer.writerow([allergen.ingredient_id, allergen.allergen])
+
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):
     with open("csv/customers.csv", "w", newline="") as f:
         writer = csv.writer(f)

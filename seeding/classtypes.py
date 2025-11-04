@@ -68,3 +68,20 @@ class OrderContent:
     menu_item_id: UUID
     ingredient_id: UUID
     order_entry_id: UUID
+
+
+@dataclass
+class NutritionInfo:
+    ingredient_id: UUID
+    calories: int
+    fat_g: int
+    sodium_g: int
+    carbs_g: int
+    sugar_g: int
+    caffiene_mg: int
+
+@dataclass
+class AllergenInfo:
+    ingredient_id: UUID
+    allergen: str
+
