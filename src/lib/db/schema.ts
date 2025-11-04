@@ -67,8 +67,6 @@ export const employee = pgTable('employee', {
   email: varchar({ length: 100 }).unique().notNull(),
   role: role().notNull().default('staff'),
   archived: boolean().default(false).notNull(),
-  emailVerified: timestamp('email_verified', { mode: 'date' }),
-  image: text('image'),
 });
 
 export const orderContent = pgTable(
@@ -169,12 +167,22 @@ export const allergens = pgTable(
   ],
 );
 
+export const users = pgTable('user', {
+  id: uuid('id')
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text('name'),
+  email: text('email').unique(),
+  emailVerified: timestamp('emailVerified', { mode: 'date' }),
+  image: text('image'),
+});
+
 export const accounts = pgTable(
   'account',
   {
-    userId: uuid('user_id')
+    userId: uuid('userId')
       .notNull()
-      .references(() => employee.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     type: text('type').$type<AdapterAccountType>().notNull(),
     provider: text('provider').notNull(),
     providerAccountId: text('providerAccountId').notNull(),
@@ -186,10 +194,10 @@ export const accounts = pgTable(
     id_token: text('id_token'),
     session_state: text('session_state'),
   },
-  (table) => [
+  (account) => [
     {
       compoundKey: primaryKey({
-        columns: [table.provider, table.providerAccountId],
+        columns: [account.provider, account.providerAccountId],
       }),
     },
   ],
@@ -199,7 +207,7 @@ export const sessions = pgTable('session', {
   sessionToken: text('sessionToken').primaryKey(),
   userId: uuid('userId')
     .notNull()
-    .references(() => employee.id, { onDelete: 'cascade' }),
+    .references(() => users.id, { onDelete: 'cascade' }),
   expires: timestamp('expires', { mode: 'date' }).notNull(),
 });
 
@@ -225,7 +233,7 @@ export const authenticators = pgTable(
     credentialID: text('credentialID').notNull().unique(),
     userId: uuid('userId')
       .notNull()
-      .references(() => employee.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     providerAccountId: text('providerAccountId').notNull(),
     credentialPublicKey: text('credentialPublicKey').notNull(),
     counter: integer('counter').notNull(),

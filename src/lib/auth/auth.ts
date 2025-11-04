@@ -8,7 +8,7 @@ import * as schema from '../db/schema';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
   adapter: DrizzleAdapter(getDB(), {
-    usersTable: schema.employee,
+    usersTable: schema.users,
     accountsTable: schema.accounts,
     sessionsTable: schema.sessions,
     verificationTokensTable: schema.verificationTokens,

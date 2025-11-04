@@ -72,7 +72,7 @@ def export_employees_csv():
         writer = csv.writer(f)
         writer.writerow(["id", "name", "email", "role", "archived"])
         for employee in employees:
-            writer.writerow([employee.id, employee.name, employee.email, employee.role.value, False, "", ""])
+            writer.writerow([employee.id, employee.name, employee.email, employee.role.value, False])
 
 def generateRandomOrder(clock: datetime):
     global next_order_entry_id
