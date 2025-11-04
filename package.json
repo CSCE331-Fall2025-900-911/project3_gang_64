@@ -20,7 +20,9 @@
     "drizzle-orm": "^0.44.7",
     "drizzle-valibot": "^0.4.2",
     "uuid": "^13.0.0",
-    "@auth/core": "0.34.3"
+    "@auth/core": "^0.34.3",
+    "@auth/sveltekit": "^1.11.1",
+    "@auth/drizzle-adapter": "^1.11.1"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",
