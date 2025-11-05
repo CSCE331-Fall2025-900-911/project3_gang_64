@@ -1,8 +1,3 @@
-id,name,email,role,archived
-e8944999-d3a2-47b5-a77d-65f693d31846,Kimberly Williams,ihernandez@example.com,manager,False
-504a8609-38f3-44d4-acd0-aaae0138b540,Joe Howard,matthewschwartz@example.net,staff,False
-acc9e74a-13ca-413e-ba90-b76b33155d52,Isaac Black,jared42@example.org,staff,False
-179dfc72-fbc3-4189-bb46-bacf2a5794c8,Veronica Harrison,butlerjoel@example.net,staff,False
-ccbc985c-9e93-41fe-84fc-6bbc6710faee,Wanda Edwards,debra34@example.net,staff,False
-41c5d534-c9af-4040-b232-5ecb139daeea,manager,manager@example.com,manager,False
-34b5711a-3771-4e2e-b404-89f6f67894b9,staff,staff@example.com,staff,False
+version https://git-lfs.github.com/spec/v1
+oid sha256:26c25009e713254718879a691e24c907e199eb22341c72e9958614775e89795e
+size 622
