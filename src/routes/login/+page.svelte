@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { SignIn, SignOut } from '@auth/sveltekit/components';
   import { page } from '$app/state';
   import google from '$lib/assets/google.png';
   import logo from '$lib/assets/logo.png';
@@ -14,10 +15,10 @@
         <CardTitle>Login to Sharetea:</CardTitle>
       </CardHeader>
       <CardBody>
-        <Button class="h-25 justify-self-center">
-          <img class="h-20" src={google} alt="google logo" />
-          Continue with Google
-        </Button>
+        <SignIn>
+          <div slot="submitButton" class="buttonPrimary">Sign in</div>
+        </SignIn>
+        <SignIn provider="google" />
       </CardBody>
     </Card>
   </div>
