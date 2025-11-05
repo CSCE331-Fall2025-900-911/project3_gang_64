@@ -14,7 +14,6 @@ async function authorizationHandle({ event, resolve }: Parameters<Handle>[0]) {
       throw redirect(303, '/login');
     }
 
-    let isEmployee = false;
     const db = getDB();
     try {
       const result = await db.select().from(employee).where(eq(employee.email, session.user.email)).limit(1);
@@ -23,7 +22,7 @@ async function authorizationHandle({ event, resolve }: Parameters<Handle>[0]) {
 
       if (!isEmployee) {
         console.warn(`Attempted access by non-provisioned user: ${session.user.email}`);
-        throw redirect(303, '/unauthorized'); // Redirect to a dedicated unauthorized page
+        throw redirect(303, '/auth/unauthorized'); // Redirect to a dedicated unauthorized page
       }
     } catch (e) {
       console.error('Database query failed during authorization check:', e);
