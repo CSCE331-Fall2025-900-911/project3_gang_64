@@ -1,0 +1,2 @@
+seeding/csv/*.csv linguist-generated=true
+seeding/csv/*.csv -diff -merge
