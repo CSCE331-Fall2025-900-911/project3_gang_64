@@ -65,8 +65,10 @@ export const employee = pgTable('employee', {
   id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
   name: varchar({ length: 100 }).notNull(),
   email: varchar({ length: 100 }).unique().notNull(),
-  role: role().notNull(),
+  role: role().notNull().default('staff'),
   archived: boolean().default(false).notNull(),
+  emailVerified: timestamp('email_verified', { mode: 'date' }),
+  image: text('image'),
 });
 
 export const orderContent = pgTable(
@@ -170,7 +172,7 @@ export const allergens = pgTable(
 export const accounts = pgTable(
   'account',
   {
-    employeeId: uuid('employee_id')
+    userId: uuid('user_id')
       .notNull()
       .references(() => employee.id, { onDelete: 'cascade' }),
     type: text('type').$type<AdapterAccountType>().notNull(),
@@ -195,7 +197,7 @@ export const accounts = pgTable(
 
 export const sessions = pgTable('session', {
   sessionToken: text('sessionToken').primaryKey(),
-  userId: text('userId')
+  userId: uuid('userId')
     .notNull()
     .references(() => employee.id, { onDelete: 'cascade' }),
   expires: timestamp('expires', { mode: 'date' }).notNull(),
@@ -221,7 +223,7 @@ export const authenticators = pgTable(
   'authenticator',
   {
     credentialID: text('credentialID').notNull().unique(),
-    userId: text('userId')
+    userId: uuid('userId')
       .notNull()
       .references(() => employee.id, { onDelete: 'cascade' }),
     providerAccountId: text('providerAccountId').notNull(),
