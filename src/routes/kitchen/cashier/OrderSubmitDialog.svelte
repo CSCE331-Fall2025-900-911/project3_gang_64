@@ -16,6 +16,11 @@
       cashierManager.paymentMethod
     );
   });
+
+  function submitOrder() {
+    cashierManager.submit();
+    onClose();
+  }
 </script>
 
 <Modal title="Submit Order" icon={mdiInvoiceSend} {onClose}>
@@ -45,7 +50,7 @@
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={cashierManager.submit} shape="round" color="primary" disabled={!valid}>Create</Button>
+      <Button onclick={submitOrder} shape="round" color="primary" disabled={!valid}>Create</Button>
     </div>
   </ModalFooter>
 </Modal>
