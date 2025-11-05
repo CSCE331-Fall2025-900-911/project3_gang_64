@@ -5,7 +5,7 @@
 </script>
 
 <div class="flex justify-center">
-  <div class="align-center mx-5 my-3 size-fit bg-black">
+  <div class="align-center mx-5 my-3 size-fit">
     <img class="mx-auto my-10 w-100" src={logo} alt="Share Tea" />
     <Card>
       <CardHeader>
