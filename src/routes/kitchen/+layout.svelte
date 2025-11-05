@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
+  import { currentEmployee } from '$lib/auth/employee.svelte';
   import UserModal from '$lib/components/UserModal.svelte';
   import {
     AppShell,
@@ -33,6 +34,8 @@
   function openUserProfile() {
     modalManager.show(UserModal);
   }
+
+  let employee = currentEmployee();
 </script>
 
 <svelte:head>
@@ -45,10 +48,12 @@
     <div class="flex w-full items-center justify-between p-4">
       <img src={logo} alt="ShareTea Logo" class="h-6" />
       <div class="flex items-center gap-4">
-        <Select data={modes} onChange={handleModeChange} bind:value={mode} />
+        {#if employee?.role == 'manager'}
+          <Select data={modes} onChange={handleModeChange} bind:value={mode} />
+        {/if}
         <ThemeSwitcher />
         <button onclick={openUserProfile}>
-          <Avatar name="Share Tea" />
+          <Avatar name={employee?.name ?? 'Share Tea'} />
         </button>
       </div>
     </div>

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state';
   import logo from '$lib/assets/logo.png';
-  import { Card, CardBody, CardHeader, CardTitle } from '@immich/ui';
-  console.log(page.url.hash.replace('#', ''));
+  import { Button, Card, CardBody, CardHeader, CardTitle } from '@immich/ui';
+
   const error = page.url.searchParams.get('error');
 
   let errorMessage = 'An unknown error occurred.';
@@ -10,23 +10,23 @@
 
   if (error === 'AccessDenied') {
     errorTitle = 'Access Denied';
-    errorMessage =
-      'Sign-in failed. This application is for authorized employees only. Please contact support if you believe this is an error.';
+    errorMessage = 'You are not authorized to access the ShareTea kitchen application.';
   } else if (error) {
-    // A catch-all for other auth errors
     errorMessage = `An error occurred during authentication. Code: ${error}`;
   }
 </script>
 
 <div class="flex justify-center">
   <div class="align-center mx-5 my-3 size-fit bg-black">
-    <img class="my-10 w-100" src={logo} alt="Share Tea" />
+    <img class="mx-auto my-10 w-100" src={logo} alt="Share Tea" />
     <Card>
       <CardHeader>
-        <CardTitle>{errorTitle}</CardTitle>
+        <CardTitle>Login</CardTitle>
       </CardHeader>
       <CardBody>
-        {errorMessage}
+        <p>{errorMessage}</p>
+
+        <Button fullWidth href="/auth/login" color="primary" class="mt-4">Return to Login</Button>
       </CardBody>
     </Card>
   </div>
