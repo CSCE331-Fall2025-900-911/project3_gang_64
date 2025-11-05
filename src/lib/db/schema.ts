@@ -172,7 +172,9 @@ export const users = pgTable('user', {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text('name'),
-  email: text('email').unique(),
+  email: text('email')
+    .unique()
+    .references(() => employee.email, { onDelete: 'cascade', onUpdate: 'cascade' }),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
 });
