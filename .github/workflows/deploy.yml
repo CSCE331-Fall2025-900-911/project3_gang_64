@@ -17,8 +17,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
-        with:
-          lfs: true
 
       - uses: jdx/mise-action@v3
 
