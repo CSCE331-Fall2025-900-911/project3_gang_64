@@ -10,7 +10,7 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>ShareTea | Login</title>
+  <title>ShareTea | Authentication</title>
 </svelte:head>
 
 {@render children?.()}

@@ -1,50 +1,58 @@
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Google from '@auth/sveltekit/providers/google';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import { redirect } from '@sveltejs/kit';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import { and, eq } from 'drizzle-orm';
 import { getDB } from '../db';
-import { eq } from 'drizzle-orm';
 
 import * as schema from '../db/schema';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
-  adapter: DrizzleAdapter(getDB(), {
-    usersTable: schema.users,
-    accountsTable: schema.accounts,
-    sessionsTable: schema.sessions,
-    verificationTokensTable: schema.verificationTokens,
-  }),
   providers: [Google({ clientId: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET })],
-
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    async signIn({ user, account, profile }) {
-      // only provision google ouath account for emplioyees
-      if (account?.provider === 'google' && profile?.email) {
-        const email = profile.email;
+    async signIn({ profile }) {
+      const email = profile?.email;
+
+      if (!email) return false;
+
+      const db = getDB();
+      const employeeRecord = await db
+        .select({ email: schema.employee.email, archived: schema.employee.archived })
+        .from(schema.employee)
+        .where(and(eq(schema.employee.email, email), eq(schema.employee.archived, false)))
+        .limit(1);
+
+      return employeeRecord.length > 0;
+    },
+    async jwt({ token, trigger }) {
+      // Add employee data to the token on sign in or update
+      if (trigger === 'signIn' || trigger === 'update') {
         const db = getDB();
         const employeeRecord = await db
-          .select({ email: schema.employee.email, archived: schema.employee.archived })
+          .select()
           .from(schema.employee)
-          .where(eq(schema.employee.email, email))
+          .where(eq(schema.employee.email, token.email!))
           .limit(1);
 
-        if (employeeRecord.length > 0) {
-          console.log(`Employee provisioned: ${email}. Allowing sign-in.`);
-          if (!employeeRecord[0].archived) {
-            return true;
-          }
-          console.warn(`Employee ${email} archived.`);
+        if (employeeRecord[0]) {
+          token.employee = employeeRecord[0];
         }
-        console.warn(`Employee NOT provisioned: ${email}. Blocking sign-in.`);
-        return false;
       }
-
-      return false;
+      return token;
+    },
+    async session({ session, token }) {
+      // Add employee data to the session
+      if (token.employee) {
+        session.employee = token.employee as typeof session.employee;
+      }
+      return session;
     },
   },
   pages: {
-    signIn: '/auth/signin', // Redirect to this route for sign in
-    error: '/auth/unauthorized', // Redirect to this route on error
+    signIn: '/auth/login',
+    signOut: '/auth/logout',
+    error: '/auth/unauthorized',
   },
 });
