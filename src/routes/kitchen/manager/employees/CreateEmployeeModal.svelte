@@ -2,7 +2,7 @@
   import { createEmployee } from '$lib/api/employee.remote';
   import { role } from '$lib/db/schema';
   import { titleCase } from '$lib/utils';
-  import { Button, Field, Input, Modal, ModalBody, ModalFooter, PasswordInput, Select, Stack } from '@immich/ui';
+  import { Button, Field, Input, Modal, ModalBody, ModalFooter, Select, Stack } from '@immich/ui';
   import { mdiAccountPlus } from '@mdi/js';
 
   interface Props {
@@ -23,7 +23,7 @@
   let selectedRole = $state(roleOptions[0]);
 
   let valid = $derived.by(() => {
-    return email.trim().length > 0 && name.trim().length >= 0;
+    return email.trim().length > 0 && name.trim().length >= 0 && email.includes('@');
   });
 </script>
 
@@ -35,7 +35,7 @@
       </Field>
 
       <Field label="Email">
-        <PasswordInput placeholder="johndoe@example.com" bind:value={email} />
+        <Input placeholder="johndoe@example.com" bind:value={email} />
       </Field>
 
       <Field label="Role">
