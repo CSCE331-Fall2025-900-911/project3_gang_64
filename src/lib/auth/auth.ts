@@ -12,6 +12,8 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
     strategy: 'jwt',
   },
   basePath: env.AUTH_URL,
+  secret: env.AUTH_SECRET,
+  trustHost: true,
   callbacks: {
     async signIn({ profile }) {
       const email = profile?.email;
