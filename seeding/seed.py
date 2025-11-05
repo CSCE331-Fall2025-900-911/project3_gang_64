@@ -154,4 +154,8 @@ if __name__ == "__main__":
 
     employees.append(Employee(id=uuid.uuid4(), name="manager", email="manager@example.com", role=Role.MANAGER))
     employees.append(Employee(id=uuid.uuid4(), name="staff", email="staff@example.com", role=Role.STAFF))
+    employees.append(Employee(id=uuid.uuid4(), name="Matthew Warren", email="mcwarren922@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(id=uuid.uuid4(), name="Brandon Wees", email="bwees@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(id=uuid.uuid4(), name="Raniv Gupta", email="rgupt@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(id=uuid.uuid4(), name="Tobias Bui", email="tobiasbui@tamu.edu", role=Role.MANAGER))
     export_employees_csv()
