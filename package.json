@@ -15,14 +15,14 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
-    "@immich/ui": "^0.37.1",
+    "@auth/core": "^0.41.1",
+    "@auth/drizzle-adapter": "^1.11.1",
+    "@auth/sveltekit": "^1.11.1",
+    "@immich/ui": "^0.41.0",
     "@mdi/js": "^7.4.47",
     "drizzle-orm": "^0.44.7",
     "drizzle-valibot": "^0.4.2",
-    "uuid": "^13.0.0",
-    "@auth/core": "^0.41.1",
-    "@auth/sveltekit": "^1.11.1",
-    "@auth/drizzle-adapter": "^1.11.1"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/compat": "^1.4.0",

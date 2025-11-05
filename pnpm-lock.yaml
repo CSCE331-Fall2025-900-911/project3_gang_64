@@ -18,8 +18,8 @@ importers:
         specifier: ^1.11.1
         version: 1.11.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)
       '@immich/ui':
-        specifier: ^0.37.1
-        version: 0.37.1(@internationalized/date@3.10.0)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
+        specifier: ^0.41.0
+        version: 0.41.0(@internationalized/date@3.10.0)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -826,8 +826,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@immich/ui@0.37.1':
-    resolution: {integrity: sha512-8S9KsyqyRcNgRHeBU8G3qMQ7D7fN4u9I31jjRc9c3s2tkiYucASofPJdcFdmGZnKLX5fIj+yofxiNZV9tVitOg==}
+  '@immich/svelte-markdown-preprocess@0.1.0':
+    resolution: {integrity: sha512-jgSOJEGLPKEXQCNRI4r4YUayeM2b0ZYLdzgKGl891jZBhOQIetlY7rU44kPpV1AA3/8wGDwNFKduIQZZ/qJYzg==}
+    peerDependencies:
+      svelte: ^5.0.0
+
+  '@immich/ui@0.41.0':
+    resolution: {integrity: sha512-D6lpSVaDn3tyJYogwP9O8yMmIIGGh5Oy+SA3IfvQcvmC/dPFylhrGqGQ8yPnXcW2DI2QPa8612TdDs7cBeYn1w==}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -2866,8 +2871,13 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@immich/ui@0.37.1(@internationalized/date@3.10.0)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
+  '@immich/svelte-markdown-preprocess@0.1.0(svelte@5.42.1)':
     dependencies:
+      svelte: 5.42.1
+
+  '@immich/ui@0.41.0(@internationalized/date@3.10.0)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
+    dependencies:
+      '@immich/svelte-markdown-preprocess': 0.1.0(svelte@5.42.1)
       '@mdi/js': 7.4.47
       bits-ui: 2.14.1(@internationalized/date@3.10.0)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)
       luxon: 3.7.2
