@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch } from "flowbite-svelte"; 
+  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox, TableSearch, tableBodyRow } from "flowbite-svelte"; 
   import {getOrders} from "$lib/api/orders.remote"
-  import { type OrderRow} from "$lib/db/types";
-  import { number } from "valibot";
   import { Button } from "@immich/ui";
+  import type { OrderRow } from "$lib/db/types";
 
-  async function loadOrders() {
+  let orders:OrderRow[];
+
+  const loadOrders = async() => {
     try {
-      let orders = await getOrders();
+      orders = await getOrders();
       console.log(orders);
     }
     catch (err) {
@@ -27,6 +28,18 @@
     <TableHeadCell>Customer Contact</TableHeadCell>
     <TableHeadCell>Payment Method</TableHeadCell>
   </TableHead>
+{#each orders as order}
+  <TableBody>
+    <TableBodyRow>
+      <TableBodyCell>{order.id}</TableBodyCell>
+      <TableBodyCell>${order.total}</TableBodyCell>
+      <TableBodyCell>{order.date}</TableBodyCell>
+      <TableBodyCell>{order.customer}</TableBodyCell>
+      <TableBodyCell>555-555-5555</TableBodyCell>
+      <TableBodyCell>{order.paymethod}</TableBodyCell>
+    </TableBodyRow>
+  </TableBody>
+{/each}
 </Table>
 
-<Button on:click={loadOrders}>Click to load order rows to console</Button>
+<!-- <Button on:click={loadOrders}>Click to load order rows to console</Button> -->
