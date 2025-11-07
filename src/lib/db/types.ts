@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-valibot';
-import { customer, employee, ingredient, menu, paymethod, recipe, order, orderContent } from './schema';
+import { customer, employee, ingredient, menu, order, orderContent, paymethod, recipe } from './schema';
 
 export const employeeSelectSchema = createSelectSchema(employee);
 export const employeeUpdateSchema = createUpdateSchema(employee);
@@ -42,7 +42,5 @@ export const orderUpdateSchema = createUpdateSchema(order);
 export const orderInsertSchema = createInsertSchema(order);
 export type Order = typeof order.$inferSelect;
 export type NewOrder = typeof order.$inferInsert;
-
-export type OrderRow = {id: string; total: string; date: string; customer: string | null; paymethod: "cash" | "credit"; };
 
 export type PaymentMethod = (typeof paymethod.enumValues)[number];

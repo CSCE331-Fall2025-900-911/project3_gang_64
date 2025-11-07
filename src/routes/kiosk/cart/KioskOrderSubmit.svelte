@@ -9,11 +9,9 @@
 
   let { onClose }: Props = $props();
 
-  let valid = $derived.by(() => {
-    return (
-      kioskManager.customerName.trim().length > 0 && kioskManager.currentOrder.length > 0 && kioskManager.paymentMethod
-    );
-  });
+  let valid = $derived(
+    kioskManager.customerName.trim().length > 0 && kioskManager.currentOrder.length > 0 && kioskManager.paymentMethod,
+  );
 
   function submitOrder() {
     kioskManager.submit();

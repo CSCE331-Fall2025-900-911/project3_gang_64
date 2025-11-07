@@ -1,8 +1,8 @@
 <script lang="ts">
-  import favicon from '$lib/assets/favicon.svg';
-  import { mdiShoppingOutline } from '@mdi/js';
-  import logo from '$lib/assets/logo.png';
   import { goto } from '$app/navigation';
+  import favicon from '$lib/assets/favicon.svg';
+  import logo from '$lib/assets/logo.png';
+  import { kioskManager } from '$lib/managers/kiosk.svelte';
   import {
     AppShell,
     AppShellHeader,
@@ -16,8 +16,8 @@
     Text,
     ThemeSwitcher,
   } from '@immich/ui';
+  import { mdiShoppingOutline } from '@mdi/js';
   import '../../../app.css';
-  import { kioskManager } from '$lib/managers/kiosk.svelte';
   import OrderSubmitDialog from './KioskOrderSubmit.svelte';
 
   let { children } = $props();
@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="flex flex-col items-end">
-            <Text size="small">${Number.parseFloat(entry.menuItem.price).toFixed(2)}</Text>
+            <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
           </div>
         </div>
       {/each}

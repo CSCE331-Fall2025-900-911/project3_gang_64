@@ -9,13 +9,11 @@
 
   let { onClose }: Props = $props();
 
-  let valid = $derived.by(() => {
-    return (
-      cashierManager.customerName.trim().length > 0 &&
+  let valid = $derived(
+    cashierManager.customerName.trim().length > 0 &&
       cashierManager.currentOrder.length > 0 &&
-      cashierManager.paymentMethod
-    );
-  });
+      cashierManager.paymentMethod,
+  );
 
   function submitOrder() {
     cashierManager.submit();

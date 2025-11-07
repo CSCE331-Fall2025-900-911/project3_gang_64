@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="flex flex-col items-end">
-              <Text size="small">${Number.parseFloat(entry.menuItem.price).toFixed(2)}</Text>
+              <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
             </div>
           </div>
         {/each}
