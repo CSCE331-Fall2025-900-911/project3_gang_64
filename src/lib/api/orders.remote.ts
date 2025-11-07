@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
 import { customer, order } from '$lib/db/schema';
 import { orderInsertSchema, orderSelectSchema, type NewOrder } from '$lib/db/types';
-import { desc, eq, sql } from 'drizzle-orm';
+import { desc, eq, sql, gt } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
@@ -36,6 +36,18 @@ export const getOrderCount = query(async () => {
       count: sql<number>`COUNT(${order.id})`,
     })
     .from(order)
+    .then((res) => res[0].count);
+});
+
+export const getOrderCountDay = query(async () => {
+  const db = getDB();
+  const day = new Date();
+
+  return await db
+    .select({
+      count: sql<number>`COUNT(${order.id})`,
+    })
+    .from(order).where(gt(order.date, day.toISOString()))
     .then((res) => res[0].count);
 });
 
