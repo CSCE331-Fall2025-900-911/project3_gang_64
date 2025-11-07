@@ -44,3 +44,5 @@ export type Order = typeof order.$inferSelect;
 export type NewOrder = typeof order.$inferInsert;
 
 export type PaymentMethod = (typeof paymethod.enumValues)[number];
+
+export type CreateOrUpdate<T> = { type: 'new' } | { type: 'edit'; item: T };

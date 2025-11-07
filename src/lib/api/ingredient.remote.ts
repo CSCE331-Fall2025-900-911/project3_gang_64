@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { ingredient, menu, recipe } from '$lib/db/schema';
-import { ingredientInsertSchema } from '$lib/db/types';
+import { ingredientInsertSchema, ingredientUpdateSchema } from '$lib/db/types';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
 
@@ -32,7 +32,15 @@ export const createIngredient = command(ingredientInsertSchema, async (newIngred
   const db = getDB();
   const created = await db.insert(ingredient).values(newIngredient).returning();
 
-  getIngredients().refresh();
+  await getIngredients().refresh();
 
   return created[0];
+});
+
+export const updateIngredient = command(ingredientUpdateSchema, async (updatedIngredient) => {
+  if (!updatedIngredient.id) throw new Error('Ingredient ID is required for update');
+  const db = getDB();
+
+  await db.update(ingredient).set(updatedIngredient).where(eq(ingredient.id, updatedIngredient.id));
+  await getIngredients().refresh();
 });

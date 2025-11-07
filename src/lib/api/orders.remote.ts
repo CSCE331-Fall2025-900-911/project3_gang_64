@@ -46,7 +46,7 @@ export const createOrder = command(orderInsertSchema, async (newOrder: NewOrder)
   return created[0];
 });
 
-export const deleteEmployee = command(orderSelectSchema.entries.id, async (id) => {
+export const deleteOrder = command(orderSelectSchema.entries.id, async (id) => {
   const db = getDB();
   await db.delete(order).where(eq(order.id, id));
 });
