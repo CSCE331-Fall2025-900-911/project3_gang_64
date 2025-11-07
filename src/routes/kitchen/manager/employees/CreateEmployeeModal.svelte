@@ -22,9 +22,7 @@
   const roleOptions = role.enumValues.map((r) => ({ label: titleCase(r), value: r }));
   let selectedRole = $state(roleOptions[0]);
 
-  let valid = $derived.by(() => {
-    return email.trim().length > 0 && name.trim().length >= 0 && email.includes('@');
-  });
+  let valid = $derived(email.trim().length > 0 && name.trim().length >= 0 && email.includes('@'));
 </script>
 
 <Modal title="Create Employee" icon={mdiAccountPlus} {onClose}>

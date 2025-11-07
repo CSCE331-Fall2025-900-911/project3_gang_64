@@ -1,6 +1,6 @@
 <script lang="ts">
   import { AppShellSidebar, NavbarItem } from '@immich/ui';
-  import { mdiAccount, mdiCurrencyUsd, mdiGauge, mdiPackageVariantClosed } from '@mdi/js';
+  import { mdiAccount, mdiCurrencyUsd, mdiFileDocument, mdiGauge, mdiPackageVariantClosed } from '@mdi/js';
 
   let { children } = $props();
 </script>
@@ -10,6 +10,7 @@
     <NavbarItem href="/kitchen/manager/dashboard" title="Dashboard" icon={mdiGauge} />
     <NavbarItem href="/kitchen/manager/employees" title="Employees" icon={mdiAccount} />
     <NavbarItem href="/kitchen/manager/reports" title="Reports" icon={mdiCurrencyUsd} />
+    <NavbarItem href="/kitchen/manager/orders" title="Orders" icon={mdiFileDocument} />
     <NavbarItem href="/kitchen/manager/inventory" title="Inventory" icon={mdiPackageVariantClosed} />
   </AppShellSidebar>
 
