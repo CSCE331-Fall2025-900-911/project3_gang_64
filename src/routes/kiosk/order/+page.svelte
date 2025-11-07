@@ -1,26 +1,9 @@
 <script lang="ts">
   import favicon from '$lib/assets/favicon.svg';
-  import { mdiCartOutline } from '@mdi/js';
-  import logo from '$lib/assets/logo.png';
   import { page } from '$app/state';
   import { getMenu } from '$lib/api/menu.remote';
-  import { goto } from '$app/navigation';
   import MenuGroup from './MenuGroup.svelte';
-  import {
-    AppShell,
-    AppShellHeader,
-    AppShellSidebar,
-    Avatar,
-    IconButton,
-    initializeTheme,
-    NavbarItem,
-    type SelectItem,
-    ThemeSwitcher,
-  } from '@immich/ui';
-  import '../../../app.css';
-  import { kioskManager } from '$lib/managers/kiosk.svelte';
-
-  let { children } = $props();
+  import { AppShell, AppShellSidebar, initializeTheme, NavbarItem } from '@immich/ui';
 
   let menu = await getMenu();
 
@@ -32,12 +15,6 @@
       items: menu[title] ?? [],
     };
   });
-
-  initializeTheme();
-
-  function openCart() {
-    goto('/kiosk/cart');
-  }
 </script>
 
 <svelte:head>
@@ -46,32 +23,6 @@
 </svelte:head>
 
 <AppShell>
-  <AppShellHeader>
-    <div class="flex w-full items-center justify-between p-4">
-      <img src={logo} alt="ShareTea Logo" class="h-6" />
-      <div class="flex items-center gap-4">
-        <ThemeSwitcher />
-        <div class="relative inline-block">
-          <IconButton
-            icon={mdiCartOutline}
-            shape="round"
-            size="medium"
-            color="primary"
-            onclick={openCart}
-            aria-label="Cart"
-          />
-          <div class="absolute -top-1 -right-1">
-            <Avatar
-              size="tiny"
-              name={kioskManager.getCurrentCartAmount() > 9 ? '9 +' : kioskManager.getCurrentCartAmount().toString()}
-              color="red"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </AppShellHeader>
-
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
       <NavbarItem
@@ -89,6 +40,4 @@
       {/if}
     </div>
   </div>
-
-  {@render children?.()}
 </AppShell>
