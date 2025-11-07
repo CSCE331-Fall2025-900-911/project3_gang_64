@@ -25,6 +25,7 @@
   <Heading size="large">Customers</Heading>
 
   <div class="flex w-1/4 items-end justify-end gap-2">
+    <!-- TODO: add search functionality via DB -->
     <Input placeholder="John Doe" leadingIcon={mdiMagnify} />
   </div>
 </div>
