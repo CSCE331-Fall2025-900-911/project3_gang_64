@@ -1,8 +1,15 @@
-import { query } from '$app/server';
+import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { ingredient, menu, recipe } from '$lib/db/schema';
+import { ingredientInsertSchema } from '$lib/db/types';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
+
+export const getIngredients = query(async () => {
+  const db = getDB();
+
+  return await db.select().from(ingredient);
+});
 
 export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: string) => {
   const db = getDB();
@@ -19,4 +26,13 @@ export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: st
   }
 
   return ingredients.map((row) => row.ingredient).filter((r) => r !== null);
+});
+
+export const createIngredient = command(ingredientInsertSchema, async (newIngredient) => {
+  const db = getDB();
+  const created = await db.insert(ingredient).values(newIngredient).returning();
+
+  getIngredients().refresh();
+
+  return created[0];
 });

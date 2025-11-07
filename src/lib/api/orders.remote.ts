@@ -5,8 +5,6 @@ import { desc, eq, sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
-// export const userState = $state({page:0});
-
 const getOrdersSchema = v.object({
   page: v.optional(v.number(), 1),
   limit: v.optional(v.number(), 50),

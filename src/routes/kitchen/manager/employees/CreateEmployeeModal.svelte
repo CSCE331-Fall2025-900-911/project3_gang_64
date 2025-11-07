@@ -12,12 +12,14 @@
   let { onClose }: Props = $props();
 
   async function submit() {
+    submitting = true;
     await createEmployee({ email, name, role: selectedRole.value });
     onClose();
   }
 
   let email = $state('');
   let name = $state('');
+  let submitting = $state(false);
 
   const roleOptions = role.enumValues.map((r) => ({ label: titleCase(r), value: r }));
   let selectedRole = $state(roleOptions[0]);
@@ -43,7 +45,7 @@
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={submit} shape="round" color="primary" disabled={!valid}>Create</Button>
+      <Button onclick={submit} shape="round" color="primary" disabled={!valid} loading={submitting}>Create</Button>
     </div>
   </ModalFooter>
 </Modal>

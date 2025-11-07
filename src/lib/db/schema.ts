@@ -95,7 +95,7 @@ export const orderContent = pgTable(
 
 export const ingredient = pgTable('ingredient', {
   id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
-  name: varchar({ length: 100 }),
+  name: varchar({ length: 100 }).notNull(),
   category: varchar({ length: 100 }).notNull(),
   currentStock: integer('current_stock').notNull(),
   orderStock: integer('order_stock').notNull(),

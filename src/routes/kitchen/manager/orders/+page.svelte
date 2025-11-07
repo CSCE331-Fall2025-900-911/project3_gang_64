@@ -2,8 +2,8 @@
   import { getOrderCount, getOrders } from '$lib/api/orders.remote';
   import PageStepper from '$lib/components/PageStepper.svelte';
   import type { PaymentMethod } from '$lib/db/types';
-  import { Heading, Icon, LoadingSpinner, Select, Text } from '@immich/ui';
-  import { mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
+  import { Heading, Icon, Input, LoadingSpinner, Select, Text } from '@immich/ui';
+  import { mdiCalendar, mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
   import { cubicInOut } from 'svelte/easing';
   import { fade } from 'svelte/transition';
 
@@ -33,8 +33,9 @@
 
 <div class="mb-6 flex items-center justify-between px-2">
   <Heading size="large">Orders</Heading>
-  <div class="flex w-1/3 items-end justify-end gap-2">
-    <PageStepper bind:currentPage={orderPage} {totalPages} />
+
+  <div class="flex w-1/4 items-end justify-end gap-2">
+    <Input placeholder="11/11/2025" leadingIcon={mdiCalendar} />
   </div>
 </div>
 
@@ -72,7 +73,13 @@
   </table>
 {/if}
 
-<div class="mt-4 flex w-1/3 items-center justify-start gap-2">
-  <Text size="large">Orders per page</Text>
-  <Select bind:value={pageSize} data={PAGE_OPTIONS}></Select>
+<div class="mt-2 flex w-full items-center justify-between">
+  <div class="flex w-1/3 items-center gap-2">
+    <Text size="large">Orders per page</Text>
+    <Select bind:value={pageSize} data={PAGE_OPTIONS}></Select>
+  </div>
+
+  <div class="flex w-1/3 items-end justify-end gap-2">
+    <PageStepper bind:currentPage={orderPage} {totalPages} />
+  </div>
 </div>
