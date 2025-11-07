@@ -152,10 +152,10 @@ if __name__ == "__main__":
 
     export_sales_csv(customers, orders, order_contents)
 
-    employees.append(Employee(id=uuid.uuid4(), name="manager", email="manager@example.com", role=Role.MANAGER))
-    employees.append(Employee(id=uuid.uuid4(), name="staff", email="staff@example.com", role=Role.STAFF))
-    employees.append(Employee(id=uuid.uuid4(), name="Matthew Warren", email="mcwarren922@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(id=uuid.uuid4(), name="Brandon Wees", email="bwees@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(id=uuid.uuid4(), name="Raniv Gupta", email="rgupt@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(id=uuid.uuid4(), name="Tobias Bui", email="tobiasbui@tamu.edu", role=Role.MANAGER))
+
+    employees.append(Employee(name="Matthew Warren", email="mcwarren922@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(name="Brandon Wees", email="bwees@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(name="Raniv Gupta", email="rgupt@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(name="Tobias Bui", email="tobiasbui@tamu.edu", role=Role.MANAGER))
+    employees.append(Employee(name="Reveille Bubbletea", email="reveille_bubbletea@gmail.com", role=Role.MANAGER))
     export_employees_csv()
