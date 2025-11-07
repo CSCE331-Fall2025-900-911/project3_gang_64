@@ -1,5 +1,6 @@
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import type { MenuItem, PaymentMethod } from '$lib/db/types';
+import { or } from 'drizzle-orm';
 import type { OrderEntry } from './cashier.types';
 
 class KioskManager {
@@ -17,6 +18,14 @@ class KioskManager {
     this.currentOrder.push({
       menuItem,
       ingredients: await getIngredientsForMenuItem(menuItem.id),
+    });
+  }
+
+  async duplicateOrderEntry(index: number) {
+    const orderEntry = this.currentOrder[index];
+    this.currentOrder.push({
+      menuItem: orderEntry.menuItem,
+      ingredients: orderEntry.ingredients,
     });
   }
 

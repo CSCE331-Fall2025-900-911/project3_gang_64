@@ -1,10 +1,19 @@
 <script lang="ts">
   import { kioskManager } from '$lib/managers/kiosk.svelte';
-  import { AppShell, Button, Heading, HStack, modalManager, Text } from '@immich/ui';
+  import { AppShell, Button, IconButton, Heading, HStack, modalManager, Text } from '@immich/ui';
   import OrderSubmitDialog from './KioskOrderSubmit.svelte';
+  import { mdiTrashCanOutline } from '@mdi/js';
 
   function showSubmitDialog() {
     modalManager.show(OrderSubmitDialog);
+  }
+
+  function removeItem(index: number) {
+    kioskManager.removeFromOrder(index);
+  }
+
+  function duplicateItem(index: number) {
+    kioskManager.duplicateOrderEntry(index);
   }
 </script>
 
@@ -27,8 +36,24 @@
               {/each}
             </div>
           </div>
-          <div class="flex flex-col items-end">
-            <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
+          <div class="flex justify-between gap-4">
+            <div class="flex flex-col justify-center">
+              <Button onclick={duplicateItem.bind(null, i)}>Duplicate Item</Button>
+            </div>
+
+            <div class="flex flex-col justify-center">
+              <IconButton
+                icon={mdiTrashCanOutline}
+                shape="round"
+                size="medium"
+                color="primary"
+                onclick={removeItem.bind(null, i)}
+                aria-label={'Remove Item'}
+              />
+            </div>
+            <div class="flex flex-col items-end">
+              <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
+            </div>
           </div>
         </div>
       {/each}
