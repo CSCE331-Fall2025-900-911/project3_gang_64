@@ -5,7 +5,7 @@
   import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
   import { cubicInOut } from 'svelte/easing';
   import { fade } from 'svelte/transition';
-  import CreateEmployeeModal from './CreateEmployeeModal.svelte';
+  import EmployeeModal from './EmployeeModal.svelte';
 
   let employees = getEmployees();
   let searchTerm = $state('');
@@ -18,11 +18,11 @@
   );
 
   function showCreateModal() {
-    modalManager.show(CreateEmployeeModal, { mode: { type: 'new' } });
+    modalManager.show(EmployeeModal, { mode: { type: 'new' } });
   }
 
   function showEditModal(employee: Employee) {
-    modalManager.show(CreateEmployeeModal, { mode: { type: 'edit', item: employee } });
+    modalManager.show(EmployeeModal, { mode: { type: 'edit', item: employee } });
   }
 
   async function showDeleteModal(employee: Employee) {

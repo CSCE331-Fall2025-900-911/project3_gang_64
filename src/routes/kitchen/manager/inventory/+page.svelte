@@ -74,7 +74,8 @@
           <td class="w-2/12">{ingredient.orderStock}</td>
           <td class="w-2/12">${ingredient.unitPrice.toFixed(2)}</td>
           <td class="flex w-2/12 gap-2">
-            <IconButton icon={mdiTruck} color="success" aria-label="Order More" />
+            <!-- TODO: Implement truck button -->
+            <IconButton icon={mdiTruck} color="success" aria-label="Shipments" />
             <IconButton icon={mdiPencil} aria-label="Edit Ingredient" onclick={() => showEditModal(ingredient)} />
             <IconButton
               icon={mdiTrashCan}

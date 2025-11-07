@@ -2,7 +2,7 @@
   import { createIngredient, updateIngredient } from '$lib/api/ingredient.remote';
   import type { CreateOrUpdate, Ingredient } from '$lib/db/types';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
-  import { mdiAccountPlus } from '@mdi/js';
+  import { mdiPackage } from '@mdi/js';
 
   interface Props {
     onClose: () => void;
@@ -34,7 +34,7 @@
   let valid = $derived(name.trim().length > 0 && currentStock >= 0 && orderStock >= 0);
 </script>
 
-<Modal title={mode.type === 'new' ? 'Create Ingredient' : 'Edit Ingredient'} icon={mdiAccountPlus} {onClose}>
+<Modal title={mode.type === 'new' ? 'Create Ingredient' : 'Edit Ingredient'} icon={mdiPackage} {onClose}>
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
