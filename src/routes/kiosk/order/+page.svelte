@@ -5,6 +5,8 @@
   import { AppShell, AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
+  const orderUrl: string = '/kiosk/order';
+
   let menu = await getMenu();
 
   let currentCategory = $derived.by(() => {
@@ -25,11 +27,7 @@
 <AppShell>
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
-      <NavbarItem
-        href={`/kiosk/order#${category}`}
-        title={category ?? ''}
-        active={category === currentCategory.title}
-      />
+      <NavbarItem href={`${orderUrl}#${category}`} title={category ?? ''} active={category === currentCategory.title} />
     {/each}
   </AppShellSidebar>
 
