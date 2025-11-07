@@ -1,9 +1,9 @@
 <script lang="ts">
-  import favicon from '$lib/assets/favicon.svg';
   import { page } from '$app/state';
   import { getMenu } from '$lib/api/menu.remote';
+  import favicon from '$lib/assets/favicon.svg';
+  import { AppShell, AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
-  import { AppShell, AppShellSidebar, initializeTheme, NavbarItem } from '@immich/ui';
 
   let menu = await getMenu();
 

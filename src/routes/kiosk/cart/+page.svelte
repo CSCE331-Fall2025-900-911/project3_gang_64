@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { AppShell, Button, Heading, HStack, modalManager, Text } from '@immich/ui';
   import { kioskManager } from '$lib/managers/kiosk.svelte';
+  import { AppShell, Button, Heading, HStack, modalManager, Text } from '@immich/ui';
   import OrderSubmitDialog from './KioskOrderSubmit.svelte';
 
   function showSubmitDialog() {
