@@ -5,23 +5,36 @@
   import logo from '$lib/assets/logo.png';
   import { kioskManager } from '$lib/managers/kiosk.svelte';
   import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, ThemeSwitcher } from '@immich/ui';
-  import { mdiCartOutline } from '@mdi/js';
+  import { mdiCartOutline, mdiShoppingOutline } from '@mdi/js';
   import '../../app.css';
 
   let { children } = $props();
 
   initializeTheme();
 
+  const orderUrl: string = '/kiosk/order';
+  const cartUrl: string = '/kiosk/cart';
+  const cartLabel: string = 'Cart';
+  const orderLabel: string = 'Order';
+
+  const shopModeIcon = $derived.by(() => {
+    return page.url.pathname === cartUrl ? mdiShoppingOutline : mdiCartOutline;
+  });
+
+  const shopModeLabel = $derived.by(() => {
+    return page.url.pathname === cartUrl ? orderLabel : cartLabel;
+  });
+
   function openCart() {
-    goto('/kiosk/cart');
+    goto(cartUrl);
   }
 
   function closeCart() {
-    goto('/kiosk/order');
+    goto(orderUrl);
   }
 
-  function handleCartClick() {
-    if (page.url.pathname === '/kiosk/cart') {
+  function handleShopModeClick() {
+    if (page.url.pathname === cartUrl) {
       closeCart();
     } else {
       openCart();
@@ -42,12 +55,12 @@
         <ThemeSwitcher />
         <div class="relative inline-block">
           <IconButton
-            icon={mdiCartOutline}
+            icon={shopModeIcon}
             shape="round"
             size="medium"
             color="primary"
-            onclick={handleCartClick}
-            aria-label="Cart"
+            onclick={handleShopModeClick}
+            aria-label={shopModeLabel}
           />
           <div class="absolute -top-1 -right-1">
             <Avatar
