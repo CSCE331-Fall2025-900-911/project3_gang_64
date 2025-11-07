@@ -1,5 +1,15 @@
 import { sql } from 'drizzle-orm';
-import { boolean, foreignKey, integer, numeric, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  doublePrecision,
+  foreignKey,
+  integer,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
 import { v4 as uuidv4 } from 'uuid';
 
 export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
@@ -9,7 +19,7 @@ export const menu = pgTable('menu', {
   id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
   name: varchar({ length: 100 }).notNull(),
   category: varchar({ length: 100 }).notNull(),
-  price: numeric().notNull(),
+  price: doublePrecision().notNull(),
   imageUrl: varchar({ length: 255 }),
   archived: boolean().default(false).notNull(),
 });
@@ -25,9 +35,9 @@ export const order = pgTable(
     id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
     customerId: uuid('customer_id').notNull(),
     employeeId: uuid('employee_id'),
-    subtotal: numeric().notNull(),
-    tax: numeric().notNull(),
-    total: numeric().notNull(),
+    subtotal: doublePrecision().notNull(),
+    tax: doublePrecision().notNull(),
+    total: doublePrecision().notNull(),
     date: timestamp({ mode: 'string' })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -89,7 +99,7 @@ export const ingredient = pgTable('ingredient', {
   category: varchar({ length: 100 }).notNull(),
   currentStock: integer('current_stock').notNull(),
   orderStock: integer('order_stock').notNull(),
-  unitPrice: numeric('unit_price').notNull(),
+  unitPrice: doublePrecision('unit_price').notNull(),
 });
 
 export const recipe = pgTable(

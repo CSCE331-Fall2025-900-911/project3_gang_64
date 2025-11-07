@@ -8,7 +8,7 @@ class KioskManager {
   paymentMethod = $state<PaymentMethod | null>(null);
   customerName = $state<string>('');
 
-  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + parseFloat(entry.menuItem.price), 0));
+  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price, 0));
   tax = $derived(this.subtotal * 0.07);
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
