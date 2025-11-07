@@ -1,12 +1,12 @@
 <script lang="ts">
-  import favicon from '$lib/assets/favicon.svg';
-  import { mdiCartOutline } from '@mdi/js';
-  import logo from '$lib/assets/logo.png';
-  import { page } from '$app/state';
   import { goto } from '$app/navigation';
-  import { AppShell, AppShellHeader, IconButton, initializeTheme, Avatar, ThemeSwitcher } from '@immich/ui';
-  import '../../app.css';
+  import { page } from '$app/state';
+  import favicon from '$lib/assets/favicon.svg';
+  import logo from '$lib/assets/logo.png';
   import { kioskManager } from '$lib/managers/kiosk.svelte';
+  import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, ThemeSwitcher } from '@immich/ui';
+  import { mdiCartOutline } from '@mdi/js';
+  import '../../app.css';
 
   let { children } = $props();
 
