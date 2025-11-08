@@ -1,14 +1,18 @@
-<script>
-  import { Icon } from "@immich/ui";
+<script lang='ts'>
+  import { Icon, LoadingSpinner } from "@immich/ui";
   import {mdiWeatherHurricane} from "@mdi/js";
-  import {getOrderCountDay} from '$lib/api/orders.remote'
+  import {getOrderCountDay , getDailyRevenue} from '$lib/api/orders.remote'
+  
+  let dailyOrders = getOrderCountDay();
+  let dailyRevenue = getDailyRevenue();
+  
+  const debug = () => {
+    console.log(dailyRevenue.current);
+  };
+
+  //weather place holders
   let temp = 67;
   let tempColor = "primary"
-
-
-  //weather api calls
-
-  let dailyOrders = getOrderCountDay().current;
 
   if(temp < 50) {
     tempColor = "cyan-300"
@@ -16,13 +20,18 @@
 </script>
 
 <div class="flex flex-row justify-around">
-  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md">
-    <h1 class="text-primary text-lg text-center">Daily Revenue</h1>
+  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md p-1">
+    <h1 class="text-primary text-lg text-center" onclick={debug}>Daily Revenue</h1>
+    {#if dailyRevenue.loading}
+      <LoadingSpinner/>
+    {:else}
+          <h1 class = 'text-center text-6xl align-middle mt-19 mx-2'>${dailyRevenue.current?.toFixed(2)}</h1>
+    {/if}
   </div>
 
-  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md flex flex-col ">
+  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md flex flex-col p-1">
     <h1 class="text-primary text-lg text-center">Orders Today</h1>
-    <h1 class = 'text-center text-9xl align-middle mt-10'>{dailyOrders}</h1>
+    <h1 class = 'text-center text-9xl align-middle mt-10'>{dailyOrders.current}</h1>
   </div>
 
   <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md flex flex-col items-center justify-evenly">
