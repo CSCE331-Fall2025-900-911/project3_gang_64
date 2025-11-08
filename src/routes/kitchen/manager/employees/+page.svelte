@@ -1,10 +1,9 @@
 <script lang="ts">
   import { getEmployees } from '$lib/api/employee.remote';
+  import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Employee } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
-  import { cubicInOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
   import EmployeeModal from './EmployeeModal.svelte';
 
   let employees = getEmployees();
@@ -54,25 +53,20 @@
 {:else if employees.error}
   <p class="text-danger">Error loading employees: {employees.error.message}</p>
 {:else}
-  <table class="mt-4 w-full text-start">
-    <thead class="mb-4 flex h-12 w-full rounded-md border bg-subtle">
-      <tr class="flex w-full place-items-center text-center text-sm font-medium">
-        <th class="w-3/12">Name</th>
-        <th class="w-4/12 text-left">Email</th>
-        <th class="w-3/12">Role</th>
-        <th class="w-2/12">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="dark:border-immich-dark-gray block w-full overflow-y-auto rounded-md border">
+  <Table>
+    <TableHeader>
+      <TableHeaderCell width="w-3/12">Name</TableHeaderCell>
+      <TableHeaderCell width="w-4/12" align="left">Email</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">Role</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">Actions</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
       {#each searchedEmployees as employee}
-        <tr
-          transition:fade={{ duration: 400, easing: cubicInOut }}
-          class="dark:text-immich-dark-fg flex w-full cursor-pointer place-items-center py-2 text-center odd:bg-subtle/80 even:bg-subtle/20 hover:bg-primary/10"
-        >
-          <td class="w-3/12">{employee.name}</td>
-          <td class="w-4/12 text-left">{employee.email}</td>
-          <td class="w-3/12">{employee.role}</td>
-          <td class="flex w-2/12 justify-center gap-2">
+        <TableRow>
+          <TableCell width="w-3/12">{employee.name}</TableCell>
+          <TableCell width="w-4/12" align="left">{employee.email}</TableCell>
+          <TableCell width="w-3/12">{employee.role}</TableCell>
+          <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton icon={mdiPencil} aria-label="Edit Employee" onclick={() => showEditModal(employee)} />
             <IconButton
               icon={mdiTrashCan}
@@ -80,9 +74,9 @@
               color="danger"
               onclick={() => showDeleteModal(employee)}
             />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       {/each}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 {/if}

@@ -1,10 +1,9 @@
 <script lang="ts">
   import { getIngredients } from '$lib/api/ingredient.remote';
+  import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Ingredient } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan, mdiTruck } from '@mdi/js';
-  import { cubicInOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
   import InventoryItemModal from './InventoryItemModal.svelte';
 
   let ingredients = getIngredients();
@@ -51,29 +50,24 @@
 {:else if ingredients.error}
   <p class="text-danger">Error loading ingredients: {ingredients.error.message}</p>
 {:else}
-  <table class="mt-4 w-full text-start">
-    <thead class="mb-4 flex h-12 w-full rounded-md border bg-subtle">
-      <tr class="flex w-full place-items-center text-center text-sm font-medium">
-        <th class="w-4/12">Name</th>
-        <th class="w-3/12">Category</th>
-        <th class="w-2/12">Current Stock</th>
-        <th class="w-2/12">Order Stock</th>
-        <th class="w-2/12">Unit Price</th>
-        <th class="w-2/12">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="dark:border-immich-dark-gray block w-full overflow-y-auto rounded-md border">
+  <Table>
+    <TableHeader>
+      <TableHeaderCell width="w-4/12">Name</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">Category</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">Current Stock</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">Order Stock</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">Unit Price</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">Actions</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
       {#each searchedIngredients as ingredient}
-        <tr
-          transition:fade={{ duration: 400, easing: cubicInOut }}
-          class="dark:text-immich-dark-fg flex w-full place-items-center py-2 text-center odd:bg-subtle/80 even:bg-subtle/20"
-        >
-          <td class="w-4/12 pl-6 text-left">{ingredient.name}</td>
-          <td class="w-3/12">{ingredient.category}</td>
-          <td class="w-2/12">{ingredient.currentStock}</td>
-          <td class="w-2/12">{ingredient.orderStock}</td>
-          <td class="w-2/12">${ingredient.unitPrice.toFixed(2)}</td>
-          <td class="flex w-2/12 gap-2">
+        <TableRow>
+          <TableCell width="w-4/12" align="left" class="pl-6">{ingredient.name}</TableCell>
+          <TableCell width="w-3/12">{ingredient.category}</TableCell>
+          <TableCell width="w-2/12">{ingredient.currentStock}</TableCell>
+          <TableCell width="w-2/12">{ingredient.orderStock}</TableCell>
+          <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>
+          <TableCell width="w-2/12" class="flex gap-2">
             <!-- TODO: Implement truck button -->
             <IconButton icon={mdiTruck} color="success" aria-label="Shipments" />
             <IconButton icon={mdiPencil} aria-label="Edit Ingredient" onclick={() => showEditModal(ingredient)} />
@@ -83,9 +77,9 @@
               aria-label="Delete Ingredient"
               onclick={() => confirmDelete(ingredient)}
             />
-          </td>
-        </tr>
+          </TableCell>
+        </TableRow>
       {/each}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 {/if}

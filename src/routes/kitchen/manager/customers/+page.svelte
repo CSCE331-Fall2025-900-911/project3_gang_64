@@ -1,10 +1,9 @@
 <script lang="ts">
   import { getCustomerCount, getCustomers } from '$lib/api/customer.remote';
   import PageStepper from '$lib/components/PageStepper.svelte';
+  import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import { Heading, Input, LoadingSpinner, Select, Text } from '@immich/ui';
   import { mdiMagnify } from '@mdi/js';
-  import { cubicInOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -37,23 +36,18 @@
 {:else if customers.error}
   <p class="text-danger">Error loading customers: {customers.error.message}</p>
 {:else}
-  <table class="mt-4 w-full text-start">
-    <thead class="mb-4 flex h-12 w-full rounded-md border bg-subtle">
-      <tr class="flex w-full place-items-center text-center text-sm font-medium">
-        <th class="w-full">Customer Name</th>
-      </tr>
-    </thead>
-    <tbody class="dark:border-immich-dark-gray block w-full overflow-y-auto rounded-md border">
+  <Table>
+    <TableHeader>
+      <TableHeaderCell width="w-full">Customer Name</TableHeaderCell>
+    </TableHeader>
+    <TableBody>
       {#each customers.current as customer}
-        <tr
-          transition:fade={{ duration: 400, easing: cubicInOut }}
-          class="dark:text-immich-dark-fg flex w-full place-items-center py-2 text-center odd:bg-subtle/80 even:bg-subtle/20"
-        >
-          <td class="w-full">{customer.name}</td>
-        </tr>
+        <TableRow>
+          <TableCell width="w-full">{customer.name}</TableCell>
+        </TableRow>
       {/each}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 {/if}
 
 <div class="mt-2 flex w-full items-center justify-between">
