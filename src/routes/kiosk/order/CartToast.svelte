@@ -7,14 +7,12 @@
   }
 
   const { onClose }: Props = $props();
-
-  const cartUrl: string = '/kiosk/cart';
 </script>
 
 <ToastContainer color="primary">
   <ToastContent icon={mdiCartOutline} color="primary" title="Cart is Ready" description="Item added to order" {onClose}>
     <div class="flex justify-end gap-2 px-2 pb-2">
-      <Button href={cartUrl} color="primary" size="small">View Cart</Button>
+      <Button href="/kiosk/cart" color="primary" size="small">View Cart</Button>
     </div>
   </ToastContent>
 </ToastContainer>
