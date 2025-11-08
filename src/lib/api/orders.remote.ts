@@ -1,5 +1,5 @@
 import { command, query } from '$app/server';
-import { customer, order } from '$lib/db/schema';
+import { customer, ingredient, order, orderContent } from '$lib/db/schema';
 import { orderInsertSchema, orderSelectSchema, type NewOrder } from '$lib/db/types';
 import { desc, eq, sql, gt } from 'drizzle-orm';
 import * as v from 'valibot';
@@ -49,6 +49,21 @@ export const getOrderCountDay = query(async () => {
     })
     .from(order).where(gt(order.date, day.toISOString()))
     .then((res) => res[0].count);
+});
+
+export const getDailyRevenue = query(async () => {
+  const db = getDB();
+  const day = new Date();
+
+  return await db 
+    .select({
+      rev: sql<number>`SUM(${order.total}) - SUM(${ingredient.unitPrice})` //maybe change to subtotal later?
+    })
+    .from(order)
+    .innerJoin(orderContent, eq(order.id, orderContent.orderId))
+    .innerJoin(ingredient, eq(ingredient.id, orderContent.ingredientId))
+    //.where(gt(order.date, day.toISOString()))
+    .then((res) => res[0].rev);
 });
 
 export const createOrder = command(orderInsertSchema, async (newOrder: NewOrder) => {
