@@ -7,6 +7,7 @@
     mdiFileDocument,
     mdiGauge,
     mdiPackageVariantClosed,
+    mdiSilverware,
   } from '@mdi/js';
 
   let { children } = $props();
@@ -15,8 +16,9 @@
 <div>
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     <NavbarItem href="/kitchen/manager/dashboard" title="Dashboard" icon={mdiGauge} />
-    <NavbarItem href="/kitchen/manager/employees" title="Employees" icon={mdiBadgeAccount} />
     <NavbarItem href="/kitchen/manager/reports" title="Reports" icon={mdiCurrencyUsd} />
+    <NavbarItem href="/kitchen/manager/employees" title="Employees" icon={mdiBadgeAccount} />
+    <NavbarItem href="/kitchen/manager/menu_items" title="Menu Items" icon={mdiSilverware} />
     <NavbarItem href="/kitchen/manager/orders" title="Orders" icon={mdiFileDocument} />
     <NavbarItem href="/kitchen/manager/customers" title="Customers" icon={mdiAccount} />
     <NavbarItem href="/kitchen/manager/inventory" title="Inventory" icon={mdiPackageVariantClosed} />
