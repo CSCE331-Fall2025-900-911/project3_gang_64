@@ -1,6 +1,5 @@
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import type { MenuItem, PaymentMethod } from '$lib/db/types';
-import { or } from 'drizzle-orm';
 import type { OrderEntry } from './cashier.types';
 
 class KioskManager {
