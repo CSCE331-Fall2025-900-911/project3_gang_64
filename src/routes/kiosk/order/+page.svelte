@@ -2,12 +2,17 @@
   import { page } from '$app/state';
   import { getMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
-  import { AppShell, AppShellSidebar, NavbarItem } from '@immich/ui';
+  import CartToast from './CartToast.svelte';
+  import { AppShell, AppShellSidebar, NavbarItem, toastManager } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
   const orderUrl: string = '/kiosk/order';
+  const timeout = $state(5000);
+  const closable = $state(true);
 
   let menu = await getMenu();
+
+  let isFirstItemAdded = $state(false);
 
   let currentCategory = $derived.by(() => {
     const hash = decodeURI(page.url.hash);
@@ -17,6 +22,17 @@
       items: menu[title] ?? [],
     };
   });
+
+  const handleCartPopup = () => {
+    toastManager.custom({ component: CartToast, props: {} }, { timeout, closable });
+  };
+
+  function firstAddAction() {
+    if (!isFirstItemAdded) {
+      handleCartPopup();
+      isFirstItemAdded = true;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -34,7 +50,7 @@
   <div class="flex h-full w-full pb-2">
     <div class="w-full overflow-y-auto p-4">
       {#if currentCategory.items}
-        <MenuGroup {...currentCategory} />
+        <MenuGroup title={currentCategory.title} items={currentCategory.items} {firstAddAction} />
       {/if}
     </div>
   </div>

@@ -7,15 +7,19 @@
 
   interface Props {
     item: MenuItem;
+    firstAddAction?: () => void;
   }
 
-  let { item }: Props = $props();
+  let { item, firstAddAction }: Props = $props();
   let loading = $state(false);
 
   async function handleAddToOrder() {
     loading = true;
     await kioskManager.addToOrder(item);
     loading = false;
+    if (firstAddAction) {
+      firstAddAction();
+    }
   }
 </script>
 
