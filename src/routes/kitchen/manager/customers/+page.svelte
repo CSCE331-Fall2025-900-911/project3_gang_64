@@ -21,7 +21,7 @@
   let customers = $derived(getCustomers({ page: customerPage, limit: parseInt(pageSize.value) }));
 </script>
 
-<div class="mb-6 flex items-center justify-between px-2">
+<div class="mb-6 flex items-center justify-between">
   <Heading size="large">Customers</Heading>
 
   <div class="flex w-1/4 items-end justify-end gap-2">

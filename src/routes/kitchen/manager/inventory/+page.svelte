@@ -36,7 +36,7 @@
   }
 </script>
 
-<div class="mb-6 flex items-center justify-between px-2">
+<div class="mb-6 flex items-center justify-between">
   <Heading size="large">Inventory</Heading>
   <div class="flex w-1/3 items-center gap-2">
     <IconButton icon={mdiPlus} variant="filled" aria-label="Add Employee" style="p-4" onclick={showCreateModal} />

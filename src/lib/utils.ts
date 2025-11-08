@@ -1,3 +1,6 @@
+import moment from 'moment';
+import * as v from 'valibot';
+
 export function titleCase(s: string) {
   return s
     .toLowerCase()
@@ -19,3 +22,8 @@ export function groupedItems<T>(items: T[], key: (item: T) => string): Record<st
     {} as Record<string, T[]>,
   );
 }
+
+export const momentValidator = v.custom<moment.Moment>(
+  (value): value is moment.Moment => moment.isMoment(value),
+  'Must be a Moment object',
+);
