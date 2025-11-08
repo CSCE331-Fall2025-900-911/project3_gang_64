@@ -30,12 +30,17 @@
     }
   }
 
-  const ToCurrency = (amnt:number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    })
-    .format(amnt);
+  const ToCurrency = (amnt:number|undefined) => {
+    if (typeof amnt === "number") {
+        return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      })
+      .format(amnt);
+    }
+
+    else return "$0";
+    
   }
 
 </script>

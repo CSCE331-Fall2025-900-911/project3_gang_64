@@ -62,7 +62,7 @@ export const getDailyRevenue = query(async () => {
     .from(order)
     .innerJoin(orderContent, eq(order.id, orderContent.orderId))
     .innerJoin(ingredient, eq(ingredient.id, orderContent.ingredientId))
-    //.where(gt(order.date, day.toISOString())) //commented out to prevent null return
+    .where(gt(order.date, day.toISOString())) //commented out to prevent null return
     .then((res) => res[0].rev);
 });
 
