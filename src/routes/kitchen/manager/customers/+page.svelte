@@ -38,12 +38,14 @@
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-full">Customer Name</TableHeaderCell>
+      <TableHeaderCell width="w-1/3">Customer Name</TableHeaderCell>
+      <TableHeaderCell width="w-2/3">Email</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each customers.current as customer}
         <TableRow>
-          <TableCell width="w-full">{customer.name}</TableCell>
+          <TableCell width="w-1/3">{customer.name}</TableCell>
+          <TableCell width="w-2/3">{customer.email}</TableCell>
         </TableRow>
       {/each}
     </TableBody>

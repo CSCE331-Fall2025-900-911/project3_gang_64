@@ -51,9 +51,9 @@ def export_menu_csv():
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):
     with open("csv/customers.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "name"])
+        writer.writerow(["id", "name", "email"])
         for customer in customers:
-            writer.writerow([customer.id, customer.name])
+            writer.writerow([customer.id, customer.name, customer.email])
 
     with open("csv/orders.csv", "w", newline="") as f:
         writer = csv.writer(f)
@@ -108,7 +108,7 @@ def generateRandomOrder(clock: datetime):
     payment = random.choices([PaymentMethod.CASH, PaymentMethod.CREDIT])[0]
     cid = uuid.uuid4()
     return (
-        Customer(id=cid, name=fake.name()),
+        Customer(id=cid, name=fake.name(), email=fake.email()),
         Order(id=order_id, customer_id=cid, employee_id=eid, subtotal=price, tax=tax, total=total, date=clock, payment_method=payment, item_quantity=count),
         orderItems
     )

@@ -24,6 +24,7 @@ class Employee:
 @dataclass
 class Customer:
     name: Optional[str] = None
+    email: Optional[str] = None
     id: UUID = field(default_factory=uuid.uuid4)
 
 @dataclass
