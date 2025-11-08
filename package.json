@@ -18,7 +18,7 @@
     "@auth/core": "^0.41.1",
     "@auth/drizzle-adapter": "^1.11.1",
     "@auth/sveltekit": "^1.11.1",
-    "@immich/ui": "^0.41.0",
+    "@immich/ui": "^0.42.3",
     "@mdi/js": "^7.4.47",
     "drizzle-orm": "^0.44.7",
     "drizzle-valibot": "^0.4.2",
