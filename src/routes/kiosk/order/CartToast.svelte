@@ -2,9 +2,9 @@
   import { Button, ToastContainer, ToastContent } from '@immich/ui';
   import { mdiCartOutline } from '@mdi/js';
 
-  interface Props = {
+  interface Props {
     onClose?: () => void;
-  };
+  }
 
   const { onClose }: Props = $props();
 
