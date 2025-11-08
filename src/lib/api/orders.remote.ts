@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
-import { customer, ingredient, order, orderContent } from '$lib/db/schema';
+import { customer, order } from '$lib/db/schema';
 import { orderInsertSchema, orderSelectSchema, type NewOrder } from '$lib/db/types';
-import { desc, eq, sql, gt } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
@@ -37,33 +37,6 @@ export const getOrderCount = query(async () => {
     })
     .from(order)
     .then((res) => res[0].count);
-});
-
-export const getOrderCountDay = query(async () => {
-  const db = getDB();
-  const day = new Date();
-
-  return await db
-    .select({
-      count: sql<number>`COUNT(${order.id})`,
-    })
-    .from(order).where(gt(order.date, day.toISOString()))
-    .then((res) => res[0].count);
-});
-
-export const getDailyRevenue = query(async () => {
-  const db = getDB();
-  const day = new Date();
-
-  return await db 
-    .select({
-      rev: sql<number>`SUM(${order.total}) - SUM(${ingredient.unitPrice})` //maybe change to subtotal later?
-    })
-    .from(order)
-    .innerJoin(orderContent, eq(order.id, orderContent.orderId))
-    .innerJoin(ingredient, eq(ingredient.id, orderContent.ingredientId))
-    .where(gt(order.date, day.toISOString())) //commented out to prevent null return
-    .then((res) => res[0].rev);
 });
 
 export const createOrder = command(orderInsertSchema, async (newOrder: NewOrder) => {

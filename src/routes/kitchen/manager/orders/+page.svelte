@@ -31,7 +31,7 @@
   }
 </script>
 
-<div class="mb-6 flex items-center justify-between px-2">
+<div class="mb-6 flex items-center justify-between">
   <Heading size="large">Orders</Heading>
 
   <div class="flex w-1/4 items-end justify-end gap-2">

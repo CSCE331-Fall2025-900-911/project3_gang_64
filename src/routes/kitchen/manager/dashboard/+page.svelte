@@ -1,27 +1,27 @@
-<script lang='ts'>
-  import { Icon, LoadingSpinner } from "@immich/ui";
-  import {mdiWeatherHurricane} from "@mdi/js";
-  import {getOrderCountDay , getDailyRevenue, getOrders} from '$lib/api/orders.remote'
+<script lang="ts">
+  import { getOrders } from '$lib/api/orders.remote';
+  import { getDayOrderCount, getDayRevenue } from '$lib/api/reports.remote';
+  import DashboardCard from '$lib/components/DashboardCard.svelte';
+  import type { PaymentMethod } from '$lib/db/types';
+  import { Heading, Icon, LoadingSpinner } from '@immich/ui';
+  import { mdiCardBulleted, mdiCashMultiple, mdiCloudOutline, mdiCurrencyUsd, mdiShoppingOutline } from '@mdi/js';
+  import moment from 'moment';
   import { cubicInOut } from 'svelte/easing';
   import { fade } from 'svelte/transition';
-  import { mdiCalendar, mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
-  import type { PaymentMethod } from '$lib/db/types';
-  import { number } from "valibot";
 
+  let dailyOrders = getDayOrderCount(moment().toDate());
 
-  let dailyOrders = getOrderCountDay();
-  let dailyRevenue = getDailyRevenue();
-  //weather place holders
-  let temp = 67;
-  let tempColor = $state("primary")
-
-  if(temp < 50) {
-    tempColor = "cyan-300"
-  }
+  let dailyRevenue = getDayRevenue(moment().toDate());
+  let lastWeekRevenue = getDayRevenue(moment().subtract(7, 'days').toDate());
+  let revenuePercentageChange = $derived(
+    dailyRevenue.ready && lastWeekRevenue.ready
+      ? ((dailyRevenue.current - lastWeekRevenue.current) / lastWeekRevenue.current) * 100
+      : undefined,
+  );
 
   let orders = $derived(getOrders({ page: 0, limit: 10 }));
 
-    function getPaymentMethodIcon(method: PaymentMethod) {
+  function getPaymentMethodIcon(method: PaymentMethod) {
     switch (method) {
       case 'cash':
         return mdiCashMultiple;
@@ -29,52 +29,31 @@
         return mdiCardBulleted;
     }
   }
-
-  const ToCurrency = (amnt:number|undefined) => {
-    if (typeof amnt === "number") {
-        return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      })
-      .format(amnt);
-    }
-
-    else return "$0";
-    
-  }
-
 </script>
-<div>
-<div class="flex flex-row justify-around">
-  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md p-1">
-    <h1 class="text-primary text-lg text-center">Daily Revenue</h1>
-    {#if dailyRevenue.loading}
-      <div class='flex justify-center'>
-        <LoadingSpinner/>
-      </div>
-    {:else if dailyRevenue.error}
-      <p class="text-danger">Error loading orders: {dailyRevenue.error.message}</p>
-    {:else}
-          <h1 class = 'text-center text-6xl align-middle mt-19 mx-2'>{ToCurrency(dailyRevenue.current)}</h1>
-    {/if}
-  </div>
 
-  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md flex flex-col p-1">
-    <h1 class="text-primary text-lg text-center">Orders Today</h1>
-    <h1 class = 'text-center text-9xl align-middle mt-10'>{dailyOrders.current}</h1>
-  </div>
+<Heading size="large" class="mt-2 mb-6">Dashboard</Heading>
 
-  <div class = "min-h-[33dvh] bg-subtle min-w-[20dvw] rounded-md flex flex-col items-center justify-evenly">
-    <h1 class="text-primary text-lg">Weather</h1>
-    <Icon icon={mdiWeatherHurricane} size='200'/>
-    <div class="flex justify-between w-full">
-      <h2 class="text-{tempColor} mx-2">{temp} &degF</h2>
-      <h2 class="text-primary mx-2">Hurricane</h2>
-    </div>
-  </div>
+<div class="flex flex-row gap-4">
+  <!-- Total Sales Card -->
+  <DashboardCard
+    title="Total Sales"
+    value={`$${dailyRevenue.current?.toFixed(2)}`}
+    percentChange={revenuePercentageChange}
+    icon={mdiCurrencyUsd}
+    loading={dailyRevenue.loading || lastWeekRevenue.loading}
+    error={dailyRevenue.error?.message}
+  />
+
+  <!-- Total Orders Card -->
+  <!-- TODO: Implement percentage calculation -->
+  <DashboardCard title="Total Orders" value={dailyOrders.current} percentChange={-2.89} icon={mdiShoppingOutline} />
+
+  <!-- Total Visitors Card -->
+  <DashboardCard title="Weather" value={'67 °F'} icon={mdiCloudOutline} />
 </div>
 
-<h1 class="mr-2 my-5 text-5xl">Recent Orders</h1>
+<div class="my-6">
+  <Heading size="medium">Recent Orders</Heading>
   {#if orders.loading}
     <div class="flex justify-center">
       <LoadingSpinner size="large" />
