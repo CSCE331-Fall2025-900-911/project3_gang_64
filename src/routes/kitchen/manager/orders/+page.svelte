@@ -3,8 +3,8 @@
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { PaymentMethod } from '$lib/db/types';
-  import { Heading, Icon, Input, LoadingSpinner, Select, Text } from '@immich/ui';
-  import { mdiCalendar, mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
+  import { Heading, Icon, LoadingSpinner, Select, Text } from '@immich/ui';
+  import { mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -33,9 +33,10 @@
 <div class="mb-6 flex items-center justify-between">
   <Heading size="large">Orders</Heading>
 
-  <div class="flex w-1/4 items-end justify-end gap-2">
+  <!-- TODO: Implement date filtering -->
+  <!-- <div class="flex w-1/4 items-end justify-end gap-2">
     <Input placeholder="11/11/2025" leadingIcon={mdiCalendar} />
-  </div>
+  </div> -->
 </div>
 
 {#if orders.loading}
