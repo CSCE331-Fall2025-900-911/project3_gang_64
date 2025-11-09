@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { getMenu } from '$lib/api/menu.remote';
+  import { getCategorizedMenu } from '$lib/api/menu.remote';
   import { cashierManager } from '$lib/managers/cashier.svelte';
   import { AppShellSidebar, Button, Heading, HStack, modalManager, NavbarItem, Text } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
 
-  let menu = await getMenu();
+  let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
     const hash = decodeURI(page.url.hash);
     const title = hash ? hash.substring(1) : Object.keys(menu)[0];

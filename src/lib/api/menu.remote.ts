@@ -5,7 +5,7 @@ import type { MenuItem } from '$lib/db/types';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
 
-export const getMenu = query(async () => {
+export const getCategorizedMenu = query(async () => {
   const db = getDB();
   const menuItems = await db.select().from(menu);
 
@@ -35,4 +35,10 @@ export const getMenuCategories = query(async () => {
   return (await db.selectDistinctOn([menu.category], { category: menu.category }).from(menu)).map(
     (row) => row.category,
   );
+});
+
+export const getMenu = query(async () => {
+  const db = getDB();
+
+  return await db.select().from(menu);
 });
