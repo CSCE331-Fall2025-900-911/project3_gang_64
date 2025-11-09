@@ -2,8 +2,7 @@
   import { getCustomerCount, getCustomers } from '$lib/api/customer.remote';
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
-  import { Heading, Input, LoadingSpinner, Select, Text } from '@immich/ui';
-  import { mdiMagnify } from '@mdi/js';
+  import { Heading, LoadingSpinner, Select, Text } from '@immich/ui';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -23,10 +22,10 @@
 <div class="mb-6 flex items-center justify-between">
   <Heading size="large">Customers</Heading>
 
-  <div class="flex w-1/4 items-end justify-end gap-2">
-    <!-- TODO: add search functionality via DB -->
+  <!-- TODO: add search functionality via DB -->
+  <!-- <div class="flex w-1/4 items-end justify-end gap-2">
     <Input placeholder="John Doe" leadingIcon={mdiMagnify} />
-  </div>
+  </div> -->
 </div>
 
 {#if customers.loading}

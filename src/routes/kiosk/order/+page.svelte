@@ -1,16 +1,16 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { getMenu } from '$lib/api/menu.remote';
+  import { getCategorizedMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
-  import CartToast from './CartToast.svelte';
   import { AppShell, AppShellSidebar, NavbarItem, toastManager } from '@immich/ui';
+  import CartToast from './CartToast.svelte';
   import MenuGroup from './MenuGroup.svelte';
 
   const orderUrl: string = '/kiosk/order';
   const timeout = $state(5000);
   const closable = $state(true);
 
-  let menu = await getMenu();
+  let menu = await getCategorizedMenu();
 
   let isFirstItemAdded = $state(false);
 

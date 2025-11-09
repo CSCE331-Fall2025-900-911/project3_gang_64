@@ -3,7 +3,7 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Ingredient } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan, mdiTruck } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
   import InventoryItemModal from './InventoryItemModal.svelte';
 
   let ingredients = getIngredients();
@@ -69,7 +69,7 @@
           <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex gap-2">
             <!-- TODO: Implement truck button -->
-            <IconButton icon={mdiTruck} color="success" aria-label="Shipments" />
+            <!-- <IconButton icon={mdiTruck} color="success" aria-label="Shipments" /> -->
             <IconButton icon={mdiPencil} aria-label="Edit Ingredient" onclick={() => showEditModal(ingredient)} />
             <IconButton
               icon={mdiTrashCan}

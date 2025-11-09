@@ -3,7 +3,7 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Employee } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiPlus } from '@mdi/js';
   import EmployeeModal from './EmployeeModal.svelte';
 
   let employees = getEmployees();
@@ -68,12 +68,12 @@
           <TableCell width="w-3/12">{employee.role}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton icon={mdiPencil} aria-label="Edit Employee" onclick={() => showEditModal(employee)} />
-            <IconButton
+            <!-- <IconButton
               icon={mdiTrashCan}
               aria-label="Delete Employee"
               color="danger"
               onclick={() => showDeleteModal(employee)}
-            />
+            /> -->
           </TableCell>
         </TableRow>
       {/each}
