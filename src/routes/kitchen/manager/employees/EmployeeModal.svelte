@@ -1,9 +1,9 @@
 <script lang="ts">
   import { createEmployee, updateEmployee } from '$lib/api/employee.remote';
   import { role } from '$lib/db/schema';
-  import type { CreateOrUpdate, Employee } from '$lib/db/types';
+  import { BlankEmployee, type CreateOrUpdate, type Employee, type NewEmployee } from '$lib/db/types';
   import { titleCase } from '$lib/utils';
-  import { Button, Field, Input, Modal, ModalBody, ModalFooter, Select, Stack } from '@immich/ui';
+  import { Button, Field, Input, Modal, ModalBody, ModalFooter, Select, Stack, type SelectItem } from '@immich/ui';
   import { mdiAccountPlus } from '@mdi/js';
 
   interface Props {
@@ -17,39 +17,44 @@
     submitting = true;
 
     if (mode.type === 'new') {
-      await createEmployee({ email, name, role: selectedRole.value });
+      await createEmployee(employee);
     } else {
-      await updateEmployee({ id: mode.item.id, email, name, role: selectedRole.value });
+      await updateEmployee({ id: mode.item.id, ...employee });
     }
 
     onClose();
   }
 
-  let email = $state(mode.type === 'edit' ? mode.item.email : '');
-  let name = $state(mode.type === 'edit' ? mode.item.name : '');
+  let employee: NewEmployee = $state(mode.type === 'edit' ? mode.item : BlankEmployee);
   let submitting = $state(false);
 
   const roleOptions = role.enumValues.map((r) => ({ label: titleCase(r), value: r }));
-  let selectedRole = $state(
-    mode.type === 'edit' ? roleOptions.find((r) => r.value === mode.item.role) || roleOptions[0] : roleOptions[0],
+  let selectedRole: SelectItem = $derived(
+    roleOptions.find((option) => option.value === employee.role) || roleOptions[0],
   );
 
-  let valid = $derived(email.trim().length > 0 && name.trim().length >= 0 && email.includes('@'));
+  let valid = $derived(
+    employee.email.trim().length > 0 && employee.name.trim().length >= 0 && employee.email.includes('@'),
+  );
+
+  function updateRole(selected: SelectItem) {
+    employee.role = selected.value as Employee['role'];
+  }
 </script>
 
 <Modal title={mode.type === 'new' ? 'Create Employee' : 'Edit Employee'} icon={mdiAccountPlus} {onClose}>
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="John Doe" bind:value={name} />
+        <Input placeholder="John Doe" bind:value={employee.name} />
       </Field>
 
       <Field label="Email">
-        <Input placeholder="johndoe@example.com" bind:value={email} />
+        <Input placeholder="johndoe@example.com" bind:value={employee.email} />
       </Field>
 
       <Field label="Role">
-        <Select data={roleOptions} bind:value={selectedRole} />
+        <Select data={roleOptions} bind:value={selectedRole} onChange={updateRole} />
       </Field>
     </Stack>
   </ModalBody>

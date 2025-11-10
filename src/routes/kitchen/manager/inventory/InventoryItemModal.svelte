@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createIngredient, updateIngredient } from '$lib/api/ingredient.remote';
-  import type { CreateOrUpdate, Ingredient } from '$lib/db/types';
+  import { BlankIngredient, type CreateOrUpdate, type Ingredient, type NewIngredient } from '$lib/db/types';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
   import { mdiPackage } from '@mdi/js';
 
@@ -15,48 +15,43 @@
     submitting = true;
 
     if (mode.type === 'new') {
-      await createIngredient({ name, currentStock, orderStock, unitPrice, category });
+      await createIngredient(item);
     } else {
-      await updateIngredient({ id: mode.item.id, name, currentStock, orderStock, unitPrice, category });
+      await updateIngredient({ id: mode.item.id, ...item });
     }
 
     onClose();
   }
 
-  let name = $state(mode.type === 'edit' ? mode.item.name : '');
-  let currentStock = $state(mode.type === 'edit' ? mode.item.currentStock : 0);
-  let orderStock = $state(mode.type === 'edit' ? mode.item.orderStock : 0);
-  let unitPrice = $state(mode.type === 'edit' ? mode.item.unitPrice : 0);
-  let category = $state(mode.type === 'edit' ? mode.item.category : '');
-
+  let item: NewIngredient = $state(mode.type === 'edit' ? mode.item : BlankIngredient);
   let submitting = $state(false);
 
-  let valid = $derived(name.trim().length > 0 && currentStock >= 0 && orderStock >= 0);
+  let valid = $derived(item.name.trim().length > 0 && item.currentStock >= 0 && item.orderStock >= 0);
 </script>
 
 <Modal title={mode.type === 'new' ? 'Create Ingredient' : 'Edit Ingredient'} icon={mdiPackage} {onClose}>
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="Ingredient name" bind:value={name} />
+        <Input placeholder="Ingredient name" bind:value={item.name} />
       </Field>
 
       <Field label="Category">
-        <Input placeholder="e.g., Vegetable, Dairy" bind:value={category} />
+        <Input placeholder="e.g., Vegetable, Dairy" bind:value={item.category} />
       </Field>
 
       <HStack gap={4}>
         <Field label="Current Stock">
-          <NumberInput placeholder="0" bind:value={currentStock} />
+          <NumberInput placeholder="0" bind:value={item.currentStock} />
         </Field>
 
         <Field label="Order Stock">
-          <NumberInput placeholder="0" bind:value={orderStock} />
+          <NumberInput placeholder="0" bind:value={item.orderStock} />
         </Field>
       </HStack>
 
       <Field label="Unit Price">
-        <NumberInput placeholder="0" bind:value={unitPrice} />
+        <NumberInput placeholder="0" bind:value={item.unitPrice} />
       </Field>
     </Stack>
   </ModalBody>

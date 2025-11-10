@@ -7,6 +7,13 @@ export const employeeInsertSchema = createInsertSchema(employee);
 export type Employee = typeof employee.$inferSelect;
 export type NewEmployee = typeof employee.$inferInsert;
 
+export const BlankEmployee: NewEmployee = {
+  name: '',
+  email: '',
+  role: 'staff',
+  archived: false,
+};
+
 export const menuItemSelectSchema = createSelectSchema(menu);
 export const menuItemUpdateSchema = createUpdateSchema(menu);
 export const menuItemInsertSchema = createInsertSchema(menu);
@@ -24,6 +31,14 @@ export const ingredientUpdateSchema = createUpdateSchema(ingredient);
 export const ingredientInsertSchema = createInsertSchema(ingredient);
 export type Ingredient = typeof ingredient.$inferSelect;
 export type NewIngredient = typeof ingredient.$inferInsert;
+
+export const BlankIngredient: NewIngredient = {
+  name: '',
+  currentStock: 0,
+  orderStock: 0,
+  category: '',
+  unitPrice: 0,
+};
 
 export const customerSelectSchema = createSelectSchema(customer);
 export const customerUpdateSchema = createUpdateSchema(customer);
