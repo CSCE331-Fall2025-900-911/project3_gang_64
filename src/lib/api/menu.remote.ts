@@ -17,6 +17,7 @@ export const getCategorizedMenu = query(async () => {
         acc[category] = [];
       }
       acc[category].push(item);
+      acc[category].sort((a, b) => a.name.localeCompare(b.name));
       return acc;
     },
     {} as Record<string, MenuItem[]>,
@@ -32,9 +33,9 @@ export const getMenuCategory = query(v.string(), async (category: string) => {
 export const getMenuCategories = query(async () => {
   const db = getDB();
 
-  return (await db.selectDistinctOn([menu.category], { category: menu.category }).from(menu)).map(
-    (row) => row.category,
-  );
+  return (await db.selectDistinctOn([menu.category], { category: menu.category }).from(menu))
+    .map((row) => row.category)
+    .sort();
 });
 
 export const getMenu = query(async () => {

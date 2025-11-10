@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
 import { customer } from '$lib/db/schema';
 import { customerInsertSchema, customerSelectSchema, type NewCustomer } from '$lib/db/types';
-import { desc, eq, sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
@@ -16,7 +16,7 @@ export const getCustomers = query(getCustomerSchema, async ({ page, limit }) => 
   return await db
     .select()
     .from(customer)
-    .orderBy(desc(customer.name))
+    .orderBy(customer.name)
     .limit(limit)
     .offset(page * limit);
 });

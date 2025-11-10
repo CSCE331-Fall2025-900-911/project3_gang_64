@@ -8,7 +8,7 @@ import * as v from 'valibot';
 export const getIngredients = query(async () => {
   const db = getDB();
 
-  return await db.select().from(ingredient);
+  return await db.select().from(ingredient).orderBy(ingredient.name);
 });
 
 export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: string) => {
@@ -18,6 +18,7 @@ export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: st
     .select()
     .from(menu)
     .where(eq(menu.id, menuItemId))
+    .orderBy(ingredient.name)
     .leftJoin(recipe, eq(menu.id, recipe.menuItemId))
     .leftJoin(ingredient, eq(recipe.ingredientId, ingredient.id));
 

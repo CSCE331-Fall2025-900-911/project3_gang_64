@@ -6,7 +6,7 @@ import { getDB } from '../db';
 
 export const getEmployees = query(async () => {
   const db = getDB();
-  return await db.select().from(employee);
+  return await db.select().from(employee).orderBy(employee.name);
 });
 
 export const createEmployee = command(employeeInsertSchema, async (newEmployee) => {
