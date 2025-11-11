@@ -1,5 +1,4 @@
 <script lang="ts">
-  import banana from '$lib/assets/banana.jpeg';
   import type { MenuItem } from '$lib/db/types';
   import { kioskManager } from '$lib/managers/kiosk.svelte';
   import { Heading, IconButton } from '@immich/ui';
@@ -24,7 +23,11 @@
 </script>
 
 <div class="flex flex-col justify-between rounded-lg border-2 p-4">
-  <img src={item.imageUrl ?? banana} alt={item.name} class="mb-3 h-50 w-full rounded-md border object-cover" />
+  <img
+    src={item.imageUrl ?? '/kioskImages/banana.jpeg'}
+    alt={item.name}
+    class="mb-3 h-50 w-full rounded-md border object-cover"
+  />
   <Heading size="medium" class="mb-2">{item.name}</Heading>
   <div class="mt-4 flex items-center justify-between">
     <Heading size="small" fontWeight="normal">${item.price.toFixed(2)}</Heading>
