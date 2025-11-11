@@ -24,7 +24,7 @@
 
 <div class="flex flex-col justify-between rounded-lg border-2 p-4">
   <img
-    src={item.imageUrl ?? '/kioskImages/banana.jpeg'}
+    src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
     alt={item.name}
     class="mb-3 h-50 w-full rounded-md border object-cover"
   />
