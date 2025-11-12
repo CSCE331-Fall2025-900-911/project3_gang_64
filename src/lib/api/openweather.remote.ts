@@ -1,7 +1,7 @@
 import { query } from '$app/server';
 import { env } from '$env/dynamic/private';
+import * as v from 'valibot';
 
-const OPENWEATHER_API_KEY = env.OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
 export interface CurrentWeatherParams {
@@ -10,19 +10,14 @@ export interface CurrentWeatherParams {
   units?: 'metric' | 'imperial' | 'standard';
 }
 
-/**
- * Fetches current weather data using the OpenWeather API.
- * @param params - Latitude, Longitude, and optional units.
- * @returns The raw weather data response as a JSON object (or throws an error).
- */
-async function fetchCurrentWeatherImpl({ lat, lon, units = 'metric' }: CurrentWeatherParams): Promise<any> {
-  if (!OPENWEATHER_API_KEY) {
-    throw new Error('Server Error: OPENWEATHER_API_KEY is not configured on the server.');
-  }
+const currentWeatherParams = v.object({
+  lat: v.number(),
+  lon: v.number(),
+  units: v.optional(v.union([v.literal('metric'), v.literal('imperial'), v.literal('standard')]), 'metric'),
+});
 
-  const url = `${BASE_URL}?lat=${lat}&lon=${lon}&units=${units}&appid=${OPENWEATHER_API_KEY}`;
-
-  console.log(`Fetching current weather data from OpenWeather API for url: ${url}`);
+export const fetchCurrentWeather = query(currentWeatherParams, async ({ lat, lon, units = 'metric' }) => {
+  const url = `${BASE_URL}?lat=${lat}&lon=${lon}&units=${units}&appid=${env.OPENWEATHER_API_KEY}`;
 
   const response = await fetch(url);
 
@@ -32,10 +27,4 @@ async function fetchCurrentWeatherImpl({ lat, lon, units = 'metric' }: CurrentWe
   }
 
   return await response.json();
-}
-
-/**
- * @param fn - The actual server-side implementation function.
- * @param validate - Optionally, you can pass a Zod/Valibot schema here for input validation.
- */
-export const fetchCurrentWeather = query('unchecked', fetchCurrentWeatherImpl);
+});
