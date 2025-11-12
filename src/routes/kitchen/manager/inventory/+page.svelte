@@ -3,8 +3,9 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Ingredient } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan, mdiTruck } from '@mdi/js';
   import InventoryItemModal from './InventoryItemModal.svelte';
+  import InventoryOrderReceiveModal from './InventoryOrderReceiveModal.svelte';
 
   let ingredients = getIngredients();
   let searchTerm = $state('');
@@ -18,6 +19,10 @@
 
   function showEditModal(ingredient: Ingredient) {
     modalManager.show(InventoryItemModal, { mode: { type: 'edit', item: ingredient } });
+  }
+
+  function showTruckModal(ingredient: Ingredient) {
+    modalManager.show(InventoryOrderReceiveModal, { ingredient });
   }
 
   async function confirmDelete(ingredient: Ingredient) {
@@ -69,7 +74,12 @@
           <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex gap-2">
             <!-- TODO: Implement truck button -->
-            <!-- <IconButton icon={mdiTruck} color="success" aria-label="Shipments" /> -->
+            <IconButton
+              icon={mdiTruck}
+              color="success"
+              aria-label="Shipments"
+              onclick={() => showTruckModal(ingredient)}
+            />
             <IconButton icon={mdiPencil} aria-label="Edit Ingredient" onclick={() => showEditModal(ingredient)} />
             <IconButton
               icon={mdiTrashCan}
