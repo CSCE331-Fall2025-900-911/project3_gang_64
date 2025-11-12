@@ -5,7 +5,22 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { PaymentMethod } from '$lib/db/types';
   import { Heading, Icon, LoadingSpinner } from '@immich/ui';
-  import { mdiCardBulleted, mdiCashMultiple, mdiCloudOutline, mdiCurrencyUsd, mdiShoppingOutline } from '@mdi/js';
+  import {
+    mdiCardBulleted,
+    mdiCashMultiple,
+    mdiCurrencyUsd,
+    mdiShoppingOutline,
+    mdiWeatherSunny,
+    mdiWeatherCloudy,
+    mdiWeatherPartlyCloudy,
+    mdiWeatherRainy,
+    mdiWeatherLightning,
+    mdiWeatherSnowy,
+    mdiWeatherFog,
+    mdiLoading,
+  } from '@mdi/js';
+  import { onMount } from 'svelte';
+  import { fetchCurrentWeather, type CurrentWeatherParams } from '$lib/api/openweather.remote';
   import moment from 'moment';
 
   let dailyOrders = getDayOrderCount(moment().toDate());
@@ -28,6 +43,69 @@
         return mdiCardBulleted;
     }
   }
+
+  let WEATHER_LOCATION = {
+    lat: 30.628,
+    lon: -96.334,
+    units: 'imperial' as const,
+  } satisfies CurrentWeatherParams;
+
+  const iconMap: Record<string, string> = {
+    '01d': mdiWeatherSunny,
+    '02d': mdiWeatherPartlyCloudy,
+    '03d': mdiWeatherCloudy,
+    '04d': mdiWeatherCloudy,
+    '09d': mdiWeatherRainy,
+    '10d': mdiWeatherRainy,
+    '11d': mdiWeatherLightning,
+    '13d': mdiWeatherSnowy,
+    '50d': mdiWeatherFog,
+    default: mdiLoading,
+  };
+
+  const weatherIconPath = $derived.by(() => {
+    if (weatherQuery.loading) {
+      return iconMap.default;
+    }
+
+    const iconCode = weatherData?.weather?.[0]?.icon;
+
+    if (iconCode && iconMap[iconCode]) {
+      return iconMap[iconCode];
+    }
+
+    return iconMap.default;
+  });
+
+  let weatherQuery = $derived(fetchCurrentWeather(WEATHER_LOCATION));
+
+  const weatherData = $derived.by(() => weatherQuery.current);
+
+  function refreshWeather() {
+    weatherQuery.refresh();
+  }
+
+  onMount(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          WEATHER_LOCATION = {
+            ...WEATHER_LOCATION,
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          };
+          refreshWeather();
+        },
+        (error) => {
+          console.error('Geolocation error:', error.message);
+          refreshWeather();
+        },
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      refreshWeather();
+    }
+  });
 </script>
 
 <Heading size="large" class="mt-2 mb-6">Dashboard</Heading>
@@ -48,7 +126,12 @@
   <DashboardCard title="Total Orders" value={dailyOrders.current} percentChange={-2.89} icon={mdiShoppingOutline} />
 
   <!-- Total Visitors Card -->
-  <DashboardCard title="Weather" value={'67 °F'} icon={mdiCloudOutline} />
+  <DashboardCard
+    title="Weather"
+    loading={weatherQuery.loading}
+    value={weatherData?.main.temp ?? '—'}
+    icon={weatherIconPath}
+  />
 </div>
 
 <div class="my-6">
