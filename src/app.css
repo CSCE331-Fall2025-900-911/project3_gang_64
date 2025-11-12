@@ -65,3 +65,18 @@ body {
 .bg-level-4 {
   @apply bg-gray-400 dark:bg-gray-400;
 }
+
+/* Accessibility Coloring */
+
+html.colorblind-protanopia {
+  filter: url(#protanopia);
+}
+html.colorblind-deuteranopia {
+  filter: url(#deuteranopia);
+}
+html.colorblind-tritanopia {
+  filter: url(#tritanopia);
+}
+html.colorblind-grayscale {
+  filter: grayscale(100%);
+}
