@@ -73,7 +73,6 @@
           <TableCell width="w-2/12">{ingredient.orderStock}</TableCell>
           <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex gap-2">
-            <!-- TODO: Implement truck button -->
             <IconButton
               icon={mdiTruck}
               color="success"
