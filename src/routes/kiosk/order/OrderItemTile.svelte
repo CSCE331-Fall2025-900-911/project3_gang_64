@@ -1,11 +1,9 @@
 <script lang="ts">
   import type { MenuItem } from '$lib/db/types';
   import { kioskManager } from '$lib/managers/kiosk.svelte';
-  import { Heading, IconButton , LoadingSpinner } from '@immich/ui';
+  import { Heading, IconButton} from '@immich/ui';
   import { mdiPlus } from '@mdi/js';
   import {getIngredients , getIngredientsForMenuItem} from '$lib/api/ingredient.remote';
-  import {onMount} from 'svelte';
-  import { boolean } from 'drizzle-orm/gel-core';
 
   interface Props {
     item: MenuItem;
