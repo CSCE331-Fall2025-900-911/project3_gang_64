@@ -11,6 +11,10 @@
 
   let { item }: Props = $props();
   let loading = $state(false);
+  let outOfStock:boolean = $state(false);
+
+  let inventory = getIngredients();
+  let recipe = $derived(getIngredientsForMenuItem(item.id));
 
   let inventory = getIngredients();
   let recipe = $derived(getIngredientsForMenuItem(item.id));
