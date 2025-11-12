@@ -35,8 +35,6 @@
 
   });
 
-
-
   async function handleAddToOrder() {
     loading = true;
     await kioskManager.addToOrder(item);
