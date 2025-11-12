@@ -38,8 +38,6 @@
   }
 </script>
 
-
-
 <div class="flex flex-col justify-between rounded-lg border-2 p-4 relative">
   <img
     src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
