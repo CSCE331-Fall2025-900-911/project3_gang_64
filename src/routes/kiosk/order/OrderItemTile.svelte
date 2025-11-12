@@ -45,9 +45,6 @@
       firstAddAction();
     }
   }
-
-  console.log("out of stock" , outOfStock);
-  console.log("loading" , loading);
   
 </script>
 
