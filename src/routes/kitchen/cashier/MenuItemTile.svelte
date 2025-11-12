@@ -33,7 +33,6 @@
     await cashierManager.addToOrder(item);
     loading = false;
   }
-
 </script>
 
 <div class="flex flex-col justify-between rounded-lg border p-4">
