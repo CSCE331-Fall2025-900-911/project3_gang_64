@@ -1,13 +1,10 @@
 <script lang="ts">
   import { kioskManager } from '$lib/managers/kiosk.svelte';
+  import type { ModalProps } from '$lib/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 
-  interface Props {
-    onClose: () => void;
-  }
-
-  let { onClose }: Props = $props();
+  let { onClose }: ModalProps = $props();
 
   let valid = $derived(
     kioskManager.customerName.trim().length > 0 && kioskManager.currentOrder.length > 0 && kioskManager.paymentMethod,

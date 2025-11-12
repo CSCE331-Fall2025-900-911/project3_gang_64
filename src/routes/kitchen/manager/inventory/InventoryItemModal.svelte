@@ -1,11 +1,11 @@
 <script lang="ts">
   import { createIngredient, updateIngredient } from '$lib/api/ingredient.remote';
   import { BlankIngredient, type CreateOrUpdate, type Ingredient, type NewIngredient } from '$lib/db/types';
+  import type { ModalProps } from '$lib/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
   import { mdiPackage } from '@mdi/js';
 
-  interface Props {
-    onClose: () => void;
+  interface Props extends ModalProps {
     mode: CreateOrUpdate<Ingredient>;
   }
 

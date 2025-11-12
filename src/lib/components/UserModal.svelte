@@ -1,13 +1,10 @@
 <script lang="ts">
   import { currentEmployee } from '$lib/auth/employee.svelte';
+  import type { ModalProps } from '$lib/utils';
   import { signOut } from '@auth/sveltekit/client';
   import { Button, Modal, ModalBody } from '@immich/ui';
 
-  interface Props {
-    onClose: () => void;
-  }
-
-  let { onClose }: Props = $props();
+  let { onClose }: ModalProps = $props();
   let employee = currentEmployee();
 </script>
 

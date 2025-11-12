@@ -1,13 +1,10 @@
 <script lang="ts">
   import { cashierManager } from '$lib/managers/cashier.svelte';
+  import type { ModalProps } from '$lib/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 
-  interface Props {
-    onClose: () => void;
-  }
-
-  let { onClose }: Props = $props();
+  let { onClose }: ModalProps = $props();
 
   let valid = $derived(
     cashierManager.customerName.trim().length > 0 &&

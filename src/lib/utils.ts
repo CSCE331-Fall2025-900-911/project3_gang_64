@@ -27,3 +27,7 @@ export const momentValidator = v.custom<moment.Moment>(
   (value): value is moment.Moment => moment.isMoment(value),
   'Must be a Moment object',
 );
+
+export interface ModalProps {
+  onClose: () => void;
+}

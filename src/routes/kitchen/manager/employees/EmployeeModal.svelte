@@ -2,12 +2,11 @@
   import { createEmployee, updateEmployee } from '$lib/api/employee.remote';
   import { role } from '$lib/db/schema';
   import { BlankEmployee, type CreateOrUpdate, type Employee, type NewEmployee } from '$lib/db/types';
-  import { titleCase } from '$lib/utils';
+  import { titleCase, type ModalProps } from '$lib/utils';
   import { Button, Field, Input, Modal, ModalBody, ModalFooter, Select, Stack, type SelectItem } from '@immich/ui';
   import { mdiAccountPlus } from '@mdi/js';
 
-  interface Props {
-    onClose: () => void;
+  interface Props extends ModalProps {
     mode: CreateOrUpdate<Employee>;
   }
 
