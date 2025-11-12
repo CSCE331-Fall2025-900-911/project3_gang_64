@@ -11,6 +11,10 @@
 
   let { item }: Props = $props();
   let loading = $state(false);
+  let outOfStock:boolean = $state(false);
+
+  let inventory = getIngredients();
+  let recipe = $derived(getIngredientsForMenuItem(item.id));
 
   let inventory = getIngredients();
   let recipe = $derived(getIngredientsForMenuItem(item.id));
@@ -34,6 +38,20 @@
     await cashierManager.addToOrder(item);
     loading = false;
   }
+
+  $effect(() => {
+    let isOut = false;
+    recipe.current?.forEach(function(ingredient) {
+      inventory.current?.forEach(function (stockItem) {
+        if (ingredient.id == stockItem.id && stockItem.currentStock == 0) {
+          isOut = true;
+        }
+      });
+    });
+
+    if (isOut !== outOfStock) outOfStock = isOut;
+
+  });
 </script>
 
 <div class="flex flex-col justify-between rounded-lg border p-4">
