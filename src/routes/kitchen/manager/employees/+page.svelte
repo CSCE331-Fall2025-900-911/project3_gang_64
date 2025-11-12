@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getEmployees } from '$lib/api/employee.remote';
+  import { getEmployees, updateEmployee } from '$lib/api/employee.remote';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Employee } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
@@ -33,7 +33,7 @@
     });
 
     if (confirm) {
-      // TODO: Handle deletion logic here
+      await updateEmployee({ id: employee.id, archived: true });
     }
   }
 </script>
