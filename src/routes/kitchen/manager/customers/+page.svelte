@@ -2,7 +2,8 @@
   import { getCustomerCount, getCustomers } from '$lib/api/customer.remote';
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
-  import { Heading, LoadingSpinner, Select, Text } from '@immich/ui';
+  import { Heading, HStack, IconButton, Input, LoadingSpinner, Select, Text } from '@immich/ui';
+  import { mdiMagnify } from '@mdi/js';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -16,16 +17,30 @@
   let pageSize = $state(PAGE_OPTIONS[1]); // Default to 25
   let totalPages = $derived(totalCustomers ? Math.ceil(totalCustomers / parseInt(pageSize.value)) : 0);
 
-  let customers = $derived(getCustomers({ page: customerPage, limit: parseInt(pageSize.value) }));
+  let searchField = $state('');
+  let searchState = $state('');
+
+  let customers = $derived(getCustomers({ page: customerPage, limit: parseInt(pageSize.value), search: searchState }));
+
+  function searchCustomers() {
+    searchState = searchField;
+    customerPage = 1;
+  }
 </script>
 
 <div class="mb-6 flex items-center justify-between">
   <Heading size="large">Customers</Heading>
 
-  <!-- TODO: add search functionality via DB -->
-  <!-- <div class="flex w-1/4 items-end justify-end gap-2">
-    <Input placeholder="John Doe" leadingIcon={mdiMagnify} />
-  </div> -->
+  <div class="flex w-1/4 items-end justify-end gap-2">
+    <HStack gap={2}>
+      <Input
+        placeholder="Search customers..."
+        bind:value={searchField}
+        onkeydown={(e) => e.key === 'Enter' && searchCustomers()}
+      />
+      <IconButton icon={mdiMagnify} aria-label="Search" onclick={searchCustomers} />
+    </HStack>
+  </div>
 </div>
 
 {#if customers.loading}

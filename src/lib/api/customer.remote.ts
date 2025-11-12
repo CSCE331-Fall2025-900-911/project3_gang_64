@@ -1,21 +1,23 @@
 import { command, query } from '$app/server';
 import { customer } from '$lib/db/schema';
 import { customerInsertSchema, customerSelectSchema, type NewCustomer } from '$lib/db/types';
-import { eq, sql } from 'drizzle-orm';
+import { eq, like, or, sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
 const getCustomerSchema = v.object({
   page: v.optional(v.number(), 1),
   limit: v.optional(v.number(), 50),
+  search: v.optional(v.string()),
 });
 
-export const getCustomers = query(getCustomerSchema, async ({ page, limit }) => {
+export const getCustomers = query(getCustomerSchema, async ({ page, limit, search }) => {
   const db = getDB();
 
   return await db
     .select()
     .from(customer)
+    .where(search ? or(like(customer.name, `%${search}%`), like(customer.email, `%${search}%`)) : undefined)
     .orderBy(customer.name)
     .limit(limit)
     .offset(page * limit);
