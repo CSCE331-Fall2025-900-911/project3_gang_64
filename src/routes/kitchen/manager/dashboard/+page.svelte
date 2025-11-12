@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fetchCurrentWeather, type CurrentWeatherParams } from '$lib/api/openweather.remote';
   import { getOrders } from '$lib/api/orders.remote';
   import { getDayOrderCount, getDayRevenue } from '$lib/api/reports.remote';
   import DashboardCard from '$lib/components/DashboardCard.svelte';
@@ -10,18 +11,17 @@
     mdiCashMultiple,
     mdiCurrencyUsd,
     mdiShoppingOutline,
-    mdiWeatherSunny,
+    mdiTimerSand,
     mdiWeatherCloudy,
+    mdiWeatherFog,
+    mdiWeatherLightning,
     mdiWeatherPartlyCloudy,
     mdiWeatherRainy,
-    mdiWeatherLightning,
     mdiWeatherSnowy,
-    mdiWeatherFog,
-    mdiLoading,
+    mdiWeatherSunny,
   } from '@mdi/js';
-  import { onMount } from 'svelte';
-  import { fetchCurrentWeather, type CurrentWeatherParams } from '$lib/api/openweather.remote';
   import moment from 'moment';
+  import { onMount } from 'svelte';
 
   let dailyOrders = getDayOrderCount(moment().toDate());
 
@@ -60,7 +60,7 @@
     '11d': mdiWeatherLightning,
     '13d': mdiWeatherSnowy,
     '50d': mdiWeatherFog,
-    default: mdiLoading,
+    default: mdiTimerSand,
   };
 
   const weatherIconPath = $derived.by(() => {
