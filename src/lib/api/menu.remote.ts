@@ -1,4 +1,4 @@
-import { query } from '$app/server';
+import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { menu } from '$lib/db/schema';
 import type { MenuItem } from '$lib/db/types';
@@ -42,4 +42,9 @@ export const getMenu = query(async () => {
   const db = getDB();
 
   return await db.select().from(menu);
+});
+
+export const deleteMenuItem = command(v.string(), async (id: string) => {
+  const db = getDB();
+  await db.update(menu).set({ archived: true }).where(eq(menu.id, id));
 });

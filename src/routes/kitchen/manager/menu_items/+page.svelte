@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getMenu } from '$lib/api/menu.remote';
+  import { deleteMenuItem, getMenu } from '$lib/api/menu.remote';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
-  import type { Employee } from '$lib/db/types';
-  import { Heading, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify } from '@mdi/js';
+  import type { MenuItem } from '$lib/db/types';
+  import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
+  import { mdiMagnify, mdiTrashCan } from '@mdi/js';
 
   let menu = getMenu();
   let searchTerm = $state('');
@@ -15,16 +15,17 @@
     ) || [],
   );
 
-  async function showDeleteModal(employee: Employee) {
+  async function showDeleteModal(item: MenuItem) {
     const confirm = await modalManager.showDialog({
-      title: 'Delete Employee',
-      prompt: `Are you sure you want to delete ${employee.name}?`,
+      title: 'Delete Menu Item',
+      prompt: `Are you sure you want to delete ${item.name}?`,
       confirmText: 'Delete',
       confirmColor: 'danger',
+      icon: mdiTrashCan,
     });
 
     if (confirm) {
-      // TODO: Handle deletion logic here
+      await deleteMenuItem(item.id);
     }
   }
 </script>
@@ -50,7 +51,7 @@
       <TableHeaderCell width="w-5/12">Name</TableHeaderCell>
       <TableHeaderCell width="w-4/12">Category</TableHeaderCell>
       <TableHeaderCell width="w-3/12">Price</TableHeaderCell>
-      <!-- <TableHeaderCell width="w-2/12">Actions</TableHeaderCell> -->
+      <TableHeaderCell width="w-2/12">Actions</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each searchedMenuItems as item}
@@ -58,11 +59,16 @@
           <TableCell width="w-5/12">{item.name}</TableCell>
           <TableCell width="w-4/12">{item.category}</TableCell>
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
-          <!-- TODO: Implement edit/delete functionality -->
-          <!-- <TableCell width="w-2/12" class="flex justify-center gap-2">
-            <IconButton icon={mdiPencil} aria-label="Edit Menu Item" />
-            <IconButton icon={mdiTrashCan} aria-label="Delete Menu Item" color="danger" />
-          </TableCell> -->
+          <!-- TODO: Implement edit functionality -->
+          <TableCell width="w-2/12" class="flex justify-center gap-2">
+            <!-- <IconButton icon={mdiPencil} aria-label="Edit Menu Item" /> -->
+            <IconButton
+              icon={mdiTrashCan}
+              aria-label="Delete Menu Item"
+              color="danger"
+              onclick={() => showDeleteModal(item)}
+            />
+          </TableCell>
         </TableRow>
       {/each}
     </TableBody>

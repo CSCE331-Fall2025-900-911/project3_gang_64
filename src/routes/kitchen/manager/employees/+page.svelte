@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getEmployees, updateEmployee } from '$lib/api/employee.remote';
+  import { deleteEmployee, getEmployees } from '$lib/api/employee.remote';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Employee } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify, mdiPencil, mdiPlus } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js';
   import EmployeeModal from './EmployeeModal.svelte';
 
   let employees = getEmployees();
@@ -30,10 +30,11 @@
       prompt: `Are you sure you want to delete ${employee.name}?`,
       confirmText: 'Delete',
       confirmColor: 'danger',
+      icon: mdiTrashCan,
     });
 
     if (confirm) {
-      await updateEmployee({ id: employee.id, archived: true });
+      await deleteEmployee(employee.id);
     }
   }
 </script>
@@ -68,12 +69,12 @@
           <TableCell width="w-3/12">{employee.role}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton icon={mdiPencil} aria-label="Edit Employee" onclick={() => showEditModal(employee)} />
-            <!-- <IconButton
+            <IconButton
               icon={mdiTrashCan}
               aria-label="Delete Employee"
               color="danger"
               onclick={() => showDeleteModal(employee)}
-            /> -->
+            />
           </TableCell>
         </TableRow>
       {/each}

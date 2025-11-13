@@ -27,10 +27,11 @@
 
   async function confirmDelete(ingredient: Ingredient) {
     const confirm = await modalManager.showDialog({
-      title: 'Nice title',
+      title: 'Delete Ingredient',
       prompt: 'Are you sure you want to delete this?',
       confirmText: 'Yes, I am',
       confirmColor: 'success',
+      icon: mdiTrashCan,
     });
 
     if (confirm) {
