@@ -1,6 +1,6 @@
 <script lang="ts">
   import { currentEmployee } from '$lib/auth/employee.svelte';
-  import type { ModalProps } from '$lib/utils';
+  import type { ModalProps } from '$lib/utils/utils';
   import { signOut } from '@auth/sveltekit/client';
   import { Button, Modal, ModalBody } from '@immich/ui';
 

@@ -13,7 +13,7 @@ export interface CurrentWeatherParams {
 const currentWeatherParams = v.object({
   lat: v.number(),
   lon: v.number(),
-  units: v.optional(v.union([v.literal('metric'), v.literal('imperial'), v.literal('standard')]), 'metric'),
+  units: v.string(),
 });
 
 export const fetchCurrentWeather = query(currentWeatherParams, async ({ lat, lon, units = 'metric' }) => {

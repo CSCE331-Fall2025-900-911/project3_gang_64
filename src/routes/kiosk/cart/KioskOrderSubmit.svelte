@@ -1,6 +1,6 @@
 <script lang="ts">
   import { kioskManager } from '$lib/managers/kiosk.svelte';
-  import type { ModalProps } from '$lib/utils';
+  import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 

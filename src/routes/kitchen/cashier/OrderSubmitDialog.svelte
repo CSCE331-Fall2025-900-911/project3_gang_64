@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cashierManager } from '$lib/managers/cashier.svelte';
-  import type { ModalProps } from '$lib/utils';
+  import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Ingredient } from '$lib/db/types';
-  import type { ModalProps } from '$lib/utils';
+  import type { ModalProps } from '$lib/utils/utils';
   import {
     Button,
     Field,

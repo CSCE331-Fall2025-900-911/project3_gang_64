@@ -1,27 +1,14 @@
 <script lang="ts">
-  import { fetchCurrentWeather, type CurrentWeatherParams } from '$lib/api/openweather.remote';
+  import { fetchCurrentWeather } from '$lib/api/openweather.remote';
   import { getOrders } from '$lib/api/orders.remote';
   import { getDayOrderCount, getDayRevenue } from '$lib/api/reports.remote';
   import DashboardCard from '$lib/components/DashboardCard.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { PaymentMethod } from '$lib/db/types';
+  import { getWeatherIcon, WEATHER_LOCATION } from '$lib/utils/weather';
   import { Heading, Icon, LoadingSpinner } from '@immich/ui';
-  import {
-    mdiCardBulleted,
-    mdiCashMultiple,
-    mdiCurrencyUsd,
-    mdiShoppingOutline,
-    mdiTimerSand,
-    mdiWeatherCloudy,
-    mdiWeatherFog,
-    mdiWeatherLightning,
-    mdiWeatherPartlyCloudy,
-    mdiWeatherRainy,
-    mdiWeatherSnowy,
-    mdiWeatherSunny,
-  } from '@mdi/js';
+  import { mdiCardBulleted, mdiCashMultiple, mdiCurrencyUsd, mdiShoppingOutline } from '@mdi/js';
   import moment from 'moment';
-  import { onMount } from 'svelte';
 
   let dailyOrders = getDayOrderCount(moment().toDate());
 
@@ -44,68 +31,8 @@
     }
   }
 
-  let WEATHER_LOCATION = {
-    lat: 30.628,
-    lon: -96.334,
-    units: 'imperial' as const,
-  } satisfies CurrentWeatherParams;
-
-  const iconMap: Record<string, string> = {
-    '01d': mdiWeatherSunny,
-    '02d': mdiWeatherPartlyCloudy,
-    '03d': mdiWeatherCloudy,
-    '04d': mdiWeatherCloudy,
-    '09d': mdiWeatherRainy,
-    '10d': mdiWeatherRainy,
-    '11d': mdiWeatherLightning,
-    '13d': mdiWeatherSnowy,
-    '50d': mdiWeatherFog,
-    default: mdiTimerSand,
-  };
-
-  const weatherIconPath = $derived.by(() => {
-    if (weatherQuery.loading) {
-      return iconMap.default;
-    }
-
-    const iconCode = weatherData?.weather?.[0]?.icon;
-
-    if (iconCode && iconMap[iconCode]) {
-      return iconMap[iconCode];
-    }
-
-    return iconMap.default;
-  });
-
   let weatherQuery = $derived(fetchCurrentWeather(WEATHER_LOCATION));
-
-  const weatherData = $derived.by(() => weatherQuery.current);
-
-  function refreshWeather() {
-    weatherQuery.refresh();
-  }
-
-  onMount(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          WEATHER_LOCATION = {
-            ...WEATHER_LOCATION,
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          };
-          refreshWeather();
-        },
-        (error) => {
-          console.error('Geolocation error:', error.message);
-          refreshWeather();
-        },
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-      refreshWeather();
-    }
-  });
+  let weatherIcon = $derived(getWeatherIcon(weatherQuery.current));
 </script>
 
 <Heading size="large" class="mt-2 mb-6">Dashboard</Heading>
@@ -129,8 +56,8 @@
   <DashboardCard
     title="Weather"
     loading={weatherQuery.loading}
-    value={weatherData?.main.temp ?? '—'}
-    icon={weatherIconPath}
+    value={weatherQuery.current?.main.temp ?? '—'}
+    icon={weatherIcon}
   />
 </div>
 
