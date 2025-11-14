@@ -15,19 +15,6 @@
   let inventory = getIngredients();
   let recipe = $derived(getIngredientsForMenuItem(item.id));
 
-  let outOfStock = $derived.by(() => {
-    let tempStock = false;
-    recipe.current?.forEach(ingredient => {
-      inventory.current?.forEach(stockItem => {
-        if(stockItem.id === ingredient.id && stockItem.currentStock == 0) {
-          tempStock = true;
-          return;
-        }
-      });
-    })
-    return tempStock;
-  });
-
   async function handleAddToOrder(item: MenuItem) {
     loading = true;
 
