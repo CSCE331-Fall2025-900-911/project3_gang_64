@@ -25,6 +25,7 @@
       });
     })
     return tempStock;
+    
   });
 
   async function handleAddToOrder(item: MenuItem) {
