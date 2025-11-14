@@ -15,22 +15,17 @@
 
   let inventory = getIngredients();
   let recipe = $derived(getIngredientsForMenuItem(item.id));
-  let outOfStock = $state(false);
-  let isOut:boolean;
-  
-  //cycle through ingredients in recipe see if we have inventory, set stock appropriately
-  $effect(() => {
-    let isOut = false;
-    recipe.current?.forEach(function(ingredient) {
-      inventory.current?.forEach(function (stockItem) {
-        if (ingredient.id == stockItem.id && stockItem.currentStock == 0) {
-          isOut = true;
+  let outOfStock = $derived.by(() => {
+    let tempStock = false;
+    recipe.current?.forEach(ingredient => {
+      inventory.current?.forEach(stockItem => {
+        if(stockItem.id === ingredient.id && stockItem.currentStock == 0) {
+          tempStock = true;
+          return;
         }
       });
-    });
-
-    if (isOut !== outOfStock) outOfStock = isOut;
-
+    })
+    return tempStock;
   });
 
   async function handleAddToOrder() {
@@ -45,12 +40,15 @@
 </script>
 
 
-<div class="flex flex-col justify-between rounded-lg border-2 p-4">
+<div class="flex flex-col justify-between rounded-lg border-2 p-4 relative">
   <img
     src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
     alt={item.name}
     class="mb-3 h-50 w-full rounded-md border object-cover"
   />
+  {#if (outOfStock)}
+    <div class="bg-black/50 text-white absolute top-25 text-center w-full pr-9">Out of Stock</div>
+  {/if}
   <Heading size="medium" class="mb-2">{item.name}</Heading>
   <div class="mt-4 flex items-center justify-between">
     <Heading size="small" fontWeight="normal">${item.price.toFixed(2)}</Heading>
