@@ -144,7 +144,7 @@
           </div>
 
           {#each recipe as ingredient}
-            <div class="flex w-full items-center justify-between rounded-md border p-2">
+            <div class="flex w-full items-center justify-between rounded-md border p-2 dark:border-gray-500">
               <span>{ingredient.name}</span>
               <div class="flex items-center gap-2">
                 <span class="font-semibold">${ingredient.unitPrice.toFixed(2)}</span>

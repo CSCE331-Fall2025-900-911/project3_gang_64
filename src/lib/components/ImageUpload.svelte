@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fileUpload } from '$lib/utils/r2';
-  import { Icon, IconButton, LoadingSpinner } from '@immich/ui';
+  import { Icon, IconButton, LoadingSpinner, Text } from '@immich/ui';
   import { mdiImagePlus, mdiTrashCan } from '@mdi/js';
 
   interface Props {
@@ -88,7 +88,7 @@
     tabindex="0"
     class="relative flex h-36 w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed transition-colors {isDragging
       ? 'border-primary bg-primary/10'
-      : 'border-gray-300 hover:border-primary/50'}"
+      : 'border-gray-300 hover:border-primary/70'}"
     ondragover={handleDragOver}
     ondragleave={handleDragLeave}
     ondrop={handleDrop}
@@ -98,7 +98,7 @@
     {#if uploading}
       <div class="flex flex-col items-center gap-2">
         <LoadingSpinner size="large" />
-        <p class="text-sm text-gray-600">Uploading...</p>
+        <Text>Uploading...</Text>
       </div>
     {:else if previewUrl}
       <div class="relative h-full w-full p-2">
@@ -118,10 +118,10 @@
     {:else}
       <div class="flex flex-col justify-center text-center">
         <Icon icon={mdiImagePlus} size="48" class="mb-2 w-full text-gray-400" />
-        <p class="mt-2 text-sm text-gray-600">
+        <Text color="secondary" class="mb-1">
           <span class="font-semibold">Click to upload</span> or drag and drop
-        </p>
-        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+        </Text>
+        <Text color="secondary" class="text-xs">PNG, JPG, GIF up to 10MB</Text>
       </div>
     {/if}
   </div>
