@@ -5,6 +5,7 @@
   import type { PaymentMethod } from '$lib/db/types';
   import { Heading, Icon, LoadingSpinner, Select, Text } from '@immich/ui';
   import { mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
+  import moment from 'moment';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -56,7 +57,7 @@
     <TableBody>
       {#each orders.current as order}
         <TableRow>
-          <TableCell width="w-3/12">{order.date}</TableCell>
+          <TableCell width="w-3/12">{moment(order.date).format('LLLL')}</TableCell>
           <TableCell width="w-4/12" align="left">{order.customer}</TableCell>
           <TableCell width="w-3/12" class="flex items-center justify-center">
             <Icon icon={getPaymentMethodIcon(order.paymethod)} size="36" />

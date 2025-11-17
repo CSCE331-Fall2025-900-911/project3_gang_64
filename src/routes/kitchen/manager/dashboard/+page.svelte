@@ -80,7 +80,7 @@
       <TableBody>
         {#each orders.current as order}
           <TableRow>
-            <TableCell width="w-3/12">{order.date}</TableCell>
+            <TableCell width="w-3/12">{moment(order.date).format('LLLL')}</TableCell>
             <TableCell width="w-4/12" align="left">{order.customer}</TableCell>
             <TableCell width="w-3/12" class="flex items-center justify-center">
               <Icon icon={getPaymentMethodIcon(order.paymethod)} size="36" />
