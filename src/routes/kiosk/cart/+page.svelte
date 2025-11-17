@@ -2,7 +2,7 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShell, Button, Heading, HStack, IconButton, modalManager, Text } from '@immich/ui';
   import { mdiTrashCanOutline } from '@mdi/js';
-  import OrderSubmitDialog from './KioskOrderSubmit.svelte';
+  import OrderSubmitDialog from '../../kitchen/cashier/OrderSubmitDialog.svelte';
 
   function showSubmitDialog() {
     modalManager.show(OrderSubmitDialog);

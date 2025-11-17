@@ -1,4 +1,7 @@
+import { createCustomer } from '$lib/api/customer.remote';
+import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
+import { submitOrder } from '$lib/api/orders.remote';
 import type { MenuItem, PaymentMethod } from '$lib/db/types';
 import type { OrderEntry } from './order_manager.types';
 
@@ -7,6 +10,7 @@ class OrderManager {
 
   paymentMethod = $state<PaymentMethod | null>(null);
   customerName = $state<string>('');
+  customerEmail = $state<string>('');
 
   subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price, 0));
   tax = $derived(this.subtotal * 0.07);
@@ -45,11 +49,24 @@ class OrderManager {
     this.paymentMethod = null;
   }
 
-  submit() {
-    console.log(this.customerName);
+  async submit() {
+    // Create customer
+    const customer = await createCustomer({
+      name: this.customerName,
+      email: this.customerEmail,
+    });
+
+    // TODO: get employee ID from kitchen or kiosk session
+    const employee = (await getEmployees())[0];
 
     // Submit the order
-    // TODO: Implement order submission logic
+    await submitOrder({
+      customerId: customer.id,
+      paymentMethod: this.paymentMethod!,
+      order: this.currentOrder,
+      employeeId: employee.id,
+    });
+
     this.clearOrder();
   }
 }

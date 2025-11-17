@@ -1,6 +1,8 @@
-import type { Ingredient, MenuItem } from '$lib/db/types';
+import { ingredientSelectSchema, menuItemSelectSchema } from '$lib/db/types';
+import * as v from 'valibot';
 
-export interface OrderEntry {
-  menuItem: MenuItem;
-  ingredients: Ingredient[];
-}
+export const OrderEntrySchema = v.object({
+  menuItem: menuItemSelectSchema,
+  ingredients: v.array(ingredientSelectSchema),
+});
+export type OrderEntry = v.InferInput<typeof OrderEntrySchema>;

@@ -22,6 +22,9 @@
       <Field label="Name">
         <Input placeholder="John Doe" bind:value={orderManager.customerName} />
       </Field>
+      <Field label="Email">
+        <Input placeholder="john.doe@example.com" bind:value={orderManager.customerEmail} />
+      </Field>
       <Text>Payment Method</Text>
       <HStack gap={4}>
         <Button

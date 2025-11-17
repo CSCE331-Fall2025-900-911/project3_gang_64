@@ -38,6 +38,8 @@ export const createCustomer = command(customerInsertSchema, async (newCustomer: 
   const db = getDB();
 
   const created = await db.insert(customer).values(newCustomer).returning();
+
+  console.log(created);
   return created[0];
 });
 
