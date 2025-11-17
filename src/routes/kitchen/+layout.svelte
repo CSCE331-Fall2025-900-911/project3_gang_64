@@ -4,6 +4,7 @@
   import logo from '$lib/assets/logo.png';
   import { currentEmployee } from '$lib/auth/employee.svelte';
   import UserModal from '$lib/components/UserModal.svelte';
+  import { t } from '$lib/utils/utils';
   import {
     AppShell,
     AppShellHeader,
@@ -23,8 +24,8 @@
   initializeTheme();
 
   const modes: SelectItem[] = [
-    { label: 'Manager', value: 'manager' },
-    { label: 'Cashier', value: 'cashier' },
+    { label: t('manager'), value: 'manager' },
+    { label: t('cashier'), value: 'cashier' },
   ];
 
   let mode = $derived(modes.find((item) => item.value === page.url.pathname.split('/')[2]) ?? modes[0]);
