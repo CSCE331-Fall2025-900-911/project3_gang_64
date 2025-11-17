@@ -1,25 +1,26 @@
 <script>
   import { Card, CardBody, CardHeader, CardTitle, Heading, Text } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
 </script>
 
-<Heading size="large" class="mt-2 mb-6">Reports</Heading>
+<Heading size="large" class="mt-2 mb-6">{t('manager_reports_title')}</Heading>
 
 <div class="mt-4 flex flex-col gap-4">
   <Card expandable>
     <CardHeader>
-      <CardTitle>X-Report</CardTitle>
+      <CardTitle>{t('manager_reports_x_title')}</CardTitle>
     </CardHeader>
     <CardBody>
-      <Text>X-Report information</Text>
+      <Text>{t('manager_reports_x_info')}</Text>
     </CardBody>
   </Card>
 
   <Card expandable>
     <CardHeader>
-      <CardTitle>Z-Report</CardTitle>
+      <CardTitle>{t('manager_reports_z_title')}</CardTitle>
     </CardHeader>
     <CardBody>
-      <Text>Z-Report information</Text>
+      <Text>{t('manager_reports_z_info')}</Text>
     </CardBody>
   </Card>
 </div>

@@ -3,6 +3,7 @@
   import { role } from '$lib/db/schema';
   import { BlankEmployee, type CreateOrUpdate, type Employee, type NewEmployee } from '$lib/db/types';
   import { titleCase, type ModalProps } from '$lib/utils/utils';
+  import { t } from '$lib/utils/utils';
   import { Button, Field, Input, Modal, ModalBody, ModalFooter, Select, Stack, type SelectItem } from '@immich/ui';
   import { mdiAccountPlus } from '@mdi/js';
 
@@ -41,15 +42,19 @@
   }
 </script>
 
-<Modal title={mode.type === 'new' ? 'Create Employee' : 'Edit Employee'} icon={mdiAccountPlus} {onClose}>
+<Modal
+  title={mode.type === 'new' ? t('manager_employee_modal_create_title') : t('manager_employee_modal_edit_title')}
+  icon={mdiAccountPlus}
+  {onClose}
+>
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="John Doe" bind:value={employee.name} />
+        <Input placeholder={t('manager_employee_placeholder_name')} bind:value={employee.name} />
       </Field>
 
       <Field label="Email">
-        <Input placeholder="johndoe@example.com" bind:value={employee.email} />
+        <Input placeholder={t('manager_employee_placeholder_email')} bind:value={employee.email} />
       </Field>
 
       <Field label="Role">
@@ -60,7 +65,7 @@
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
       <Button onclick={submit} shape="round" color="primary" disabled={!valid} loading={submitting}
-        >{mode.type === 'new' ? 'Create' : 'Update'}</Button
+        >{mode.type === 'new' ? t('manager_employee_create') : t('manager_employee_update')}</Button
       >
     </div>
   </ModalFooter>

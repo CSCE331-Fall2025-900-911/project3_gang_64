@@ -27,9 +27,9 @@
 
   async function showDeleteModal(employee: Employee) {
     const confirm = await modalManager.showDialog({
-      title: 'Delete Employee',
-      prompt: `Are you sure you want to delete ${employee.name}?`,
-      confirmText: 'Delete',
+      title: t('manager_delete_employee_title'),
+      prompt: `${t('manager_delete_employee_prompt')} ${employee.name}?`,
+      confirmText: t('manager_delete_confirm_text'),
       confirmColor: 'danger',
       icon: mdiTrashCan,
     });
@@ -41,10 +41,16 @@
 </script>
 
 <div class="mb-6 flex items-center justify-between">
-  <Heading size="large">Employees</Heading>
+  <Heading size="large">{t('manager_employees_title')}</Heading>
   <div class="flex w-1/3 items-center gap-2">
-    <IconButton icon={mdiPlus} variant="filled" aria-label="Add Employee" style="p-4" onclick={showCreateModal} />
-    <Input placeholder="Search" leadingIcon={mdiMagnify} bind:value={searchTerm} />
+    <IconButton
+      icon={mdiPlus}
+      variant="filled"
+      aria-label={t('manager_employees_add_aria')}
+      style="p-4"
+      onclick={showCreateModal}
+    />
+    <Input placeholder={t('manager_employees_search_placeholder')} leadingIcon={mdiMagnify} bind:value={searchTerm} />
   </div>
 </div>
 
@@ -53,14 +59,14 @@
     <LoadingSpinner size="large" />
   </div>
 {:else if employees.error}
-  <p class="text-danger">Error loading employees: {employees.error.message}</p>
+  <p class="text-danger">{t('manager_employees_error_loading')}: {employees.error.message}</p>
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-3/12">Name</TableHeaderCell>
-      <TableHeaderCell width="w-4/12" align="left">Email</TableHeaderCell>
-      <TableHeaderCell width="w-3/12">Role</TableHeaderCell>
-      <TableHeaderCell width="w-2/12">Actions</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">{t('manager_employees_table_name')}</TableHeaderCell>
+      <TableHeaderCell width="w-4/12" align="left">{t('manager_employees_table_email')}</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">{t('manager_employees_table_role')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_employees_table_actions')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each searchedEmployees as employee}
@@ -69,10 +75,14 @@
           <TableCell width="w-4/12" align="left">{employee.email}</TableCell>
           <TableCell width="w-3/12">{t(employee.role)}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">
-            <IconButton icon={mdiPencil} aria-label="Edit Employee" onclick={() => showEditModal(employee)} />
+            <IconButton
+              icon={mdiPencil}
+              aria-label={t('manager_employees_edit_aria')}
+              onclick={() => showEditModal(employee)}
+            />
             <IconButton
               icon={mdiTrashCan}
-              aria-label="Delete Employee"
+              aria-label={t('manager_employees_delete_aria')}
               color="danger"
               onclick={() => showDeleteModal(employee)}
             />

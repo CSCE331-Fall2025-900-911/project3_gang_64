@@ -22,6 +22,7 @@
     Text,
   } from '@immich/ui';
   import { mdiPlus, mdiSilverware, mdiTrashCan } from '@mdi/js';
+  import { t } from '$lib/utils/utils';
 
   interface Props extends ModalProps {
     mode: CreateOrUpdate<MenuItem>;
@@ -89,41 +90,42 @@
   let selectedIngredient = $state<SelectItem | undefined>(undefined);
 </script>
 
-<Modal title={mode.type === 'new' ? 'Create Menu Item' : 'Edit Menu Item'} icon={mdiSilverware} {onClose} size="giant">
+<Modal
+  title={mode.type === 'new' ? t('manager_menuitem_create_title') : t('manager_menuitem_edit_title')}
+  icon={mdiSilverware}
+  {onClose}
+  size="giant"
+>
   <ModalBody>
     <HStack gap={6} class="items-start">
       <Stack gap={4} class="w-1/2">
         <Stack gap={2}>
-          <Text size="medium">Kiosk Image</Text>
+          <Text size="medium">{t('manager_menuitem_kiosk_image')}</Text>
           <ImageUpload bind:value={item.imageUrl} />
         </Stack>
 
-        <Field label="Name">
-          <Input placeholder="Menu Item name" bind:value={item.name} />
+        <Field label={t('manager_menuitem_label_name')}>
+          <Input placeholder={t('manager_menuitem_placeholder_name')} bind:value={item.name} />
         </Field>
 
-        <Field label="Category">
-          <Input placeholder="Category Name" bind:value={item.category} />
+        <Field label={t('manager_menuitem_label_category')}>
+          <Input placeholder={t('manager_menuitem_placeholder_category')} bind:value={item.category} />
         </Field>
 
-        <Field label="Category">
-          <Input placeholder="Category Name" bind:value={item.category} />
-        </Field>
-
-        <Field label="Sale Price">
-          <NumberInput placeholder="0" bind:value={item.price} min={0} />
+        <Field label={t('manager_menuitem_label_price')}>
+          <NumberInput placeholder={t('manager_menuitem_placeholder_number')} bind:value={item.price} min={0} />
         </Field>
       </Stack>
 
       <Stack gap={2} class="h-full w-1/2" align="start">
-        <Heading size="medium">Recipe</Heading>
+        <Heading size="medium">{t('manager_menuitem_recipe')}</Heading>
 
         {#if ingredients.loading || existingRecipe.loading}
           <div class="flex w-full justify-center">
             <LoadingSpinner size="large" />
           </div>
         {:else if ingredients.error || existingRecipe.error}
-          <p class="text-danger">Error loading ingredients</p>
+          <p class="text-danger">{t('manager_menuitem_error_loading_ingredients')}</p>
         {:else}
           <!-- Add Item Dropdown -->
           <div class="flex w-full items-center justify-between gap-2 rounded-md border p-2">
@@ -131,13 +133,13 @@
               data={ingredientOptions}
               bind:value={selectedIngredient}
               class="w-full"
-              placeholder="Select an ingredient"
+              placeholder={t('manager_menuitem_select_ingredient')}
             />
             <IconButton
               icon={mdiPlus}
               size="small"
               color="success"
-              aria-label="Add Ingredient"
+              aria-label={t('manager_menuitem_add_ingredient_aria')}
               variant="ghost"
               onclick={addIngredient}
             />
@@ -152,7 +154,7 @@
                   icon={mdiTrashCan}
                   size="small"
                   color="danger"
-                  aria-label="Add Ingredient"
+                  aria-label={t('manager_menuitem_remove_ingredient_aria')}
                   variant="ghost"
                   onclick={() => deleteIngredient(ingredient)}
                 />
@@ -166,7 +168,7 @@
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
       <Button onclick={submit} shape="round" color="primary" disabled={!valid} loading={submitting}
-        >{mode.type === 'new' ? 'Create' : 'Update'}</Button
+        >{mode.type === 'new' ? t('manager_menuitem_create') : t('manager_menuitem_update')}</Button
       >
     </div>
   </ModalFooter>

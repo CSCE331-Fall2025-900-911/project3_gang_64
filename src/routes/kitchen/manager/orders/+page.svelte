@@ -6,6 +6,7 @@
   import { Heading, Icon, LoadingSpinner, Select, Text } from '@immich/ui';
   import { mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
   import moment from 'moment';
+  import { t } from '$lib/utils/utils';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -32,7 +33,7 @@
 </script>
 
 <div class="mb-6 flex items-center justify-between">
-  <Heading size="large">Orders</Heading>
+  <Heading size="large">{t('manager_orders_title')}</Heading>
 
   <!-- TODO: Implement date filtering -->
   <!-- <div class="flex w-1/4 items-end justify-end gap-2">
@@ -45,14 +46,14 @@
     <LoadingSpinner size="large" />
   </div>
 {:else if orders.error}
-  <p class="text-danger">Error loading orders: {orders.error.message}</p>
+  <p class="text-danger">{t('manager_orders_error_loading')}: {orders.error.message}</p>
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-3/12">Order Date</TableHeaderCell>
-      <TableHeaderCell width="w-4/12" align="left">Customer</TableHeaderCell>
-      <TableHeaderCell width="w-3/12">Payment Method</TableHeaderCell>
-      <TableHeaderCell width="w-2/12">Total</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">{t('manager_orders_table_order_date')}</TableHeaderCell>
+      <TableHeaderCell width="w-4/12" align="left">{t('manager_orders_table_customer')}</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">{t('manager_orders_table_payment_method')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_orders_table_total')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each orders.current as order}
@@ -71,7 +72,7 @@
 
 <div class="mt-2 flex w-full items-center justify-between">
   <div class="flex w-1/3 items-center gap-2">
-    <Text size="large">Orders per page</Text>
+    <Text size="large">{t('manager_orders_per_page')}</Text>
     <Select bind:value={pageSize} data={PAGE_OPTIONS}></Select>
   </div>
 

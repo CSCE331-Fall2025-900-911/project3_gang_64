@@ -7,6 +7,7 @@
   import type { PaymentMethod } from '$lib/db/types';
   import { getWeatherIcon, WEATHER_LOCATION } from '$lib/utils/weather';
   import { Heading, Icon, LoadingSpinner } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
   import { mdiCardBulleted, mdiCashMultiple, mdiCurrencyUsd, mdiShoppingOutline } from '@mdi/js';
   import moment from 'moment';
 
@@ -35,12 +36,12 @@
   let weatherIcon = $derived(getWeatherIcon(weatherQuery.current));
 </script>
 
-<Heading size="large" class="mt-2 mb-6">Dashboard</Heading>
+<Heading size="large" class="mt-2 mb-6">{t('manager_dashboard_title')}</Heading>
 
 <div class="flex flex-row gap-4">
   <!-- Total Sales Card -->
   <DashboardCard
-    title="Total Sales"
+    title={t('manager_dashboard_total_sales')}
     value={`$${dailyRevenue.current?.toFixed(2)}`}
     percentChange={revenuePercentageChange}
     icon={mdiCurrencyUsd}
@@ -50,11 +51,16 @@
 
   <!-- Total Orders Card -->
   <!-- TODO: Implement percentage calculation -->
-  <DashboardCard title="Total Orders" value={dailyOrders.current} percentChange={-2.89} icon={mdiShoppingOutline} />
+  <DashboardCard
+    title={t('manager_dashboard_total_orders')}
+    value={dailyOrders.current}
+    percentChange={-2.89}
+    icon={mdiShoppingOutline}
+  />
 
   <!-- Total Visitors Card -->
   <DashboardCard
-    title="Weather"
+    title={t('manager_dashboard_weather')}
     loading={weatherQuery.loading}
     value={`${weatherQuery.current?.main.temp.toFixed(0) ?? '—-'} °F`}
     icon={weatherIcon}
@@ -62,20 +68,20 @@
 </div>
 
 <div class="my-6">
-  <Heading size="medium">Recent Orders</Heading>
+  <Heading size="medium">{t('manager_dashboard_recent_orders')}</Heading>
   {#if orders.loading}
     <div class="flex justify-center">
       <LoadingSpinner size="large" />
     </div>
   {:else if orders.error}
-    <p class="text-danger">Error loading orders: {orders.error.message}</p>
+    <p class="text-danger">{t('manager_dashboard_error_loading_orders')}: {orders.error.message}</p>
   {:else}
     <Table>
       <TableHeader>
-        <TableHeaderCell width="w-3/12">Order Date</TableHeaderCell>
-        <TableHeaderCell width="w-4/12" align="left">Customer</TableHeaderCell>
-        <TableHeaderCell width="w-3/12">Payment Method</TableHeaderCell>
-        <TableHeaderCell width="w-2/12">Total</TableHeaderCell>
+        <TableHeaderCell width="w-3/12">{t('manager_dashboard_table_order_date')}</TableHeaderCell>
+        <TableHeaderCell width="w-4/12" align="left">{t('manager_dashboard_table_customer')}</TableHeaderCell>
+        <TableHeaderCell width="w-3/12">{t('manager_dashboard_table_payment_method')}</TableHeaderCell>
+        <TableHeaderCell width="w-2/12">{t('manager_dashboard_table_total')}</TableHeaderCell>
       </TableHeader>
       <TableBody>
         {#each orders.current as order}
