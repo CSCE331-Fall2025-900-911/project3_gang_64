@@ -111,7 +111,7 @@
         </Field>
 
         <Field label="Sale Price">
-          <NumberInput placeholder="0" bind:value={item.price} />
+          <NumberInput placeholder="0" bind:value={item.price} min={0} />
         </Field>
       </Stack>
 

@@ -61,7 +61,7 @@
     <VStack gap={4} class="w-full">
       <Field label="Receive Inventory">
         <HStack gap={4} class="w-full items-start">
-          <NumberInput placeholder={'0'} bind:value={receiveField}></NumberInput>
+          <NumberInput placeholder={'0'} bind:value={receiveField} min={0} max={orderStock}></NumberInput>
           {#if receiveField > orderStock}
             <HelperText color="danger">Cannot receive more than on order stock</HelperText>
           {/if}
@@ -72,7 +72,7 @@
       </Field>
       <Field label="Order Inventory">
         <HStack gap={4} class="w-full items-start">
-          <NumberInput placeholder={'0'} bind:value={orderField}></NumberInput>
+          <NumberInput placeholder={'0'} bind:value={orderField} min={0}></NumberInput>
           <Button shape="round" color="success" class="mt-8" disabled={!orderFieldValid} onclick={orderInventory}>
             Place Order
           </Button>

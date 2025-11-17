@@ -42,16 +42,16 @@
 
       <HStack gap={4}>
         <Field label="Current Stock">
-          <NumberInput placeholder="0" bind:value={item.currentStock} />
+          <NumberInput placeholder="0" bind:value={item.currentStock} min={0} />
         </Field>
 
         <Field label="Order Stock">
-          <NumberInput placeholder="0" bind:value={item.orderStock} />
+          <NumberInput placeholder="0" bind:value={item.orderStock} min={0} />
         </Field>
       </HStack>
 
       <Field label="Unit Price">
-        <NumberInput placeholder="0" bind:value={item.unitPrice} />
+        <NumberInput placeholder="0" bind:value={item.unitPrice} min={0} />
       </Field>
     </Stack>
   </ModalBody>
