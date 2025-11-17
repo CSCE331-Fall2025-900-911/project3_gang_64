@@ -3,6 +3,7 @@
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
+  import { t } from '$lib/utils/utils';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, ThemeSwitcher } from '@immich/ui';
   import { mdiCartOutline, mdiEye, mdiPartyPopper, mdiShoppingOutline } from '@mdi/js';
@@ -16,8 +17,8 @@
 
   const orderUrl: string = '/kiosk/order';
   const cartUrl: string = '/kiosk/cart';
-  const cartLabel: string = 'Cart';
-  const orderLabel: string = 'Order';
+  const cartLabel: string = t('kiosk_cart');
+  const orderLabel: string = t('kiosk_order');
 
   const shopModeIcon = $derived.by(() => {
     return page.url.pathname === cartUrl ? mdiShoppingOutline : mdiCartOutline;
@@ -138,15 +139,13 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>ShareTea</title>
+  <title>{t('kiosk_title')}</title>
 </svelte:head>
 
 <AppShell>
   <AppShellHeader>
     <div class="flex w-full items-center justify-between p-4">
-      <a href="/kiosk">
-        <img src={logo} alt="ShareTea Logo" class="h-6" />
-      </a>
+      <img src={logo} alt={t('kiosk_logoAlt')} class="h-6" />
       <div class="flex items-center gap-4">
         <IconButton
           icon={mdiPartyPopper}
@@ -164,7 +163,7 @@
           onclick={toggleMode}
           aria-label={colorBlindModeLabel}
         />
-        <ThemeSwitcher size="large"/>
+        <ThemeSwitcher size="large" />
         <div class="relative inline-block">
           <IconButton
             icon={shopModeIcon}

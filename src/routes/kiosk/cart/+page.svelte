@@ -3,6 +3,7 @@
   import { AppShell, Button, Heading, HStack, IconButton, modalManager, Text } from '@immich/ui';
   import { mdiTrashCanOutline } from '@mdi/js';
   import OrderSubmitDialog from '../../kitchen/cashier/OrderSubmitDialog.svelte';
+  import { t } from '$lib/utils/utils';
 
   function showSubmitDialog() {
     modalManager.show(OrderSubmitDialog);
@@ -21,7 +22,7 @@
   <div class="flex flex-col overflow-hidden" style="height: 80vh;">
     <div class="bg-level-1 mt-4 mr-80 ml-80 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
       {#if orderManager.currentOrder.length == 0}
-        <Text class="pt-6 text-center">No items in order</Text>
+        <Text class="pt-6 text-center">{t('cart_noItems')}</Text>
       {/if}
 
       {#each orderManager.currentOrder as entry, i}
@@ -38,7 +39,7 @@
           </div>
           <div class="flex justify-between gap-4">
             <div class="flex flex-col justify-center">
-              <Button onclick={duplicateItem.bind(null, i)}>Duplicate Item</Button>
+              <Button onclick={duplicateItem.bind(null, i)}>{t('cart_duplicateItem')}</Button>
             </div>
 
             <div class="flex flex-col justify-center">
@@ -48,7 +49,7 @@
                 size="medium"
                 color="primary"
                 onclick={removeItem.bind(null, i)}
-                aria-label={'Remove Item'}
+                aria-label={t('cart_removeItem')}
               />
             </div>
             <div class="flex flex-col items-end">
@@ -61,19 +62,19 @@
 
     <div class="m-4 mr-80 ml-80 shrink-0 gap-2">
       <HStack class="flex justify-between">
-        <Heading size="tiny" fontWeight="normal">Subtotal</Heading>
+        <Heading size="tiny" fontWeight="normal">{t('cart_subtotal')}</Heading>
         <p>${orderManager.subtotal.toFixed(2)}</p>
       </HStack>
       <HStack class="flex justify-between">
-        <Heading size="tiny" fontWeight="normal">Tax</Heading>
+        <Heading size="tiny" fontWeight="normal">{t('cart_tax')}</Heading>
         <p>${orderManager.tax.toFixed(2)}</p>
       </HStack>
       <HStack class="mt-2 flex justify-between">
-        <Heading size="small">Total</Heading>
+        <Heading size="small">{t('cart_total')}</Heading>
         <p>${orderManager.total.toFixed(2)}</p>
       </HStack>
       <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder}
-        >Submit Order</Button
+        >{t('cart_submitOrder')}</Button
       >
     </div>
   </div>

@@ -4,6 +4,7 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { Heading, IconButton } from '@immich/ui';
   import { mdiPlus } from '@mdi/js';
+  import { t } from '$lib/utils/utils';
 
   interface Props {
     item: MenuItem;
@@ -47,7 +48,7 @@
     />
     {#if outOfStock}
       <div class="absolute inset-0 flex items-center justify-center rounded-md bg-black/60">
-        <span class="text-lg font-semibold text-white">Out of Stock</span>
+        <span class="text-lg font-semibold text-white">{t('orderItem_outOfStock')}</span>
       </div>
     {/if}
   </div>
@@ -60,7 +61,7 @@
       color="info"
       onclick={handleAddToOrder}
       disabled={outOfStock || loading}
-      aria-label="Add to Order"
+      aria-label={t('orderItem_addToOrder')}
     />
   </div>
 </div>

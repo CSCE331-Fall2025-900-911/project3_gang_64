@@ -6,5 +6,40 @@
   "role": "Role",
   "manager": "Manager",
   "staff": "Staff",
-  "cashier": "Cashier"
+  "cashier": "Cashier",
+
+  "imageUpload_uploading": "Uploading...",
+  "imageUpload_previewAlt": "Preview",
+  "imageUpload_removeImage": "Remove Image",
+  "imageUpload_clickToUpload": "Click to upload",
+  "imageUpload_orDragAndDrop": "or drag and drop",
+  "imageUpload_fileTypes": "PNG, JPG, GIF up to 10MB",
+
+  "pageStepper_previousPage": "Previous Page",
+  "pageStepper_nextPage": "Next Page",
+  "pageStepper_page": "Page",
+
+  "signInWithGoogle_login": "Login with Google",
+  "signInWithGoogle_googleLogoAlt": "Google logo",
+
+  "authLayout_title": "ShareTea | Authentication",
+  "kiosk_title": "ShareTea",
+  "kiosk_logoAlt": "ShareTea Logo",
+  "kiosk_cart": "Cart",
+  "kiosk_order": "Order",
+  "kiosk_order_title": "ShareTea",
+
+  "cartToast_title": "Cart is Ready",
+  "cartToast_description": "Item added to order",
+  "cartToast_viewCart": "View Cart",
+
+  "orderItem_outOfStock": "Out of Stock",
+  "orderItem_addToOrder": "Add to Order",
+  "cart_noItems": "No items in order",
+  "cart_duplicateItem": "Duplicate Item",
+  "cart_removeItem": "Remove Item",
+  "cart_subtotal": "Subtotal",
+  "cart_tax": "Tax",
+  "cart_total": "Total",
+  "cart_submitOrder": "Submit Order"
 }
