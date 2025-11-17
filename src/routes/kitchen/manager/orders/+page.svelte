@@ -18,7 +18,7 @@
   let pageSize = $state(PAGE_OPTIONS[1]); // Default to 25
   let totalPages = $derived(totalOrders ? Math.ceil(totalOrders / parseInt(pageSize.value)) : 0);
 
-  let orders = $derived(getOrders({ page: orderPage, limit: parseInt(pageSize.value) }));
+  let orders = $derived(getOrders({ page: orderPage - 1, limit: parseInt(pageSize.value) }));
 
   function getPaymentMethodIcon(method: PaymentMethod) {
     switch (method) {

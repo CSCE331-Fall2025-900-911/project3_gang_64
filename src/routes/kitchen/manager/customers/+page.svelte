@@ -20,7 +20,9 @@
   let searchField = $state('');
   let searchState = $state('');
 
-  let customers = $derived(getCustomers({ page: customerPage, limit: parseInt(pageSize.value), search: searchState }));
+  let customers = $derived(
+    getCustomers({ page: customerPage - 1, limit: parseInt(pageSize.value), search: searchState }),
+  );
 
   function searchCustomers() {
     searchState = searchField;
