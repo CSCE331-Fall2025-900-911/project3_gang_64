@@ -31,6 +31,7 @@
           class="w-full"
           color={orderManager.paymentMethod === 'cash' ? 'primary' : 'secondary'}
           onclick={() => (orderManager.paymentMethod = 'cash')}
+          size="large"
         >
           Cash
         </Button>
@@ -38,6 +39,7 @@
           class="w-full"
           color={orderManager.paymentMethod === 'credit' ? 'primary' : 'secondary'}
           onclick={() => (orderManager.paymentMethod = 'credit')}
+          size="large"
         >
           Credit
         </Button>
@@ -46,7 +48,7 @@
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid}>Create</Button>
+      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid} size="large">Create</Button>
     </div>
   </ModalFooter>
 </Modal>

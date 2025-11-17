@@ -35,9 +35,9 @@
 
 <div class="flex flex-col justify-between rounded-lg border p-4">
   <Heading size="medium" class="mb-2">{item.name}</Heading>
-  <div class="mt-4 flex items-center justify-between">
-    <Heading size="small" fontWeight="normal">${item.price.toFixed(2)}</Heading>
-    <Button onclick={handleAddToOrder} {loading} disabled={outOfStock}>
+  <div class="mt-4 flex justify-between flex-col">
+    <Heading size="medium" fontWeight="normal" class="mb-2">${item.price.toFixed(2)}</Heading>
+    <Button onclick={handleAddToOrder} {loading} disabled={outOfStock} size="large">
       {#if outOfStock}
         Out of Stock
       {:else}

@@ -62,18 +62,18 @@
               </div>
             </div>
             <div class="flex flex-col items-end justify-between">
-              <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
+              <Text size="giant">${entry.menuItem.price.toFixed(2)}</Text>
               <HStack gap={2}>
                 <IconButton
                   icon={mdiPencil}
-                  size="small"
+                  size="medium"
                   color="primary"
                   onclick={() => alert('TODO: Edit functionality not yet implemented')}
-                  aria-label={'Remove Item'}
+                  aria-label={'Edit Item'}
                 />
                 <IconButton
                   icon={mdiTrashCan}
-                  size="small"
+                  size="medium"
                   color="danger"
                   onclick={() => orderManager.removeFromOrder(i)}
                   aria-label={'Remove Item'}
@@ -98,7 +98,7 @@
           <Heading size="small">Total</Heading>
           <p>${orderManager.total.toFixed(2)}</p>
         </HStack>
-        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder}
+        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder} size = "large"
           >Submit Order</Button
         >
       </div>

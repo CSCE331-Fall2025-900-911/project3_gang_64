@@ -144,7 +144,9 @@
 <AppShell>
   <AppShellHeader>
     <div class="flex w-full items-center justify-between p-4">
-      <img src={logo} alt="ShareTea Logo" class="h-6" />
+      <a href="/kiosk">
+        <img src={logo} alt="ShareTea Logo" class="h-6" />
+      </a>
       <div class="flex items-center gap-4">
         <IconButton
           icon={mdiPartyPopper}
@@ -162,7 +164,7 @@
           onclick={toggleMode}
           aria-label={colorBlindModeLabel}
         />
-        <ThemeSwitcher />
+        <ThemeSwitcher size="large"/>
         <div class="relative inline-block">
           <IconButton
             icon={shopModeIcon}

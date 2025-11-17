@@ -56,7 +56,7 @@
             <Select data={modes} onChange={handleModeChange} bind:value={mode} />
           </HStack>
         {/if}
-        <ThemeSwitcher />
+        <ThemeSwitcher size="large"/>
         <button onclick={openUserProfile}>
           <Avatar name={employee?.name ?? 'Share Tea'} />
         </button>
