@@ -2,7 +2,8 @@
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { AppShellSidebar, Button, Heading, HStack, modalManager, NavbarItem, Text } from '@immich/ui';
+  import { AppShellSidebar, Button, Heading, HStack, IconButton, modalManager, NavbarItem, Text } from '@immich/ui';
+  import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
 
@@ -60,8 +61,24 @@
                 {/each}
               </div>
             </div>
-            <div class="flex flex-col items-end">
+            <div class="flex flex-col items-end justify-between">
               <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
+              <HStack gap={2}>
+                <IconButton
+                  icon={mdiPencil}
+                  size="small"
+                  color="primary"
+                  onclick={() => alert('TODO: Edit functionality not yet implemented')}
+                  aria-label={'Remove Item'}
+                />
+                <IconButton
+                  icon={mdiTrashCan}
+                  size="small"
+                  color="danger"
+                  onclick={() => orderManager.removeFromOrder(i)}
+                  aria-label={'Remove Item'}
+                />
+              </HStack>
             </div>
           </div>
         {/each}
