@@ -70,8 +70,6 @@ export const submitOrder = command(
     const tax = subtotal * 0.07;
     const total = subtotal + tax;
 
-    console.log(moment().toISOString());
-
     const newOrder: NewOrder = {
       customerId,
       subtotal,

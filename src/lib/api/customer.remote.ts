@@ -39,8 +39,21 @@ export const createCustomer = command(customerInsertSchema, async (newCustomer: 
 
   const created = await db.insert(customer).values(newCustomer).returning();
 
-  console.log(created);
   return created[0];
+});
+
+export const createOrSelectCustomer = command(customerInsertSchema, async (newCustomer: NewCustomer) => {
+  const db = getDB();
+
+  // Check if customer already exists
+  const existingCustomers = await db.select().from(customer).where(eq(customer.email, newCustomer.email!));
+
+  if (existingCustomers.length > 0) {
+    return existingCustomers[0];
+  }
+
+  // If not, create a new customer
+  return await createCustomer(newCustomer);
 });
 
 export const deleteCustomer = command(customerSelectSchema.entries.id, async (id) => {

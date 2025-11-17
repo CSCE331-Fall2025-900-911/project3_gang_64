@@ -1,4 +1,4 @@
-import { createCustomer } from '$lib/api/customer.remote';
+import { createOrSelectCustomer } from '$lib/api/customer.remote';
 import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
@@ -51,7 +51,7 @@ class OrderManager {
 
   async submit() {
     // Create customer
-    const customer = await createCustomer({
+    const customer = await createOrSelectCustomer({
       name: this.customerName,
       email: this.customerEmail,
     });

@@ -26,8 +26,8 @@ export const menu = pgTable('menu', {
 
 export const customer = pgTable('customer', {
   id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
-  name: varchar({ length: 100 }),
-  email: varchar({ length: 100 }),
+  name: varchar({ length: 100 }).notNull(),
+  email: varchar({ length: 100 }).notNull().unique(),
 });
 
 export const order = pgTable(
