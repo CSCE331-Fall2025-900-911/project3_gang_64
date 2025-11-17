@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { menu } from '$lib/db/schema';
-import type { MenuItem } from '$lib/db/types';
+import { menuItemInsertSchema, menuItemUpdateSchema, type MenuItem } from '$lib/db/types';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
 
@@ -42,6 +42,25 @@ export const getMenu = query(async () => {
   const db = getDB();
 
   return await db.select().from(menu);
+});
+
+export const createMenuItem = command(menuItemInsertSchema, async (newMenuItem) => {
+  const db = getDB();
+
+  const created = await db.insert(menu).values(newMenuItem).returning();
+  await getMenu().refresh();
+
+  return created[0];
+});
+
+export const updateMenuItem = command(menuItemUpdateSchema, async (updatedMenuItem) => {
+  const db = getDB();
+
+  const updated = await db.update(menu).set(updatedMenuItem).where(eq(menu.id, updatedMenuItem.id!)).returning();
+
+  await getMenu().refresh();
+
+  return updated[0];
 });
 
 export const deleteMenuItem = command(v.string(), async (id: string) => {

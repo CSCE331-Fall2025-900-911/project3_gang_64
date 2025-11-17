@@ -1,0 +1,156 @@
+<script lang="ts">
+  import { getIngredients, getIngredientsForMenuItem, updateRecipe } from '$lib/api/ingredient.remote';
+  import { createMenuItem, updateMenuItem } from '$lib/api/menu.remote';
+  import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
+  import type { ModalProps } from '$lib/utils/utils';
+  import {
+    Button,
+    Field,
+    Heading,
+    HStack,
+    IconButton,
+    Input,
+    LoadingSpinner,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    NumberInput,
+    Select,
+    type SelectItem,
+    Stack,
+  } from '@immich/ui';
+  import { mdiPlus, mdiSilverware, mdiTrashCan } from '@mdi/js';
+
+  interface Props extends ModalProps {
+    mode: CreateOrUpdate<MenuItem>;
+  }
+
+  let { onClose, mode }: Props = $props();
+
+  async function submit() {
+    submitting = true;
+
+    if (mode.type === 'new') {
+      await createMenuItem(item);
+    } else {
+      await updateMenuItem({ id: mode.item.id, ...item });
+    }
+
+    await updateRecipe({
+      menuItemId: item.id!,
+      ingredients: recipe,
+    });
+
+    onClose();
+  }
+
+  function hasIngredient(ingredient: Ingredient): boolean {
+    return recipe.some((ing) => ing.id === ingredient.id);
+  }
+
+  function addIngredient() {
+    if (selectedIngredient) {
+      const ing = ingredients.current?.find((i) => i.id === selectedIngredient!.value);
+      console.log(ing);
+      if (ing) {
+        recipe = [...recipe, ing];
+        selectedIngredient = undefined;
+      }
+    }
+  }
+
+  function deleteIngredient(ingredient: Ingredient) {
+    recipe = recipe.filter((ing) => ing.id !== ingredient.id);
+  }
+
+  let item: NewMenuItem = $state(mode.type === 'edit' ? mode.item : BlankMenuItem);
+  let submitting = $state(false);
+
+  let recipe = $state(item.id != '' ? await getIngredientsForMenuItem(item.id!) : []);
+  let valid = $derived(item.name.trim().length > 0);
+
+  let ingredients = getIngredients();
+  let ingredientOptions = $derived(
+    ingredients.current?.map((ing) => ({ label: `${ing.name}`, value: ing.id, disabled: hasIngredient(ing) })) ?? [],
+  );
+
+  let selectedIngredient = $state<SelectItem | undefined>(undefined);
+</script>
+
+<Modal title={mode.type === 'new' ? 'Create Menu Item' : 'Edit Menu Item'} icon={mdiSilverware} {onClose} size="giant">
+  <ModalBody>
+    <HStack gap={6} class="items-start">
+      <Stack gap={4} class="w-1/2">
+        <Field label="Name">
+          <Input placeholder="Menu Item name" bind:value={item.name} />
+        </Field>
+
+        <Field label="Category">
+          <Input placeholder="Category Name" bind:value={item.category} />
+        </Field>
+
+        <Field label="Category">
+          <Input placeholder="Category Name" bind:value={item.category} />
+        </Field>
+
+        <Field label="Sale Price">
+          <NumberInput placeholder="0" bind:value={item.price} />
+        </Field>
+      </Stack>
+
+      <Stack gap={2} class="h-full w-1/2" align="start">
+        <Heading size="medium">Recipe</Heading>
+
+        {#if ingredients.loading}
+          <div class="flex w-full justify-center">
+            <LoadingSpinner size="large" />
+          </div>
+        {:else if ingredients.error}
+          <p class="text-danger">Error loading ingredients: {ingredients.error.message}</p>
+        {:else}
+          <!-- Add Item Dropdown -->
+          <div class="flex w-full items-center justify-between gap-2 rounded-md border p-2">
+            <Select
+              data={ingredientOptions}
+              bind:value={selectedIngredient}
+              class="w-full"
+              placeholder="Select an ingredient"
+            />
+            <IconButton
+              icon={mdiPlus}
+              size="small"
+              color="success"
+              aria-label="Add Ingredient"
+              variant="ghost"
+              onclick={addIngredient}
+            />
+          </div>
+
+          {#each recipe as ingredient}
+            <div class="flex w-full items-center justify-between rounded-md border p-2">
+              <span>{ingredient.name}</span>
+              <div class="flex items-center gap-2">
+                <span class="font-semibold">${ingredient.unitPrice.toFixed(2)}</span>
+                <IconButton
+                  icon={mdiTrashCan}
+                  size="small"
+                  color="danger"
+                  aria-label="Add Ingredient"
+                  variant="ghost"
+                  onclick={() => deleteIngredient(ingredient)}
+                />
+              </div>
+            </div>
+          {/each}
+        {/if}
+      </Stack>
+    </HStack>
+  </ModalBody>
+  <ModalFooter>
+    <div class="grid w-full grid-cols-1 gap-2">
+      <Button onclick={submit} shape="round" color="primary" disabled={!valid} loading={submitting}
+        >{mode.type === 'new' ? 'Create' : 'Update'}</Button
+      >
+    </div>
+  </ModalFooter>
+</Modal>

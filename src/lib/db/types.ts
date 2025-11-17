@@ -20,6 +20,13 @@ export const menuItemInsertSchema = createInsertSchema(menu);
 export type MenuItem = typeof menu.$inferSelect;
 export type NewMenuItem = typeof menu.$inferInsert;
 
+export const BlankMenuItem: NewMenuItem = {
+  name: '',
+  price: 0,
+  category: '',
+  archived: false,
+};
+
 export const recipeSelectSchema = createSelectSchema(recipe);
 export const recipeUpdateSchema = createUpdateSchema(recipe);
 export const recipeInsertSchema = createInsertSchema(recipe);

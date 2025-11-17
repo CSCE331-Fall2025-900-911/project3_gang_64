@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { ingredient, menu, recipe } from '$lib/db/schema';
-import { ingredientInsertSchema, ingredientUpdateSchema } from '$lib/db/types';
+import { ingredientInsertSchema, ingredientSelectSchema, ingredientUpdateSchema } from '$lib/db/types';
 import { eq } from 'drizzle-orm';
 import * as v from 'valibot';
 
@@ -45,3 +45,25 @@ export const updateIngredient = command(ingredientUpdateSchema, async (updatedIn
   await db.update(ingredient).set(updatedIngredient).where(eq(ingredient.id, updatedIngredient.id));
   await getIngredients().refresh();
 });
+
+export const updateRecipe = command(
+  v.object({
+    menuItemId: v.string(),
+    ingredients: v.array(ingredientSelectSchema),
+  }),
+  async (data) => {
+    const db = getDB();
+
+    // Delete existing recipe entries for the menu item
+    await db.delete(recipe).where(eq(recipe.menuItemId, data.menuItemId));
+
+    // Insert new recipe entries
+    for (const ing of data.ingredients) {
+      await db.insert(recipe).values({
+        menuItemId: data.menuItemId,
+        ingredientId: ing.id,
+        quantity: 1,
+      });
+    }
+  },
+);

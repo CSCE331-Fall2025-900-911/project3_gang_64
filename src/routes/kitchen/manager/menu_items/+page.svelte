@@ -3,7 +3,8 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { MenuItem } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
-  import { mdiMagnify, mdiTrashCan } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiTrashCan } from '@mdi/js';
+  import MenuItemModal from './MenuItemModal.svelte';
 
   let menu = getMenu();
   let searchTerm = $state('');
@@ -27,6 +28,12 @@
     if (confirm) {
       await deleteMenuItem(item.id);
     }
+  }
+
+  function showEditModal(item: MenuItem) {
+    modalManager.show(MenuItemModal, {
+      mode: { type: 'edit', item },
+    });
   }
 </script>
 
@@ -61,7 +68,7 @@
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
           <!-- TODO: Implement edit functionality -->
           <TableCell width="w-2/12" class="flex justify-center gap-2">
-            <!-- <IconButton icon={mdiPencil} aria-label="Edit Menu Item" /> -->
+            <IconButton icon={mdiPencil} aria-label="Edit Menu Item" onclick={() => showEditModal(item)} />
             <IconButton
               icon={mdiTrashCan}
               aria-label="Delete Menu Item"
