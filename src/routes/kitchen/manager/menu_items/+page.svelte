@@ -66,7 +66,6 @@
           <TableCell width="w-5/12">{item.name}</TableCell>
           <TableCell width="w-4/12">{item.category}</TableCell>
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
-          <!-- TODO: Implement edit functionality -->
           <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton icon={mdiPencil} aria-label="Edit Menu Item" onclick={() => showEditModal(item)} />
             <IconButton
