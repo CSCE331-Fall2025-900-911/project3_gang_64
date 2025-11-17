@@ -25,6 +25,15 @@ const iconMap: Record<string, string> = {
   '11d': mdiWeatherLightning,
   '13d': mdiWeatherSnowy,
   '50d': mdiWeatherFog,
+  '01n': mdiWeatherSunny,
+  '02n': mdiWeatherPartlyCloudy,
+  '03n': mdiWeatherCloudy,
+  '04n': mdiWeatherCloudy,
+  '09n': mdiWeatherRainy,
+  '10n': mdiWeatherRainy,
+  '11n': mdiWeatherLightning,
+  '13n': mdiWeatherSnowy,
+  '50n': mdiWeatherFog,
   default: mdiTimerSand,
 };
 
