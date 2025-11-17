@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
-  import { cashierManager } from '$lib/managers/cashier.svelte';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShellSidebar, Button, Heading, HStack, modalManager, NavbarItem, Text } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
@@ -44,11 +44,11 @@
     <!-- Order Summary -->
     <div class="m-6 flex w-1/3 flex-col">
       <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
-        {#if cashierManager.currentOrder.length == 0}
+        {#if orderManager.currentOrder.length == 0}
           <Text class="pt-6 text-center">No items in order</Text>
         {/if}
 
-        {#each cashierManager.currentOrder as entry, i}
+        {#each orderManager.currentOrder as entry, i}
           <div class="mb-2 flex justify-between border-b pb-2">
             <div>
               <Heading size="small">{entry.menuItem.name}</Heading>
@@ -71,17 +71,17 @@
       <div class="shrink-0 gap-2">
         <HStack class="flex justify-between">
           <Heading size="tiny" fontWeight="normal">Subtotal</Heading>
-          <p>${cashierManager.subtotal.toFixed(2)}</p>
+          <p>${orderManager.subtotal.toFixed(2)}</p>
         </HStack>
         <HStack class="flex justify-between">
           <Heading size="tiny" fontWeight="normal">Tax</Heading>
-          <p>${cashierManager.tax.toFixed(2)}</p>
+          <p>${orderManager.tax.toFixed(2)}</p>
         </HStack>
         <HStack class="mt-2 flex justify-between">
           <Heading size="small">Total</Heading>
-          <p>${cashierManager.total.toFixed(2)}</p>
+          <p>${orderManager.total.toFixed(2)}</p>
         </HStack>
-        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!cashierManager.isValidOrder}
+        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder}
           >Submit Order</Button
         >
       </div>

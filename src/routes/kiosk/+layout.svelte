@@ -3,12 +3,12 @@
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
-  import { kioskManager } from '$lib/managers/kiosk.svelte';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, ThemeSwitcher } from '@immich/ui';
-  import { mdiCartOutline, mdiShoppingOutline, mdiEye, mdiPartyPopper } from '@mdi/js';
+  import { mdiCartOutline, mdiEye, mdiPartyPopper, mdiShoppingOutline } from '@mdi/js';
+  import { onMount } from 'svelte';
   import '../../app.css';
   import { colorblindMode, type ColorblindMode } from './colorBlind';
-  import { onMount } from 'svelte';
 
   let { children } = $props();
 
@@ -175,7 +175,7 @@
           <div class="absolute -top-1 -right-1">
             <Avatar
               size="tiny"
-              name={kioskManager.getCurrentCartAmount() > 9 ? '9 +' : kioskManager.getCurrentCartAmount().toString()}
+              name={orderManager.getCurrentCartAmount() > 9 ? '9 +' : orderManager.getCurrentCartAmount().toString()}
               color="red"
             />
           </div>

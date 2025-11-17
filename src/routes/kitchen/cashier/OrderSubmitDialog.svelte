@@ -1,51 +1,49 @@
 <script lang="ts">
-  import { cashierManager } from '$lib/managers/cashier.svelte';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 
   let { onClose }: ModalProps = $props();
 
-  let valid = $derived(
-    cashierManager.customerName.trim().length > 0 &&
-      cashierManager.currentOrder.length > 0 &&
-      cashierManager.paymentMethod,
+  const isValid = $derived(
+    orderManager.customerName.trim().length > 0 && orderManager.currentOrder.length > 0 && orderManager.paymentMethod,
   );
 
-  function submitOrder() {
-    cashierManager.submit();
+  const handleSubmit = () => {
+    orderManager.submit();
     onClose();
-  }
+  };
 </script>
 
 <Modal title="Submit Order" icon={mdiInvoiceSend} {onClose}>
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="John Doe" bind:value={cashierManager.customerName} />
+        <Input placeholder="John Doe" bind:value={orderManager.customerName} />
       </Field>
       <Text>Payment Method</Text>
       <HStack gap={4}>
         <Button
-          class="h-20 flex-1"
-          color={cashierManager.paymentMethod === 'cash' ? 'primary' : 'secondary'}
-          onclick={() => (cashierManager.paymentMethod = 'cash')}
+          class="w-full"
+          color={orderManager.paymentMethod === 'cash' ? 'primary' : 'secondary'}
+          onclick={() => (orderManager.paymentMethod = 'cash')}
         >
           Cash
         </Button>
         <Button
-          class="h-20 flex-1"
-          color={cashierManager.paymentMethod === 'credit' ? 'primary' : 'secondary'}
-          onclick={() => (cashierManager.paymentMethod = 'credit')}
+          class="w-full"
+          color={orderManager.paymentMethod === 'credit' ? 'primary' : 'secondary'}
+          onclick={() => (orderManager.paymentMethod = 'credit')}
         >
-          Credit Card
+          Credit
         </Button>
       </HStack>
     </Stack>
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={submitOrder} shape="round" color="primary" disabled={!valid}>Create</Button>
+      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid}>Create</Button>
     </div>
   </ModalFooter>
 </Modal>

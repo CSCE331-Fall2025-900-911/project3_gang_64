@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { kioskManager } from '$lib/managers/kiosk.svelte';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
@@ -7,11 +7,11 @@
   let { onClose }: ModalProps = $props();
 
   let valid = $derived(
-    kioskManager.customerName.trim().length > 0 && kioskManager.currentOrder.length > 0 && kioskManager.paymentMethod,
+    orderManager.customerName.trim().length > 0 && orderManager.currentOrder.length > 0 && orderManager.paymentMethod,
   );
 
   function submitOrder() {
-    kioskManager.submit();
+    orderManager.submit();
     onClose();
   }
 </script>
@@ -20,21 +20,21 @@
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder="John Doe" bind:value={kioskManager.customerName} />
+        <Input placeholder="John Doe" bind:value={orderManager.customerName} />
       </Field>
       <Text>Payment Method</Text>
       <HStack gap={4}>
         <Button
           class="h-20 flex-1"
-          color={kioskManager.paymentMethod === 'cash' ? 'primary' : 'secondary'}
-          onclick={() => (kioskManager.paymentMethod = 'cash')}
+          color={orderManager.paymentMethod === 'cash' ? 'primary' : 'secondary'}
+          onclick={() => (orderManager.paymentMethod = 'cash')}
         >
           Cash
         </Button>
         <Button
           class="h-20 flex-1"
-          color={kioskManager.paymentMethod === 'credit' ? 'primary' : 'secondary'}
-          onclick={() => (kioskManager.paymentMethod = 'credit')}
+          color={orderManager.paymentMethod === 'credit' ? 'primary' : 'secondary'}
+          onclick={() => (orderManager.paymentMethod = 'credit')}
         >
           Credit Card
         </Button>

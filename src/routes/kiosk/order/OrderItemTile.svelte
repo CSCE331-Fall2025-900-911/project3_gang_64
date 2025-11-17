@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
-  import { kioskManager } from '$lib/managers/kiosk.svelte';
-  import { Heading, IconButton} from '@immich/ui';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
+  import { Heading, IconButton } from '@immich/ui';
   import { mdiPlus } from '@mdi/js';
-  import {getIngredients , getIngredientsForMenuItem} from '$lib/api/ingredient.remote';
 
   interface Props {
     item: MenuItem;
@@ -17,36 +17,35 @@
   let recipe = $derived(getIngredientsForMenuItem(item.id));
   let outOfStock = $derived.by(() => {
     let tempStock = false;
-    recipe.current?.forEach(ingredient => {
-      inventory.current?.forEach(stockItem => {
-        if(stockItem.id === ingredient.id && stockItem.currentStock == 0) {
+    recipe.current?.forEach((ingredient) => {
+      inventory.current?.forEach((stockItem) => {
+        if (stockItem.id === ingredient.id && stockItem.currentStock == 0) {
           tempStock = true;
           return;
         }
       });
-    })
+    });
     return tempStock;
   });
 
   async function handleAddToOrder() {
     loading = true;
-    await kioskManager.addToOrder(item);
+    await orderManager.addToOrder(item);
     loading = false;
     if (firstAddAction) {
       firstAddAction();
     }
   }
-  
 </script>
 
-<div class="flex flex-col justify-between rounded-lg border-2 p-4 relative">
+<div class="relative flex flex-col justify-between rounded-lg border-2 p-4">
   <img
     src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
     alt={item.name}
     class="mb-3 h-50 w-full rounded-md border object-cover"
   />
-  {#if (outOfStock)}
-    <div class="bg-black/50 text-white absolute top-25 text-center w-full pr-9">Out of Stock</div>
+  {#if outOfStock}
+    <div class="absolute top-25 w-full bg-black/50 pr-9 text-center text-white">Out of Stock</div>
   {/if}
   <Heading size="medium" class="mb-2">{item.name}</Heading>
   <div class="mt-4 flex items-center justify-between">
