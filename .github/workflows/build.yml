@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build dependencies
+        run: pnpm build
+
       - name: TypeScript Compile
         run: pnpm tsc
