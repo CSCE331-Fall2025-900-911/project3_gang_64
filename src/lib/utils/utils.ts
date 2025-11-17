@@ -1,3 +1,4 @@
+import { m } from '$lib/i18n/messages';
 import moment from 'moment';
 import * as v from 'valibot';
 
@@ -30,4 +31,8 @@ export const momentValidator = v.custom<moment.Moment>(
 
 export interface ModalProps {
   onClose: () => void;
+}
+
+export function t(key: keyof typeof m): string {
+  return m[key]();
 }

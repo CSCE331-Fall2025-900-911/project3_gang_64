@@ -1,6 +1,9 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "kiosk": {},
-  "manager": {},
-  "sign_out": "Sign out"
+
+  "sign_out": "Sign out",
+  "email": "Email",
+  "role": "Role",
+  "manager": "Manager",
+  "staff": "Staff"
 }
