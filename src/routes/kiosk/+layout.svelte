@@ -139,13 +139,13 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>{t('kiosk_title')}</title>
+  <title>{t('title')}</title>
 </svelte:head>
 
 <AppShell>
   <AppShellHeader>
     <div class="flex w-full items-center justify-between p-4">
-      <img src={logo} alt={t('kiosk_logoAlt')} class="h-6" />
+      <img src={logo} alt={t('logoAlt')} class="h-6" />
       <div class="flex items-center gap-4">
         <IconButton
           icon={mdiPartyPopper}

@@ -3,6 +3,7 @@
   import type { MenuItem } from '$lib/db/types';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { Button, Heading } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
 
   interface Props {
     item: MenuItem;
@@ -39,9 +40,9 @@
     <Heading size="medium" fontWeight="normal" class="mb-2">${item.price.toFixed(2)}</Heading>
     <Button onclick={handleAddToOrder} {loading} disabled={outOfStock} size="large">
       {#if outOfStock}
-        Out of Stock
+        {t('orderItem_outOfStock')}
       {:else}
-        Add to Order
+        {t('orderItem_addToOrder')}
       {/if}
     </Button>
   </div>

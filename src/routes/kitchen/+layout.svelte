@@ -43,23 +43,23 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>ShareTea | {mode.label}</title>
+  <title>{t('title')} | {mode.label}</title>
 </svelte:head>
 
 <AppShell>
   <AppShellHeader>
     <div class="flex w-full items-center justify-between p-4">
-      <img src={logo} alt="ShareTea Logo" class="h-6" />
+      <img src={logo} alt={t('logoAlt')} class="h-6" />
       <div class="flex items-center gap-4">
         {#if employee?.role == 'manager'}
           <HStack gap={4}>
-            <Heading size="tiny">Mode:</Heading>
+            <Heading size="tiny">{t('mode_label')}</Heading>
             <Select data={modes} onChange={handleModeChange} bind:value={mode} />
           </HStack>
         {/if}
         <ThemeSwitcher size="large"/>
         <button onclick={openUserProfile}>
-          <Avatar name={employee?.name ?? 'Share Tea'} />
+          <Avatar name={employee?.name ?? t('avatar_defaultName')} />
         </button>
       </div>
     </div>

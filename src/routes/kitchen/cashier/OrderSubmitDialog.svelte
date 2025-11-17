@@ -3,6 +3,7 @@
   import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
+  import { t } from '$lib/utils/utils';
 
   let { onClose }: ModalProps = $props();
 
@@ -16,16 +17,16 @@
   };
 </script>
 
-<Modal title="Submit Order" icon={mdiInvoiceSend} {onClose}>
+<Modal title={t('order_submitOrder')} icon={mdiInvoiceSend} {onClose}>
   <ModalBody>
     <Stack gap={4}>
-      <Field label="Name">
-        <Input placeholder="John Doe" bind:value={orderManager.customerName} />
+      <Field label={t('order_label_name')}>
+        <Input placeholder={t('order_placeholder_name')} bind:value={orderManager.customerName} />
       </Field>
-      <Field label="Email">
-        <Input placeholder="john.doe@example.com" bind:value={orderManager.customerEmail} />
+      <Field label={t('order_label_email')}>
+        <Input placeholder={t('order_placeholder_email')} bind:value={orderManager.customerEmail} />
       </Field>
-      <Text>Payment Method</Text>
+      <Text>{t('order_paymentMethod')}</Text>
       <HStack gap={4}>
         <Button
           class="w-full"
@@ -33,7 +34,7 @@
           onclick={() => (orderManager.paymentMethod = 'cash')}
           size="large"
         >
-          Cash
+          {t('order_payment_cash')}
         </Button>
         <Button
           class="w-full"
@@ -41,14 +42,14 @@
           onclick={() => (orderManager.paymentMethod = 'credit')}
           size="large"
         >
-          Credit
+          {t('order_payment_credit')}
         </Button>
       </HStack>
     </Stack>
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid} size="large">Create</Button>
+      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid}>{t('order_create')}</Button>
     </div>
   </ModalFooter>
 </Modal>

@@ -6,6 +6,7 @@
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
+  import { t } from '$lib/utils/utils';
 
   let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
@@ -46,7 +47,7 @@
     <div class="m-6 flex w-1/3 flex-col">
       <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
         {#if orderManager.currentOrder.length == 0}
-          <Text class="pt-6 text-center">No items in order</Text>
+          <Text class="pt-6 text-center">{t('cart_noItems')}</Text>
         {/if}
 
         {#each orderManager.currentOrder as entry, i}
@@ -69,14 +70,14 @@
                   size="medium"
                   color="primary"
                   onclick={() => alert('TODO: Edit functionality not yet implemented')}
-                  aria-label={'Edit Item'}
+                  aria-label={t('cart_editItem')}
                 />
                 <IconButton
                   icon={mdiTrashCan}
                   size="medium"
                   color="danger"
                   onclick={() => orderManager.removeFromOrder(i)}
-                  aria-label={'Remove Item'}
+                  aria-label={t('cart_removeItem')}
                 />
               </HStack>
             </div>
@@ -87,19 +88,19 @@
       <!-- Order Summary -->
       <div class="shrink-0 gap-2">
         <HStack class="flex justify-between">
-          <Heading size="tiny" fontWeight="normal">Subtotal</Heading>
+          <Heading size="tiny" fontWeight="normal">{t('cart_subtotal')}</Heading>
           <p>${orderManager.subtotal.toFixed(2)}</p>
         </HStack>
         <HStack class="flex justify-between">
-          <Heading size="tiny" fontWeight="normal">Tax</Heading>
+          <Heading size="tiny" fontWeight="normal">{t('cart_tax')}</Heading>
           <p>${orderManager.tax.toFixed(2)}</p>
         </HStack>
         <HStack class="mt-2 flex justify-between">
-          <Heading size="small">Total</Heading>
+          <Heading size="small">{t('cart_total')}</Heading>
           <p>${orderManager.total.toFixed(2)}</p>
         </HStack>
-        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder} size = "large"
-          >Submit Order</Button
+        <Button class="mt-4 w-full" color="success" onclick={showSubmitDialog} disabled={!orderManager.isValidOrder}
+          >{t('cart_submitOrder')}</Button
         >
       </div>
     </div>

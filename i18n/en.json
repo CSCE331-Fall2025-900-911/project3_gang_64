@@ -7,6 +7,8 @@
   "manager": "Manager",
   "staff": "Staff",
   "cashier": "Cashier",
+  "title": "ShareTea",
+  "logoAlt": "ShareTea Logo",
 
   "imageUpload_uploading": "Uploading...",
   "imageUpload_previewAlt": "Preview",
@@ -23,8 +25,6 @@
   "signInWithGoogle_googleLogoAlt": "Google logo",
 
   "authLayout_title": "ShareTea | Authentication",
-  "kiosk_title": "ShareTea",
-  "kiosk_logoAlt": "ShareTea Logo",
   "kiosk_cart": "Cart",
   "kiosk_order": "Order",
   "kiosk_order_title": "ShareTea",
@@ -41,5 +41,18 @@
   "cart_subtotal": "Subtotal",
   "cart_tax": "Tax",
   "cart_total": "Total",
-  "cart_submitOrder": "Submit Order"
+  "cart_submitOrder": "Submit Order",
+
+  "mode_label": "Mode:",
+  "avatar_defaultName": "Share Tea",
+  "cart_editItem": "Edit Item",
+  "order_submitOrder": "Submit Order",
+  "order_label_name": "Name",
+  "order_placeholder_name": "John Doe",
+  "order_label_email": "Email",
+  "order_placeholder_email": "john.doe@example.com",
+  "order_paymentMethod": "Payment Method",
+  "order_payment_cash": "Cash",
+  "order_payment_credit": "Credit",
+  "order_create": "Create"
 }
