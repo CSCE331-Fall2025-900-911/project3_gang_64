@@ -1,18 +1,8 @@
 <script lang="ts">
+  import { orderIngredient, receiveIngredient } from '$lib/api/ingredient.remote';
   import type { Ingredient } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
-  import {
-    Button,
-    Field,
-    Heading,
-    HelperText,
-    HStack,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    NumberInput,
-    VStack,
-  } from '@immich/ui';
+  import { Button, Field, Heading, HStack, Modal, ModalBody, ModalFooter, NumberInput, VStack } from '@immich/ui';
   import { mdiTruck } from '@mdi/js';
 
   interface Props extends ModalProps {
@@ -29,18 +19,35 @@
   let orderFieldValid = $derived(orderField > 0);
   let receiveFieldValid = $derived(receiveField > 0 && receiveField <= orderStock);
 
-  function receiveInventory() {
-    currentStock += receiveField;
-    orderStock -= receiveField;
+  let placingOrder = $state(false);
+  let receivingInventory = $state(false);
+
+  async function receiveInventory() {
+    receivingInventory = true;
+    const result = await receiveIngredient({
+      id: ingredient.id,
+      receiveQuantity: receiveField,
+    });
+
     receiveField = 0;
 
-    // TODO: make api calls
+    orderStock = result.orderStock;
+    currentStock = result.currentStock;
+    receivingInventory = false;
   }
 
-  function orderInventory() {
-    orderStock += orderField;
+  async function orderInventory() {
+    placingOrder = true;
+    const result = await orderIngredient({
+      id: ingredient.id,
+      orderQuantity: orderField,
+    });
+
     orderField = 0;
-    // TODO: make api calls
+
+    orderStock = result.orderStock;
+    currentStock = result.currentStock;
+    placingOrder = false;
   }
 </script>
 
@@ -62,10 +69,14 @@
       <Field label="Receive Inventory">
         <HStack gap={4} class="w-full items-start">
           <NumberInput placeholder={'0'} bind:value={receiveField} min={0} max={orderStock}></NumberInput>
-          {#if receiveField > orderStock}
-            <HelperText color="danger">Cannot receive more than on order stock</HelperText>
-          {/if}
-          <Button shape="round" color="success" class="mt-8" disabled={!receiveFieldValid} onclick={receiveInventory}>
+          <Button
+            shape="round"
+            color="success"
+            class="mt-8"
+            disabled={!receiveFieldValid}
+            onclick={receiveInventory}
+            loading={receivingInventory}
+          >
             Receive
           </Button>
         </HStack>
@@ -73,7 +84,14 @@
       <Field label="Order Inventory">
         <HStack gap={4} class="w-full items-start">
           <NumberInput placeholder={'0'} bind:value={orderField} min={0}></NumberInput>
-          <Button shape="round" color="success" class="mt-8" disabled={!orderFieldValid} onclick={orderInventory}>
+          <Button
+            shape="round"
+            color="success"
+            class="mt-8"
+            disabled={!orderFieldValid}
+            onclick={orderInventory}
+            loading={placingOrder}
+          >
             Place Order
           </Button>
         </HStack>

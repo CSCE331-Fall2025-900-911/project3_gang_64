@@ -67,3 +67,66 @@ export const updateRecipe = command(
     }
   },
 );
+
+export const orderIngredient = command(v.object({ id: v.string(), orderQuantity: v.number() }), async (data) => {
+  const db = getDB();
+
+  const ing = await db
+    .select()
+    .from(ingredient)
+    .where(eq(ingredient.id, data.id))
+    .limit(1)
+    .then((res) => res[0]);
+
+  if (!ing) {
+    throw new Error('Ingredient not found');
+  }
+
+  const updated = await db
+    .update(ingredient)
+    .set({ orderStock: ing.orderStock + data.orderQuantity })
+    .where(eq(ingredient.id, data.id))
+    .returning();
+
+  await getIngredients().refresh();
+
+  return {
+    orderStock: updated[0].orderStock,
+    currentStock: updated[0].currentStock,
+  };
+});
+
+export const receiveIngredient = command(v.object({ id: v.string(), receiveQuantity: v.number() }), async (data) => {
+  const db = getDB();
+
+  const ing = await db
+    .select()
+    .from(ingredient)
+    .where(eq(ingredient.id, data.id))
+    .limit(1)
+    .then((res) => res[0]);
+
+  if (!ing) {
+    throw new Error('Ingredient not found');
+  }
+
+  if (data.receiveQuantity > ing.orderStock) {
+    throw new Error('Cannot receive more than ordered stock');
+  }
+
+  const updated = await db
+    .update(ingredient)
+    .set({
+      currentStock: ing.currentStock + data.receiveQuantity,
+      orderStock: ing.orderStock - data.receiveQuantity,
+    })
+    .where(eq(ingredient.id, data.id))
+    .returning();
+
+  await getIngredients().refresh();
+
+  return {
+    currentStock: updated[0].currentStock,
+    orderStock: updated[0].orderStock,
+  };
+});

@@ -5,7 +5,7 @@
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan, mdiTruck } from '@mdi/js';
   import InventoryItemModal from './InventoryItemModal.svelte';
-  import InventoryOrderReceiveModal from './InventoryOrderReceiveModal.svelte';
+  import InventoryManageModal from './InventoryManageModal.svelte';
 
   let ingredients = getIngredients();
   let searchTerm = $state('');
@@ -22,7 +22,7 @@
   }
 
   function showTruckModal(ingredient: Ingredient) {
-    modalManager.show(InventoryOrderReceiveModal, { ingredient });
+    modalManager.show(InventoryManageModal, { ingredient });
   }
 
   async function confirmDelete(ingredient: Ingredient) {
