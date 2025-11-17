@@ -39,7 +39,7 @@
 </script>
 
 <div class="relative flex flex-col justify-between rounded-lg border-2 p-4">
-  <div class="relative mb-3">
+  <div class="relative mb-5">
     <img
       src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
       alt={item.name}
@@ -51,12 +51,12 @@
       </div>
     {/if}
   </div>
-  <Heading size="medium" class="mb-2">{item.name}</Heading>
-  <div class="mt-4 flex items-center justify-between">
-    <Heading size="small" fontWeight="normal">${item.price.toFixed(2)}</Heading>
+  <Heading size="large" class="mb-2">{item.name}</Heading>
+  <div class="mt-2 flex items-center justify-between">
+    <Heading size="medium" fontWeight="normal">${item.price.toFixed(2)}</Heading>
     <IconButton
       icon={mdiPlus}
-      size="small"
+      size="large"
       color="info"
       onclick={handleAddToOrder}
       disabled={outOfStock || loading}
