@@ -1,5 +1,5 @@
 import { command } from '$app/server';
-import { env } from '$env/dynamic/private';
+import { env } from '$env/dynamic/public';
 import { getR2 } from '$lib/r2/client';
 import * as v from 'valibot';
 
@@ -35,6 +35,6 @@ export const uploadImageToR2 = command(uploadImageSchema, async ({ file: base64,
 
   return {
     key: objectKey,
-    url: `https://${env.R2_PUBLIC}/${objectKey}`,
+    url: `https://${env.PUBLIC_R2_ENDPOINT}/${objectKey}`,
   };
 });

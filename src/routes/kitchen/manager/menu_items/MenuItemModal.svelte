@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getIngredients, getIngredientsForMenuItem, updateRecipe } from '$lib/api/ingredient.remote';
   import { createMenuItem, updateMenuItem } from '$lib/api/menu.remote';
+  import ImageUpload from '$lib/components/ImageUpload.svelte';
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import {
@@ -18,6 +19,7 @@
     Select,
     type SelectItem,
     Stack,
+    Text,
   } from '@immich/ui';
   import { mdiPlus, mdiSilverware, mdiTrashCan } from '@mdi/js';
 
@@ -63,10 +65,20 @@
     recipe = recipe.filter((ing) => ing.id !== ingredient.id);
   }
 
+  // We only want to load the existing recipe once
+  $effect(() => {
+    if (mode.type === 'edit') {
+      recipe = existingRecipe.current || [];
+    } else {
+      recipe = [];
+    }
+  });
+
   let item: NewMenuItem = $state(mode.type === 'edit' ? mode.item : BlankMenuItem);
   let submitting = $state(false);
 
-  let recipe = $state(item.id != '' ? await getIngredientsForMenuItem(item.id!) : []);
+  let existingRecipe = $derived(getIngredientsForMenuItem(item.id!));
+  let recipe = $state<Ingredient[]>([]);
   let valid = $derived(item.name.trim().length > 0);
 
   let ingredients = getIngredients();
@@ -81,6 +93,11 @@
   <ModalBody>
     <HStack gap={6} class="items-start">
       <Stack gap={4} class="w-1/2">
+        <Stack gap={2}>
+          <Text size="medium">Kiosk Image</Text>
+          <ImageUpload bind:value={item.imageUrl} />
+        </Stack>
+
         <Field label="Name">
           <Input placeholder="Menu Item name" bind:value={item.name} />
         </Field>
@@ -101,12 +118,12 @@
       <Stack gap={2} class="h-full w-1/2" align="start">
         <Heading size="medium">Recipe</Heading>
 
-        {#if ingredients.loading}
+        {#if ingredients.loading || existingRecipe.loading}
           <div class="flex w-full justify-center">
             <LoadingSpinner size="large" />
           </div>
-        {:else if ingredients.error}
-          <p class="text-danger">Error loading ingredients: {ingredients.error.message}</p>
+        {:else if ingredients.error || existingRecipe.error}
+          <p class="text-danger">Error loading ingredients</p>
         {:else}
           <!-- Add Item Dropdown -->
           <div class="flex w-full items-center justify-between gap-2 rounded-md border p-2">
