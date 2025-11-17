@@ -12,6 +12,9 @@ deploy:
 repl +ARGS='':
     psql -d gang_64_db {{ARGS}}
 
+translate LCL:
+    pnpm dlx @inlang/cli machine translate --project ./project.inlang --locale "en" --targetLocales "{{LCL}}"
+
 reset-db:
     just repl -f seeding/reset.sql
     pnpm drizzle-kit push 

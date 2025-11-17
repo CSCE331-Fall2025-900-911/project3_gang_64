@@ -4,6 +4,7 @@
   import type { ModalProps } from '$lib/utils/utils';
   import { Button, Field, Heading, HStack, Modal, ModalBody, ModalFooter, NumberInput, VStack } from '@immich/ui';
   import { mdiTruck } from '@mdi/js';
+  import { t } from '$lib/utils/utils';
 
   interface Props extends ModalProps {
     ingredient: Ingredient;
@@ -51,22 +52,22 @@
   }
 </script>
 
-<Modal title="Manage Inventory" icon={mdiTruck} {onClose}>
+<Modal title={t('manager_inventory_manage_title')} icon={mdiTruck} {onClose}>
   <ModalBody>
     <HStack gap={4} class="w-full justify-center">
       <VStack gap={2} class="w-1/2 items-center">
-        <Heading class="text-left">Current Stock</Heading>
+        <Heading class="text-left">{t('manager_inventory_current_stock')}</Heading>
         <Heading class="text-center" fontWeight="normal">{currentStock}</Heading>
       </VStack>
       <div class="h-16 border-l"></div>
       <VStack gap={2} class="w-1/2 items-center">
-        <Heading class="text-left">On Order Stock</Heading>
+        <Heading class="text-left">{t('manager_inventory_on_order_stock')}</Heading>
         <Heading class="text-center" fontWeight="normal">{orderStock}</Heading>
       </VStack>
     </HStack>
     <div class="my-4 w-100 border-l"></div>
     <VStack gap={4} class="w-full">
-      <Field label="Receive Inventory">
+      <Field label={t('manager_inventory_receive_label')}>
         <HStack gap={4} class="w-full items-start">
           <NumberInput placeholder={'0'} bind:value={receiveField} min={0} max={orderStock}></NumberInput>
           <Button
@@ -77,11 +78,11 @@
             onclick={receiveInventory}
             loading={receivingInventory}
           >
-            Receive
+            {t('manager_inventory_receive_btn')}
           </Button>
         </HStack>
       </Field>
-      <Field label="Order Inventory">
+      <Field label={t('manager_inventory_order_label')}>
         <HStack gap={4} class="w-full items-start">
           <NumberInput placeholder={'0'} bind:value={orderField} min={0}></NumberInput>
           <Button
@@ -92,13 +93,13 @@
             onclick={orderInventory}
             loading={placingOrder}
           >
-            Place Order
+            {t('manager_inventory_place_order_btn')}
           </Button>
         </HStack>
       </Field>
     </VStack>
   </ModalBody>
   <ModalFooter>
-    <Button onclick={onClose} shape="round" color="primary" fullWidth>Close</Button>
+    <Button onclick={onClose} shape="round" color="primary" fullWidth>{t('manager_inventory_close_btn')}</Button>
   </ModalFooter>
 </Modal>

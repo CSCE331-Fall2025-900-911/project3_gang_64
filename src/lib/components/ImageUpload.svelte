@@ -2,6 +2,7 @@
   import { fileUpload } from '$lib/utils/r2';
   import { Icon, IconButton, LoadingSpinner, Text } from '@immich/ui';
   import { mdiImagePlus, mdiTrashCan } from '@mdi/js';
+  import { t } from '$lib/utils/utils';
 
   interface Props {
     value?: string | null;
@@ -98,15 +99,15 @@
     {#if uploading}
       <div class="flex flex-col items-center gap-2">
         <LoadingSpinner size="large" />
-        <Text>Uploading...</Text>
+        <Text>{t('imageUpload_uploading')}</Text>
       </div>
     {:else if previewUrl}
       <div class="relative h-full w-full p-2">
-        <img src={previewUrl} alt="Preview" class="h-full w-full object-contain" />
+        <img src={previewUrl} alt={t('imageUpload_previewAlt')} class="h-full w-full object-contain" />
         <IconButton
           icon={mdiTrashCan}
           size="small"
-          aria-label="Remove Image"
+          aria-label={t('imageUpload_removeImage')}
           color="danger"
           class="absolute top-2 right-2"
           onclick={(e: MouseEvent) => {
@@ -119,9 +120,10 @@
       <div class="flex flex-col justify-center text-center">
         <Icon icon={mdiImagePlus} size="48" class="mb-2 w-full text-gray-400" />
         <Text color="secondary" class="mb-1">
-          <span class="font-semibold">Click to upload</span> or drag and drop
+          <span class="font-semibold">{t('imageUpload_clickToUpload')}</span>
+          {t('imageUpload_orDragAndDrop')}
         </Text>
-        <Text color="secondary" class="text-xs">PNG, JPG, GIF up to 10MB</Text>
+        <Text color="secondary" class="text-xs">{t('imageUpload_fileTypes')}</Text>
       </div>
     {/if}
   </div>

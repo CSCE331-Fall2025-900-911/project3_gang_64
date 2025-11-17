@@ -3,6 +3,7 @@
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import { Heading, HStack, IconButton, Input, LoadingSpinner, Select, Text } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
   import { mdiMagnify } from '@mdi/js';
 
   const PAGE_OPTIONS = [
@@ -31,16 +32,16 @@
 </script>
 
 <div class="mb-6 flex items-center justify-between">
-  <Heading size="large">Customers</Heading>
+  <Heading size="large">{t('manager_customers_title')}</Heading>
 
   <div class="flex w-1/4 items-end justify-end gap-2">
     <HStack gap={2}>
       <Input
-        placeholder="Search customers..."
+        placeholder={t('manager_customers_search_placeholder')}
         bind:value={searchField}
         onkeydown={(e) => e.key === 'Enter' && searchCustomers()}
       />
-      <IconButton icon={mdiMagnify} aria-label="Search" onclick={searchCustomers} />
+      <IconButton icon={mdiMagnify} aria-label={t('manager_customers_search_aria')} onclick={searchCustomers} />
     </HStack>
   </div>
 </div>
@@ -50,12 +51,12 @@
     <LoadingSpinner size="large" />
   </div>
 {:else if customers.error}
-  <p class="text-danger">Error loading customers: {customers.error.message}</p>
+  <p class="text-danger">{t('manager_customers_error_loading')}: {customers.error.message}</p>
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-1/3">Customer Name</TableHeaderCell>
-      <TableHeaderCell width="w-2/3">Email</TableHeaderCell>
+      <TableHeaderCell width="w-1/3">{t('manager_customers_table_name')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/3">{t('manager_customers_table_email')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each customers.current as customer}
@@ -70,7 +71,7 @@
 
 <div class="mt-2 flex w-full items-center justify-between">
   <div class="flex w-1/3 items-center gap-2">
-    <Text size="large">Customers per page</Text>
+    <Text size="large">{t('manager_customers_per_page')}</Text>
     <Select bind:value={pageSize} data={PAGE_OPTIONS}></Select>
   </div>
 

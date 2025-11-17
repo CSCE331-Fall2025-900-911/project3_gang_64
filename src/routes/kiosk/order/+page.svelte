@@ -5,6 +5,7 @@
   import { AppShell, AppShellSidebar, NavbarItem, toastManager } from '@immich/ui';
   import CartToast from './CartToast.svelte';
   import MenuGroup from './MenuGroup.svelte';
+  import { t } from '$lib/utils/utils';
 
   const orderUrl: string = '/kiosk/order';
   const timeout = $state(5000);
@@ -37,7 +38,7 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>ShareTea</title>
+  <title>{t('kiosk_order_title')}</title>
 </svelte:head>
 
 <AppShell>

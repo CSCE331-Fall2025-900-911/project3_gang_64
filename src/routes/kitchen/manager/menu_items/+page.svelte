@@ -3,6 +3,7 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { MenuItem } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
   import { mdiMagnify, mdiPencil, mdiTrashCan } from '@mdi/js';
   import MenuItemModal from './MenuItemModal.svelte';
 
@@ -18,9 +19,9 @@
 
   async function showDeleteModal(item: MenuItem) {
     const confirm = await modalManager.showDialog({
-      title: 'Delete Menu Item',
-      prompt: `Are you sure you want to delete ${item.name}?`,
-      confirmText: 'Delete',
+      title: t('manager_delete_menu_item_title'),
+      prompt: `${t('manager_delete_menu_item_prompt')} ${item.name}?`,
+      confirmText: t('manager_delete_confirm_text'),
       confirmColor: 'danger',
       icon: mdiTrashCan,
     });
@@ -38,11 +39,11 @@
 </script>
 
 <div class="mb-6 flex items-center justify-between">
-  <Heading size="large">Menu Items</Heading>
+  <Heading size="large">{t('manager_menu_items_title')}</Heading>
   <div class="flex w-1/3 items-center gap-2">
     <!-- TODO: Add create menu item -->
     <!-- <IconButton icon={mdiPlus} variant="filled" aria-label="Add Menu Item" style="p-4" /> -->
-    <Input placeholder="Search" leadingIcon={mdiMagnify} bind:value={searchTerm} />
+    <Input placeholder={t('manager_menu_items_search_placeholder')} leadingIcon={mdiMagnify} bind:value={searchTerm} />
   </div>
 </div>
 
@@ -51,14 +52,14 @@
     <LoadingSpinner size="large" />
   </div>
 {:else if menu.error}
-  <p class="text-danger">Error loading menu: {menu.error.message}</p>
+  <p class="text-danger">{t('manager_menu_items_error_loading')}: {menu.error.message}</p>
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-5/12">Name</TableHeaderCell>
-      <TableHeaderCell width="w-4/12">Category</TableHeaderCell>
-      <TableHeaderCell width="w-3/12">Price</TableHeaderCell>
-      <TableHeaderCell width="w-2/12">Actions</TableHeaderCell>
+      <TableHeaderCell width="w-5/12">{t('manager_menu_items_table_name')}</TableHeaderCell>
+      <TableHeaderCell width="w-4/12">{t('manager_menu_items_table_category')}</TableHeaderCell>
+      <TableHeaderCell width="w-3/12">{t('manager_menu_items_table_price')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_menu_items_table_actions')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each searchedMenuItems as item}
@@ -67,10 +68,14 @@
           <TableCell width="w-4/12">{item.category}</TableCell>
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">
-            <IconButton icon={mdiPencil} aria-label="Edit Menu Item" onclick={() => showEditModal(item)} />
+            <IconButton
+              icon={mdiPencil}
+              aria-label={t('manager_menu_items_edit_aria')}
+              onclick={() => showEditModal(item)}
+            />
             <IconButton
               icon={mdiTrashCan}
-              aria-label="Delete Menu Item"
+              aria-label={t('manager_menu_items_delete_aria')}
               color="danger"
               onclick={() => showDeleteModal(item)}
             />

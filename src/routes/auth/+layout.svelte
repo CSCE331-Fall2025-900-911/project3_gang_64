@@ -2,6 +2,7 @@
   import favicon from '$lib/assets/favicon.svg';
   import { initializeTheme } from '@immich/ui';
   import '../../app.css';
+  import { t } from '$lib/utils/utils';
 
   let { children } = $props();
 
@@ -10,7 +11,7 @@
 
 <svelte:head>
   <link rel="icon" href={favicon} />
-  <title>ShareTea | Authentication</title>
+  <title>{t('authLayout_title')}</title>
 </svelte:head>
 
 {@render children?.()}
