@@ -8,6 +8,8 @@
     AppShell,
     AppShellHeader,
     Avatar,
+    Heading,
+    HStack,
     initializeTheme,
     modalManager,
     Select,
@@ -49,7 +51,10 @@
       <img src={logo} alt="ShareTea Logo" class="h-6" />
       <div class="flex items-center gap-4">
         {#if employee?.role == 'manager'}
-          <Select data={modes} onChange={handleModeChange} bind:value={mode} />
+          <HStack gap={4}>
+            <Heading size="tiny">Mode:</Heading>
+            <Select data={modes} onChange={handleModeChange} bind:value={mode} />
+          </HStack>
         {/if}
         <ThemeSwitcher />
         <button onclick={openUserProfile}>
