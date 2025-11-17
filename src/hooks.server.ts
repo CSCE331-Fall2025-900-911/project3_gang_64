@@ -1,7 +1,7 @@
 import { type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handle as authenticationHandle } from './lib/auth/auth';
-import { paraglideMiddleware } from '$lib/paraglide/server';
+import { paraglideMiddleware } from '$lib/i18n/server';
 
 async function employeePopulation({ event, resolve }: Parameters<Handle>[0]) {
   const session = await event.locals.auth();
