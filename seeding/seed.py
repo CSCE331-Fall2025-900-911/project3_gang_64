@@ -74,7 +74,7 @@ def export_employees_csv():
         for employee in employees:
             writer.writerow([employee.id, employee.name, employee.email, employee.role.value, False])
 
-def generateRandomOrder(clock: datetime):
+def generateRandomOrder(clock: datetime, existing_emails: set[str]):
     global next_order_entry_id
 
     orderItems: list[OrderContent] = []
@@ -107,8 +107,15 @@ def generateRandomOrder(clock: datetime):
 
     payment = random.choices([PaymentMethod.CASH, PaymentMethod.CREDIT])[0]
     cid = uuid.uuid4()
+    
+    # Generate unique email
+    email = fake.email()
+    while email in existing_emails:
+        email = fake.email()
+    existing_emails.add(email)
+    
     return (
-        Customer(id=cid, name=fake.name(), email=fake.email()),
+        Customer(id=cid, name=fake.name(), email=email),
         Order(id=order_id, customer_id=cid, employee_id=eid, subtotal=price, tax=tax, total=total, date=clock, payment_method=payment, item_quantity=count),
         orderItems
     )
@@ -126,6 +133,7 @@ if __name__ == "__main__":
     customers: list[Customer] = []
     orders: list[Order] = []
     order_contents: list[OrderContent] = []
+    existing_emails: set[str] = set()
 
     peakDays: list[datetime] = []
     for d in dates:
@@ -137,7 +145,7 @@ if __name__ == "__main__":
 
         for _ in range(num_orders):
             eid = random.choice(employees).id
-            customer, order, order_items = generateRandomOrder(d + timedelta(hours=random.randint(9, 20), minutes=random.randint(0, 59)))
+            customer, order, order_items = generateRandomOrder(d + timedelta(hours=random.randint(9, 20), minutes=random.randint(0, 59)), existing_emails)
             customers.append(customer)
             orders.append(order)
             order_contents.extend(order_items)
