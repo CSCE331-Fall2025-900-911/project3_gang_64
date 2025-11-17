@@ -39,14 +39,18 @@
 </script>
 
 <div class="relative flex flex-col justify-between rounded-lg border-2 p-4">
-  <img
-    src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
-    alt={item.name}
-    class="mb-3 h-50 w-full rounded-md border object-cover"
-  />
-  {#if outOfStock}
-    <div class="absolute top-25 w-full bg-black/50 pr-9 text-center text-white">Out of Stock</div>
-  {/if}
+  <div class="relative mb-3">
+    <img
+      src={item.imageUrl ?? '/kioskImages/boba.jpeg'}
+      alt={item.name}
+      class="h-50 w-full rounded-md border object-cover"
+    />
+    {#if outOfStock}
+      <div class="absolute inset-0 flex items-center justify-center rounded-md bg-black/60">
+        <span class="text-lg font-semibold text-white">Out of Stock</span>
+      </div>
+    {/if}
+  </div>
   <Heading size="medium" class="mb-2">{item.name}</Heading>
   <div class="mt-4 flex items-center justify-between">
     <Heading size="small" fontWeight="normal">${item.price.toFixed(2)}</Heading>
