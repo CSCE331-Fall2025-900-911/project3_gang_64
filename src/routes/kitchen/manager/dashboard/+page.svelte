@@ -16,7 +16,7 @@
   let lastWeekRevenue = getDayRevenue(moment().subtract(7, 'days').toDate());
   let revenuePercentageChange = $derived(
     dailyRevenue.ready && lastWeekRevenue.ready
-      ? ((dailyRevenue.current - lastWeekRevenue.current) / lastWeekRevenue.current) * 100
+      ? ((dailyRevenue.current - lastWeekRevenue.current) / (lastWeekRevenue.current || 1)) * 100
       : undefined,
   );
 
@@ -56,7 +56,7 @@
   <DashboardCard
     title="Weather"
     loading={weatherQuery.loading}
-    value={weatherQuery.current?.main.temp ?? '—'}
+    value={`${weatherQuery.current?.main.temp.toFixed(0) ?? '—-'} °F`}
     icon={weatherIcon}
   />
 </div>
