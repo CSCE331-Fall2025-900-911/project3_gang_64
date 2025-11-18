@@ -25,6 +25,7 @@ export const BlankMenuItem: NewMenuItem = {
   price: 0,
   category: '',
   archived: false,
+  imageUrl: '',
 };
 
 export const recipeSelectSchema = createSelectSchema(recipe);

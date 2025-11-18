@@ -33,8 +33,16 @@
   async function submit() {
     submitting = true;
 
+    let createdItem: MenuItem | null = null;
+
     if (mode.type === 'new') {
-      await createMenuItem(item);
+      createdItem = await createMenuItem(item);
+      if (createdItem) {
+        item = createdItem as NewMenuItem;
+      } else {
+        submitting = false;
+        return;
+      }
     } else {
       await updateMenuItem({ id: mode.item.id, ...item });
     }
@@ -78,7 +86,9 @@
   let item: NewMenuItem = $state(mode.type === 'edit' ? mode.item : BlankMenuItem);
   let submitting = $state(false);
 
-  let existingRecipe = $derived(getIngredientsForMenuItem(item.id!));
+  let existingRecipe = $derived(
+    mode.type === 'edit' ? getIngredientsForMenuItem(item.id!) : { loading: false, error: null, current: [] },
+  );
   let recipe = $state<Ingredient[]>([]);
   let valid = $derived(item.name.trim().length > 0);
 

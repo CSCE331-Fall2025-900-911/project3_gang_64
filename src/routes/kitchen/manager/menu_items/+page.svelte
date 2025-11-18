@@ -4,17 +4,19 @@
   import type { MenuItem } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { t } from '$lib/utils/utils';
-  import { mdiMagnify, mdiPencil, mdiTrashCan } from '@mdi/js';
+  import { mdiMagnify, mdiPencil, mdiTrashCan, mdiPlus } from '@mdi/js';
   import MenuItemModal from './MenuItemModal.svelte';
 
   let menu = getMenu();
   let searchTerm = $state('');
   let searchedMenuItems = $derived(
-    menu.current?.filter(
-      (item) =>
-        item.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
-        item.category.toUpperCase().includes(searchTerm.toUpperCase()),
-    ) || [],
+    menu.current
+      ?.filter((item) => item.archived === false)
+      .filter(
+        (item) =>
+          item.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
+          item.category.toUpperCase().includes(searchTerm.toUpperCase()),
+      ) || [],
   );
 
   async function showDeleteModal(item: MenuItem) {
@@ -28,6 +30,8 @@
 
     if (confirm) {
       await deleteMenuItem(item.id);
+      item.archived = true;
+      searchedMenuItems = searchedMenuItems.filter((i) => i.id !== item.id);
     }
   }
 
@@ -36,13 +40,24 @@
       mode: { type: 'edit', item },
     });
   }
+
+  function showCreateModal() {
+    modalManager.show(MenuItemModal, {
+      mode: { type: 'new' },
+    });
+  }
 </script>
 
 <div class="mb-6 flex items-center justify-between">
   <Heading size="large">{t('manager_menu_items_title')}</Heading>
   <div class="flex w-1/3 items-center gap-2">
-    <!-- TODO: Add create menu item -->
-    <!-- <IconButton icon={mdiPlus} variant="filled" aria-label="Add Menu Item" style="p-4" /> -->
+    <IconButton
+      icon={mdiPlus}
+      variant="filled"
+      aria-label={t('manager_menuitem_create_title')}
+      style="p-4"
+      onclick={showCreateModal}
+    />
     <Input placeholder={t('manager_menu_items_search_placeholder')} leadingIcon={mdiMagnify} bind:value={searchTerm} />
   </div>
 </div>

@@ -41,7 +41,7 @@ export const getMenuCategories = query(async () => {
 export const getMenu = query(async () => {
   const db = getDB();
 
-  return await db.select().from(menu);
+  return await db.select().from(menu).where(eq(menu.archived, false));
 });
 
 export const createMenuItem = command(menuItemInsertSchema, async (newMenuItem) => {
