@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@immich/ui@0.45.0':
-    hash: 03bec8191a6a0a01978c5e32f3c264fae23db7c027665fcfaf7b280b15857043
-    path: patches/@immich__ui@0.45.0.patch
-
 importers:
 
   .:
@@ -23,8 +18,8 @@ importers:
         specifier: ^1.11.1
         version: 1.11.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)
       '@immich/ui':
-        specifier: ^0.45.0
-        version: 0.45.0(patch_hash=03bec8191a6a0a01978c5e32f3c264fae23db7c027665fcfaf7b280b15857043)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
+        specifier: ^0.45.1
+        version: 0.45.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -848,8 +843,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0
 
-  '@immich/ui@0.45.0':
-    resolution: {integrity: sha512-znTRkZPn0Rv+JWbotjsdckMnp0CKSBEP7UCmBGA/pU0TwjHvmq6Gcp1Yg3KbNo5rOy7XCFvuV+EiMjIIHnyKCQ==}
+  '@immich/ui@0.45.1':
+    resolution: {integrity: sha512-LanpfRI7cJLXExRxaYd4xMRvq/SWZlHmBhSsw56l0aAI6Mltm+IcFMD6LF+jvSzGOSLGLcNxIAYsqqWAPmn8+g==}
     peerDependencies:
       svelte: ^5.0.0
 
@@ -2996,7 +2991,7 @@ snapshots:
     dependencies:
       svelte: 5.42.1
 
-  '@immich/ui@0.45.0(patch_hash=03bec8191a6a0a01978c5e32f3c264fae23db7c027665fcfaf7b280b15857043)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
+  '@immich/ui@0.45.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
     dependencies:
       '@immich/svelte-markdown-preprocess': 0.1.0(svelte@5.42.1)
       '@internationalized/date': 3.10.0
