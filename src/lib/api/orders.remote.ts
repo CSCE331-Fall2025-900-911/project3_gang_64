@@ -85,32 +85,34 @@ export const submitOrder = command(
 
     // Add order content entries
     for (const entry of submittedOrder) {
-      const entryId = uuidv4();
+      for (let i = 0; i < entry.quantity; i++) {
+        const entryId = uuidv4();
 
-      for (const entryIngredient of entry.ingredients) {
-        await db.insert(orderContent).values({
-          orderId: createdOrder[0].id,
-          menuItemId: entry.menuItem.id,
-          ingredientId: entryIngredient.id,
-          orderEntryId: entryId,
-        });
+        for (const entryIngredient of entry.ingredients) {
+          await db.insert(orderContent).values({
+            orderId: createdOrder[0].id,
+            menuItemId: entry.menuItem.id,
+            ingredientId: entryIngredient.id,
+            orderEntryId: entryId,
+          });
 
-        // get current ingredient stock and decrement by 1
-        const currentIngredient = await db
-          .select()
-          .from(ingredient)
-          .where(eq(ingredient.id, entryIngredient.id))
-          .limit(1);
+          // get current ingredient stock and decrement by 1
+          const currentIngredient = await db
+            .select()
+            .from(ingredient)
+            .where(eq(ingredient.id, entryIngredient.id))
+            .limit(1);
 
-        if (currentIngredient.length === 0) {
-          throw new Error(`Ingredient with ID ${entryIngredient.id} not found`);
+          if (currentIngredient.length === 0) {
+            throw new Error(`Ingredient with ID ${entryIngredient.id} not found`);
+          }
+
+          // decrement the ingredient quantity
+          await db
+            .update(ingredient)
+            .set({ currentStock: currentIngredient[0].currentStock - 1 })
+            .where(eq(ingredient.id, entryIngredient.id));
         }
-
-        // decrement the ingredient quantity
-        await db
-          .update(ingredient)
-          .set({ currentStock: currentIngredient[0].currentStock - 1 })
-          .where(eq(ingredient.id, entryIngredient.id));
       }
     }
 

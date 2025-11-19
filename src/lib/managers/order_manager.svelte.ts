@@ -21,15 +21,12 @@ class OrderManager {
     this.currentOrder.push({
       menuItem,
       ingredients: await getIngredientsForMenuItem(menuItem.id),
+      quantity: 1,
     });
   }
 
   async duplicateOrderEntry(index: number) {
-    const orderEntry = this.currentOrder[index];
-    this.currentOrder.push({
-      menuItem: orderEntry.menuItem,
-      ingredients: orderEntry.ingredients,
-    });
+    this.currentOrder[index].quantity += 1;
   }
 
   getCurrentCartAmount(): number {
