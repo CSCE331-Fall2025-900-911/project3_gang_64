@@ -1,0 +1,13 @@
+diff --git a/dist/styles.js b/dist/styles.js
+index 6fb658e9a73ca703004a8ac242bdee8ad40939be..1000349edd8057f83d5c14a33b0a63b1a2b20df1 100644
+--- a/dist/styles.js
++++ b/dist/styles.js
+@@ -13,7 +13,7 @@ export const styleVariants = {
+         muted: 'text-gray-600 dark:text-gray-400',
+     },
+     inputCommon: 'disabled:bg-gray-300 disabled:text-dark dark:disabled:bg-gray-900 dark:disabled:text-gray-200 bg-transparent transition outline-none disabled:cursor-not-allowed ',
+-    inputContainerCommon: 'bg-gray-100 ring-1 ring-gray-200 focus-within:ring-primary dark:focus-within:ring-primary transition outline-none focus-within:ring-1 disabled:cursor-not-allowed dark:bg-gray-800 dark:ring-black',
++    inputContainerCommon: 'bg-gray-100 ring-1 ring-gray-200 focus-within:ring-primary dark:focus-within:ring-primary transition outline-none focus-within:ring-1 disabled:cursor-not-allowed dark:bg-gray-600 dark:ring-black',
+     shape: {
+         rectangle: 'rounded-none',
+         'semi-round': '',

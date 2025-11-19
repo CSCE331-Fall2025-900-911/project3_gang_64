@@ -1,3 +1,6 @@
 onlyBuiltDependencies:
   - esbuild
   - '@tailwindcss/oxide'
+
+patchedDependencies:
+  '@immich/ui@0.45.0': patches/@immich__ui@0.45.0.patch
