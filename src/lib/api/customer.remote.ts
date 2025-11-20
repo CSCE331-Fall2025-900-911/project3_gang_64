@@ -14,13 +14,32 @@ const getCustomerSchema = v.object({
 export const getCustomers = query(getCustomerSchema, async ({ page, limit, search }) => {
   const db = getDB();
 
-  return await db
+  const filter = search ? or(like(customer.name, `%${search}%`), like(customer.email, `%${search}%`)) : undefined;
+
+  // Get total count for pagination
+  const [totalCount] = await db
+    .select({
+      count: sql<number>`COUNT(${customer.id})`,
+    })
+    .from(customer)
+    .where(filter);
+
+  // Get paginated customers
+  const customers = await db
     .select()
     .from(customer)
-    .where(search ? or(like(customer.name, `%${search}%`), like(customer.email, `%${search}%`)) : undefined)
+    .where(filter)
     .orderBy(customer.name)
     .limit(limit)
     .offset(page * limit);
+
+  const totalPages = Math.ceil(totalCount.count / limit);
+
+  return {
+    customers,
+    totalPages,
+    totalCount: totalCount.count,
+  };
 });
 
 export const getCustomerCount = query(async () => {

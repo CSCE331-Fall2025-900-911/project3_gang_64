@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getCustomerCount, getCustomers } from '$lib/api/customer.remote';
+  import { getCustomers } from '$lib/api/customer.remote';
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
-  import { Heading, HStack, IconButton, Input, LoadingSpinner, Select, Text } from '@immich/ui';
   import { t } from '$lib/utils/utils';
+  import { Heading, HStack, IconButton, Input, LoadingSpinner, Select, Text } from '@immich/ui';
   import { mdiMagnify } from '@mdi/js';
 
   const PAGE_OPTIONS = [
@@ -14,16 +14,17 @@
   ];
 
   let customerPage = $state(1);
-  let totalCustomers = await getCustomerCount();
   let pageSize = $state(PAGE_OPTIONS[1]); // Default to 25
-  let totalPages = $derived(totalCustomers ? Math.ceil(totalCustomers / parseInt(pageSize.value)) : 0);
 
   let searchField = $state('');
   let searchState = $state('');
 
-  let customers = $derived(
+  let customersData = $derived(
     getCustomers({ page: customerPage - 1, limit: parseInt(pageSize.value), search: searchState }),
   );
+
+  let customers = $derived(customersData.current?.customers || []);
+  let totalPages = $derived(customersData.current?.totalPages || 0);
 
   function searchCustomers() {
     searchState = searchField;
@@ -46,12 +47,12 @@
   </div>
 </div>
 
-{#if customers.loading}
+{#if customersData.loading}
   <div class="flex justify-center">
     <LoadingSpinner size="large" />
   </div>
-{:else if customers.error}
-  <p class="text-danger">{t('manager_customers_error_loading')}: {customers.error.message}</p>
+{:else if customersData.error}
+  <p class="text-danger">{t('manager_customers_error_loading')}: {customersData.error.message}</p>
 {:else}
   <Table>
     <TableHeader>
@@ -59,12 +60,19 @@
       <TableHeaderCell width="w-2/3">{t('manager_customers_table_email')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
-      {#each customers.current as customer}
+      {#each customers as customer}
         <TableRow>
           <TableCell width="w-1/3">{customer.name}</TableCell>
           <TableCell width="w-2/3">{customer.email}</TableCell>
         </TableRow>
       {/each}
+      {#if customers.length === 0}
+        <TableRow>
+          <TableCell width="w-full" class="text-center">
+            {t('manager_customers_no_results')}
+          </TableCell>
+        </TableRow>
+      {/if}
     </TableBody>
   </Table>
 {/if}
@@ -75,7 +83,9 @@
     <Select bind:value={pageSize} data={PAGE_OPTIONS}></Select>
   </div>
 
-  <div class="flex w-1/3 items-end justify-end gap-2">
-    <PageStepper bind:currentPage={customerPage} {totalPages} />
-  </div>
+  {#if totalPages !== 0}
+    <div class="flex w-1/3 items-end justify-end gap-2">
+      <PageStepper bind:currentPage={customerPage} {totalPages} />
+    </div>
+  {/if}
 </div>
