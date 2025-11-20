@@ -2,9 +2,9 @@
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { Heading, Icon, IconButton } from '@immich/ui';
-  import { mdiPlus, mdiImageOff } from '@mdi/js';
   import { t } from '$lib/utils/utils';
+  import { Heading, Icon, IconButton } from '@immich/ui';
+  import { mdiImageOff, mdiPlus } from '@mdi/js';
 
   interface Props {
     item: MenuItem;
@@ -41,13 +41,13 @@
 
 <div class="relative flex flex-col justify-between rounded-lg border-2 p-4">
   <div class="relative mb-5">
-    {#if item.imageUrl}
-      <img src={item.imageUrl} alt={item.name} class="h-50 w-full rounded-md border object-cover" />
-    {:else}
-      <svg viewBox="0 0 24 24" class="h-50 w-full rounded-md border object-cover">
-        <path d={mdiImageOff} />
-      </svg>
-    {/if}
+    <div class="bg-level-2 flex h-50 w-full items-center justify-center rounded-md border object-cover">
+      {#if item.imageUrl}
+        <img src={item.imageUrl} alt={item.name} />
+      {:else}
+        <Icon icon={mdiImageOff} size="96" class="" />
+      {/if}
+    </div>
 
     {#if outOfStock}
       <div class="absolute inset-0 flex items-center justify-center rounded-md bg-black/60">
