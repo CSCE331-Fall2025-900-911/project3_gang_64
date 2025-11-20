@@ -38,7 +38,7 @@
   <div class="flex h-full items-center bg-primary">
     <div class="h-1/3 w-px bg-gray-300 dark:bg-gray-600"></div>
   </div>
-  <Text class="flex h-10 w-10 items-center justify-center bg-primary text-white dark:text-black" size="small"
+  <Text class="flex h-10 w-10 items-center justify-center bg-primary text-white dark:text-black" size="medium"
     >{value}</Text
   >
   <div class="flex h-full items-center bg-primary">
