@@ -29,8 +29,8 @@
   "kiosk_order": "Order",
   "kiosk_order_title": "ShareTea",
 
-  "cartToast_title": "Cart is Ready",
-  "cartToast_description": "Item added to order",
+  "cartToast_title": "Added to Order",
+  "cartToast_description": "{item_name} added to order",
   "cartToast_viewCart": "View Cart",
 
   "orderItem_outOfStock": "Out of Stock",

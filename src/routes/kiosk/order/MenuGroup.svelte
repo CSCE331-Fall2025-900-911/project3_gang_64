@@ -6,10 +6,9 @@
   interface Props {
     items: MenuItem[];
     title: string;
-    firstAddAction?: () => void;
   }
 
-  let { items, title, firstAddAction }: Props = $props();
+  let { items, title }: Props = $props();
 </script>
 
 <div>
@@ -17,7 +16,7 @@
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
     {#each items as item}
-      <OrderItemTile {item} {firstAddAction} />
+      <OrderItemTile {item} />
     {/each}
   </div>
 </div>

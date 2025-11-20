@@ -3,15 +3,15 @@
   import type { MenuItem } from '$lib/db/types';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { t } from '$lib/utils/utils';
-  import { Heading, Icon, IconButton } from '@immich/ui';
+  import { Heading, Icon, IconButton, toastManager } from '@immich/ui';
   import { mdiImageOff, mdiPlus } from '@mdi/js';
+  import CartToast from './CartToast.svelte';
 
   interface Props {
     item: MenuItem;
-    firstAddAction?: () => void;
   }
 
-  let { item, firstAddAction }: Props = $props();
+  let { item }: Props = $props();
   let loading = $state(false);
 
   let inventory = getIngredients();
@@ -33,9 +33,8 @@
     loading = true;
     await orderManager.addToOrder(item);
     loading = false;
-    if (firstAddAction) {
-      firstAddAction();
-    }
+
+    toastManager.custom({ component: CartToast, props: { itemName: item.name } }, { timeout: 5000, closable: true });
   }
 </script>
 

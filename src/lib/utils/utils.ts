@@ -28,8 +28,9 @@ export interface ModalProps {
   onClose: () => void;
 }
 
-export function t(key: keyof typeof m): string {
-  return m[key]();
+export function t<K extends keyof typeof m>(key: K, input: Parameters<(typeof m)[K]>[0] = {}): string {
+  // @ts-expect-error TypeScript can't infer the type here
+  return m[key](input);
 }
 
 export const luxonDatetime = custom<DateTime>((input) => (input instanceof DateTime ? input.isValid : false));
