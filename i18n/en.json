@@ -28,6 +28,8 @@
   "kiosk_cart": "Cart",
   "kiosk_order": "Order",
   "kiosk_order_title": "ShareTea",
+  "kiosk_itemModification": "Modify Item",
+  "kiosk_addToCart": "Add To Cart",
 
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",
