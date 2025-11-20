@@ -37,32 +37,43 @@
 
 <Modal title={t('kiosk_itemModification')} icon={mdiInvoiceSend} {onClose}>
   <ModalBody>
-    <div class="m-6 flex w-1/3 flex-col">
-      <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
+    <div class="flex flex-row">
+      <div class="m-3 flex w-7/12 flex-col">
         <div>
-          <Heading size="small">{item.name}</Heading>
-          <div class="gap-3 pl-4">
-            {#each ingredientList as ingredient}
-              <Text size="small" class="text-muted-foreground">
-                {ingredient.name}
-              </Text>
-            {/each}
-          </div>
+          <!--Add item mods here-->
+        </div>
+        <div class="grid w-full grid-cols-1 gap-2">
+          <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
+          <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
         </div>
       </div>
+      <div class="m-3 flex w-1/3 flex-col">
+        <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
+          <div>
+            <Heading size="small">{item.name}</Heading>
+            <div class="gap-3 pl-4">
+              {#each ingredientList as ingredient}
+                <Text size="small" class="text-muted-foreground">
+                  {ingredient.name}
+                </Text>
+              {/each}
+            </div>
+          </div>
+        </div>
 
-      <div class="shrink-0 gap-2">
-        <HStack class="flex justify-between">
-          <Heading size="tiny" fontWeight="normal">{t('kiosk_itemTotal')}</Heading>
-          <p>${currentPrice.toFixed(2)}</p>
-        </HStack>
+        <div class="shrink-0 gap-2">
+          <HStack class="flex justify-between">
+            <Heading size="tiny" fontWeight="normal">{t('kiosk_itemTotal')}</Heading>
+            <p>${currentPrice.toFixed(2)}</p>
+          </HStack>
+        </div>
       </div>
     </div>
   </ModalBody>
-  <ModalFooter>
+  <!-- <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
       <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
+      <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
     </div>
-  </ModalFooter>
+  </ModalFooter> -->
 </Modal>
