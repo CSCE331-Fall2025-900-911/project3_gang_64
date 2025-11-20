@@ -37,6 +37,17 @@
     ingredientList?.push(ingredientList[0]);
     currentPrice += ingredientList![0].unitPrice + 0.5;
   }
+
+  function removeIngredient(index: number) {
+    const ingredient = ingredientList![index];
+
+    ingredientList!.splice(index, 1);
+    currentPrice -= ingredient.unitPrice + 0.5;
+    if (currentPrice < item.price) {
+      currentPrice = item.price;
+    }
+    ingredientList = [...ingredientList!];
+  }
 </script>
 
 <Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose}>
@@ -56,8 +67,12 @@
           <div>
             <Heading size="small">{item.name}</Heading>
             <div class="gap-3 pl-4">
-              {#each ingredientList as ingredient}
-                <Text size="small" class="text-muted-foreground">
+              {#each ingredientList as ingredient, index}
+                <Text
+                  size="small"
+                  class="text-muted-foreground cursor-pointer transition hover:text-red-500"
+                  onclick={() => removeIngredient(index)}
+                >
                   {ingredient.name}
                 </Text>
               {/each}
