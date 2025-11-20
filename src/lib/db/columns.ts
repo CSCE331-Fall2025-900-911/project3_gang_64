@@ -37,8 +37,6 @@ export const luxonTimestamp = customType<{
     const ms = msStr.replace('Z', '').padStart(3, '0');
     const us = ms + '000'; // microseconds = milliseconds * 1000
 
-    console.log(`${date} ${hms}.${us}`);
-
     return `${date} ${hms}.${us}`;
   },
 });

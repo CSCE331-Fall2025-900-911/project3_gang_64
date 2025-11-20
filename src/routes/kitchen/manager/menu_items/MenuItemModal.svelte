@@ -4,6 +4,7 @@
   import ImageUpload from '$lib/components/ImageUpload.svelte';
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
+  import { t } from '$lib/utils/utils';
   import {
     Button,
     Field,
@@ -22,7 +23,6 @@
     Text,
   } from '@immich/ui';
   import { mdiPlus, mdiSilverware, mdiTrashCan } from '@mdi/js';
-  import { t } from '$lib/utils/utils';
 
   interface Props extends ModalProps {
     mode: CreateOrUpdate<MenuItem>;
@@ -62,7 +62,7 @@
   function addIngredient() {
     if (selectedIngredient) {
       const ing = ingredients.current?.find((i) => i.id === selectedIngredient!.value);
-      console.log(ing);
+
       if (ing) {
         recipe = [...recipe, ing];
         selectedIngredient = undefined;
