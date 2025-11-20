@@ -5,7 +5,6 @@
   import { mdiPlus, mdiImageOff } from '@mdi/js';
   import ItemModification from './ItemModification.svelte';
   import { t } from '$lib/utils/utils';
-  import { OrderEntrySchema } from '$lib/managers/order_manager.types';
   import CartToast from './CartToast.svelte';
 
   interface Props {

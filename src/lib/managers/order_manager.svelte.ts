@@ -18,14 +18,19 @@ class OrderManager {
   customerName = $state<string>('');
   customerEmail = $state<string>('');
 
-  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price * entry.quantity, 0));
+  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.subtotal * entry.quantity, 0));
   tax = $derived(this.subtotal * 0.07);
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
 
-  async addToOrder(menuItem: MenuItem, itemIngredients: Ingredient[] | null = null) {
+  async addToOrder(
+    menuItem: MenuItem,
+    itemIngredients: Ingredient[] | null = null,
+    itemSubtotal: number | null = null,
+  ) {
+    const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
     if (!itemIngredients) {
-      itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+      itemIngredients = baseItemIngredients;
     }
     const currentHash = itemHash(menuItem, itemIngredients);
 
@@ -40,10 +45,15 @@ class OrderManager {
       return;
     }
 
+    if (!itemSubtotal) {
+      itemSubtotal = menuItem.price;
+    }
+
     this.currentOrder.push({
       menuItem,
       ingredients: itemIngredients,
       quantity: 1,
+      subtotal: itemSubtotal,
     });
   }
 

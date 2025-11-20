@@ -19,7 +19,7 @@
 
   async function handleAddToOrder() {
     loading = true;
-    await orderManager.addToOrder(item, ingredientList);
+    await orderManager.addToOrder(item, ingredientList, currentPrice);
     loading = false;
 
     states.isAdded = true;
@@ -35,7 +35,7 @@
 
   function addSugar() {
     ingredientList?.push(ingredientList[0]);
-    currentPrice += ingredientList![0].unitPrice;
+    currentPrice += ingredientList![0].unitPrice + 0.5;
   }
 </script>
 
