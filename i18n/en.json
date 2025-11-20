@@ -69,6 +69,7 @@
   "manager_customers_table_name": "Customer Name",
   "manager_customers_table_email": "Email",
   "manager_customers_per_page": "Customers per page",
+  "manager_customers_no_results": "No customers found.",
 
   "manager_dashboard_title": "Dashboard",
   "manager_dashboard_total_sales": "Total Sales",
@@ -172,6 +173,7 @@
   "manager_orders_table_payment_method": "Payment Method",
   "manager_orders_table_total": "Total",
   "manager_orders_per_page": "Orders per page",
+  "manager_orders_no_orders": "No orders for the selected date.",
 
   "manager_reports_title": "Reports",
   "manager_reports_x_title": "X-Report",

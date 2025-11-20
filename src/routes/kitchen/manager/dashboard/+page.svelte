@@ -5,23 +5,23 @@
   import DashboardCard from '$lib/components/DashboardCard.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { PaymentMethod } from '$lib/db/types';
+  import { t } from '$lib/utils/utils';
   import { getWeatherIcon, WEATHER_LOCATION } from '$lib/utils/weather';
   import { Heading, Icon, LoadingSpinner } from '@immich/ui';
-  import { t } from '$lib/utils/utils';
   import { mdiCardBulleted, mdiCashMultiple, mdiCurrencyUsd, mdiShoppingOutline } from '@mdi/js';
-  import moment from 'moment';
+  import { DateTime } from 'luxon';
 
-  let dailyOrders = getDayOrderCount(moment().toDate());
+  let dailyOrders = getDayOrderCount(DateTime.now());
 
-  let dailyRevenue = getDayRevenue(moment().toDate());
-  let lastWeekRevenue = getDayRevenue(moment().subtract(7, 'days').toDate());
+  let dailyRevenue = getDayRevenue(DateTime.now());
+  let lastWeekRevenue = getDayRevenue(DateTime.now().minus({ days: 7 }));
   let revenuePercentageChange = $derived(
     dailyRevenue.ready && lastWeekRevenue.ready
       ? ((dailyRevenue.current - lastWeekRevenue.current) / (lastWeekRevenue.current || 1)) * 100
       : undefined,
   );
 
-  let orders = $derived(getOrders({ page: 0, limit: 10 }));
+  let orders = $derived(getOrders({ limit: 10 }));
 
   function getPaymentMethodIcon(method: PaymentMethod) {
     switch (method) {
@@ -86,7 +86,7 @@
       <TableBody>
         {#each orders.current as order}
           <TableRow>
-            <TableCell width="w-3/12">{moment(order.date).format('LLLL')}</TableCell>
+            <TableCell width="w-3/12">{order.date.toLocaleString(DateTime.DATETIME_MED)}</TableCell>
             <TableCell width="w-4/12" align="left">{order.customer}</TableCell>
             <TableCell width="w-3/12" class="flex items-center justify-center">
               <Icon icon={getPaymentMethodIcon(order.paymethod)} size="36" />

@@ -1,6 +1,6 @@
 import { m } from '$lib/i18n/messages';
-import moment from 'moment';
-import * as v from 'valibot';
+import { DateTime } from 'luxon';
+import { custom } from 'valibot';
 
 export function titleCase(s: string) {
   return s
@@ -24,11 +24,6 @@ export function groupedItems<T>(items: T[], key: (item: T) => string): Record<st
   );
 }
 
-export const momentValidator = v.custom<moment.Moment>(
-  (value): value is moment.Moment => moment.isMoment(value),
-  'Must be a Moment object',
-);
-
 export interface ModalProps {
   onClose: () => void;
 }
@@ -36,3 +31,5 @@ export interface ModalProps {
 export function t(key: keyof typeof m): string {
   return m[key]();
 }
+
+export const luxonDatetime = custom<DateTime>((input) => (input instanceof DateTime ? input.isValid : false));

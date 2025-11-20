@@ -2,8 +2,9 @@ import { command, query } from '$app/server';
 import { customer, ingredient, order, orderContent } from '$lib/db/schema';
 import { orderInsertSchema, orderSelectSchema, type NewOrder } from '$lib/db/types';
 import { OrderEntrySchema } from '$lib/managers/order_manager.types';
+import { luxonDatetime } from '$lib/utils/utils';
 import { desc, eq, sql } from 'drizzle-orm';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
 import * as v from 'valibot';
 import { getDB } from '../db';
@@ -11,12 +12,24 @@ import { getDB } from '../db';
 const getOrdersSchema = v.object({
   page: v.optional(v.number(), 1),
   limit: v.optional(v.number(), 50),
+  date: v.optional(luxonDatetime),
 });
 
-export const getOrders = query(getOrdersSchema, async ({ page, limit }) => {
+export const getOrders = query(getOrdersSchema, async ({ page = 0, limit = 25, date }) => {
   const db = getDB();
 
-  return await db
+  const filter = date ? eq(sql<string>`DATE(${order.date})`, date) : undefined;
+
+  // Get total count for pagination
+  const [totalCount] = await db
+    .select({
+      count: sql<number>`COUNT(${order.id})`,
+    })
+    .from(order)
+    .where(filter);
+
+  // Get paginated orders
+  const orders = await db
     .select({
       id: order.id,
       total: order.total,
@@ -25,21 +38,19 @@ export const getOrders = query(getOrdersSchema, async ({ page, limit }) => {
       paymethod: order.paymentMethod,
     })
     .from(order)
+    .where(filter)
     .innerJoin(customer, eq(order.customerId, customer.id))
     .orderBy(desc(order.date))
     .limit(limit)
     .offset(page * limit);
-});
 
-export const getOrderCount = query(async () => {
-  const db = getDB();
+  const totalPages = Math.ceil(totalCount.count / limit);
 
-  return await db
-    .select({
-      count: sql<number>`COUNT(${order.id})`,
-    })
-    .from(order)
-    .then((res) => res[0].count);
+  return {
+    orders,
+    totalPages,
+    totalCount: totalCount.count,
+  };
 });
 
 export const createOrder = command(orderInsertSchema, async (newOrder: NewOrder) => {
@@ -77,7 +88,7 @@ export const submitOrder = command(
       total,
       paymentMethod,
       employeeId,
-      date: moment().toISOString(),
+      date: DateTime.now(),
       itemQuantity: submittedOrder.length,
     };
 

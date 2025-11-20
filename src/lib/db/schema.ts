@@ -1,16 +1,7 @@
 import { sql } from 'drizzle-orm';
-import {
-  boolean,
-  doublePrecision,
-  foreignKey,
-  integer,
-  pgEnum,
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { boolean, doublePrecision, foreignKey, integer, pgEnum, pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
 import { v4 as uuidv4 } from 'uuid';
+import { luxonTimestamp } from './columns';
 
 export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
 export const role = pgEnum('role', ['manager', 'staff']);
@@ -39,7 +30,7 @@ export const order = pgTable(
     subtotal: doublePrecision().notNull(),
     tax: doublePrecision().notNull(),
     total: doublePrecision().notNull(),
-    date: timestamp({ mode: 'string' })
+    date: luxonTimestamp()
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     paymentMethod: paymethod('payment_method').notNull(),
@@ -125,7 +116,7 @@ export const recipe = pgTable(
 );
 
 export const zReport = pgTable('z_report', {
-  timestamp: timestamp({ mode: 'string' })
+  timestamp: luxonTimestamp()
     .default(sql`(CURRENT_TIMESTAMP - '1 day'::interval)`)
     .notNull(),
 });
