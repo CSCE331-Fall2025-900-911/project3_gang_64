@@ -8,16 +8,24 @@
 
   interface Props {
     item: MenuItem;
-    firstAddAction?: () => void;
+    states: { isAdded: boolean };
   }
 
-  let { onClose, item }: ModalProps & Props = $props();
+  let { onClose, item, states }: ModalProps & Props = $props();
   let loading = $state(false);
 
   async function handleAddToOrder() {
     loading = true;
     await orderManager.addToOrder(item);
     loading = false;
+
+    states.isAdded = true;
+
+    onClose();
+  }
+
+  function cancelItem() {
+    states.isAdded = false;
 
     onClose();
   }
@@ -29,6 +37,7 @@
   </ModalBody>
   <ModalFooter>
     <div class="grid w-full grid-cols-1 gap-2">
+      <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
       <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
     </div>
   </ModalFooter>
