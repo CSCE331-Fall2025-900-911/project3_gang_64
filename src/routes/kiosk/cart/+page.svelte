@@ -1,20 +1,13 @@
 <script lang="ts">
+  import NumberStepper from '$lib/components/NumberStepper.svelte';
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { AppShell, Button, Heading, HStack, IconButton, modalManager, Text } from '@immich/ui';
-  import { mdiTrashCanOutline } from '@mdi/js';
-  import OrderSubmitDialog from '../../kitchen/cashier/OrderSubmitDialog.svelte';
   import { t } from '$lib/utils/utils';
+  import { AppShell, Button, Heading, HStack, IconButton, modalManager, Text } from '@immich/ui';
+  import { mdiPencil, mdiTrashCan } from '@mdi/js';
+  import OrderSubmitDialog from '../../kitchen/cashier/OrderSubmitDialog.svelte';
 
   function showSubmitDialog() {
     modalManager.show(OrderSubmitDialog);
-  }
-
-  function removeItem(index: number) {
-    orderManager.removeFromOrder(index);
-  }
-
-  function duplicateItem(index: number) {
-    orderManager.duplicateOrderEntry(index);
   }
 </script>
 
@@ -37,24 +30,29 @@
               {/each}
             </div>
           </div>
-          <div class="flex justify-between gap-4">
-            <div class="flex flex-col justify-center">
-              <Button onclick={duplicateItem.bind(null, i)}>{t('cart_duplicateItem')}</Button>
-            </div>
-
-            <div class="flex flex-col justify-center">
+          <div class="flex flex-col items-end justify-between">
+            <Text size="large">${(entry.menuItem.price * entry.quantity).toFixed(2)}</Text>
+            <NumberStepper
+              value={entry.quantity}
+              min={1}
+              onChange={(newValue) => orderManager.updateQuantity(i, newValue)}
+            />
+            <HStack gap={2}>
               <IconButton
-                icon={mdiTrashCanOutline}
-                shape="round"
+                icon={mdiPencil}
                 size="medium"
                 color="primary"
-                onclick={removeItem.bind(null, i)}
+                onclick={() => alert('TODO: Edit functionality not yet implemented')}
+                aria-label={t('cart_editItem')}
+              />
+              <IconButton
+                icon={mdiTrashCan}
+                size="medium"
+                color="danger"
+                onclick={() => orderManager.removeFromOrder(i)}
                 aria-label={t('cart_removeItem')}
               />
-            </div>
-            <div class="flex flex-col items-end">
-              <Text size="small">${entry.menuItem.price.toFixed(2)}</Text>
-            </div>
+            </HStack>
           </div>
         </div>
       {/each}

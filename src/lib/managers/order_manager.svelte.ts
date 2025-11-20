@@ -2,8 +2,14 @@ import { createOrSelectCustomer } from '$lib/api/customer.remote';
 import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
-import type { MenuItem, PaymentMethod } from '$lib/db/types';
+import type { Ingredient, MenuItem, PaymentMethod } from '$lib/db/types';
 import type { OrderEntry } from './order_manager.types';
+
+function itemHash(menuItem: MenuItem, ingredientIds: Ingredient[]): string {
+  // Sort ingredient IDs to ensure consistent hash regardless of order
+  const sortedIngredients = [...ingredientIds].sort((a, b) => a.id.localeCompare(b.id));
+  return `${menuItem.id}-${sortedIngredients.map((i) => i.id).join(',')}`;
+}
 
 class OrderManager {
   currentOrder = $state<OrderEntry[]>([]);
@@ -18,9 +24,23 @@ class OrderManager {
   isValidOrder = $derived(this.currentOrder.length > 0);
 
   async addToOrder(menuItem: MenuItem) {
+    const itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+    const currentHash = itemHash(menuItem, itemIngredients);
+
+    // check if item already exists in order
+    const existing = this.currentOrder.find((entry) => {
+      const existingHash = itemHash(entry.menuItem, entry.ingredients);
+      return existingHash === currentHash;
+    });
+
+    if (existing) {
+      existing.quantity += 1;
+      return;
+    }
+
     this.currentOrder.push({
       menuItem,
-      ingredients: await getIngredientsForMenuItem(menuItem.id),
+      ingredients: itemIngredients,
       quantity: 1,
     });
   }
@@ -30,7 +50,7 @@ class OrderManager {
   }
 
   getCurrentCartAmount(): number {
-    return this.currentOrder.length;
+    return this.currentOrder.reduce((sum, entry) => sum + entry.quantity, 0);
   }
 
   modifyOrderEntry(index: number, newEntry: OrderEntry) {
