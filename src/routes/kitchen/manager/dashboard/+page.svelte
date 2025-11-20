@@ -84,7 +84,7 @@
         <TableHeaderCell width="w-2/12">{t('manager_dashboard_table_total')}</TableHeaderCell>
       </TableHeader>
       <TableBody>
-        {#each orders.current as order}
+        {#each orders.current?.orders as order}
           <TableRow>
             <TableCell width="w-3/12">{order.date.toLocaleString(DateTime.DATETIME_MED)}</TableCell>
             <TableCell width="w-4/12" align="left">{order.customer}</TableCell>

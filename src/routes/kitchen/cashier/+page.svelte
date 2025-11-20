@@ -1,12 +1,13 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
+  import NumberStepper from '$lib/components/NumberStepper.svelte';
   import { orderManager } from '$lib/managers/order_manager.svelte';
+  import { t } from '$lib/utils/utils';
   import { AppShellSidebar, Button, Heading, HStack, IconButton, modalManager, NavbarItem, Text } from '@immich/ui';
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
-  import { t } from '$lib/utils/utils';
 
   let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
@@ -63,7 +64,12 @@
               </div>
             </div>
             <div class="flex flex-col items-end justify-between">
-              <Text size="giant">${entry.menuItem.price.toFixed(2)}</Text>
+              <Text size="large">${(entry.menuItem.price * entry.quantity).toFixed(2)}</Text>
+              <NumberStepper
+                value={entry.quantity}
+                min={1}
+                onChange={(newValue) => orderManager.updateQuantity(i, newValue)}
+              />
               <HStack gap={2}>
                 <IconButton
                   icon={mdiPencil}

@@ -12,7 +12,7 @@ class OrderManager {
   customerName = $state<string>('');
   customerEmail = $state<string>('');
 
-  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price, 0));
+  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price * entry.quantity, 0));
   tax = $derived(this.subtotal * 0.07);
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
@@ -65,6 +65,10 @@ class OrderManager {
     });
 
     this.clearOrder();
+  }
+
+  updateQuantity(index: number, newQuantity: number) {
+    this.currentOrder[index].quantity = newQuantity;
   }
 }
 
