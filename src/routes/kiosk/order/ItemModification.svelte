@@ -2,8 +2,8 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { ModalProps } from '$lib/utils/utils';
-  import { Button, Modal, ModalBody, HStack, Heading, Text } from '@immich/ui';
-  import { mdiTagEdit } from '@mdi/js';
+  import { Button, Modal, ModalBody, HStack, Heading, Text, Icon } from '@immich/ui';
+  import { mdiTagEdit, mdiRestart } from '@mdi/js';
   import type { MenuItem } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
 
@@ -16,6 +16,7 @@
   let loading = $state(false);
   let currentPrice = $state(item.price);
   let ingredientList = $state(getIngredientsForMenuItem(item.id).current);
+  const markup = 0.5;
 
   async function handleAddToOrder() {
     loading = true;
@@ -27,26 +28,25 @@
     onClose();
   }
 
-  function cancelItem() {
-    states.isAdded = false;
-
-    onClose();
-  }
-
   function addSugar() {
     ingredientList?.push(ingredientList[0]);
-    currentPrice += ingredientList![0].unitPrice + 0.5;
+    currentPrice += ingredientList![0].unitPrice + markup;
   }
 
   function removeIngredient(index: number) {
     const ingredient = ingredientList![index];
 
     ingredientList!.splice(index, 1);
-    currentPrice -= ingredient.unitPrice + 0.5;
+    currentPrice -= ingredient.unitPrice + markup;
     if (currentPrice < item.price) {
       currentPrice = item.price;
     }
     ingredientList = [...ingredientList!];
+  }
+
+  function restartModification() {
+    ingredientList = getIngredientsForMenuItem(item.id).current;
+    currentPrice = item.price;
   }
 </script>
 
@@ -54,12 +54,21 @@
   <ModalBody>
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
-        <div class="grid w-full grid-cols-1 gap-2">
+        <div class="mb-2 grid w-full grid-cols-1 gap-2">
           <Button onclick={addSugar} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
         </div>
-        <div class="grid w-full grid-cols-1 gap-2">
-          <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
-          <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
+        <div class="flex h-12 w-full flex-row items-center">
+          <Button onclick={handleAddToOrder} shape="round" color="primary" class="m-2 h-full w-9/10">
+            {t('kiosk_addToCart')}
+          </Button>
+          <Button
+            onclick={restartModification}
+            shape="round"
+            color="secondary"
+            class="flex h-full w-3/20 items-center justify-center"
+          >
+            <Icon icon={mdiRestart} class="h-full w-full" />
+          </Button>
         </div>
       </div>
       <div class="mr-2 ml-4 flex w-1/3 flex-col">
