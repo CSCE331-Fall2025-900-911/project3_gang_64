@@ -31,6 +31,7 @@
   "kiosk_itemModification": "Modify Item",
   "kiosk_addToCart": "Add To Cart",
   "kiosk_cancelItem": "Cancel Item Order",
+  "kiosk_itemTotal": "Item Total",
 
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",
