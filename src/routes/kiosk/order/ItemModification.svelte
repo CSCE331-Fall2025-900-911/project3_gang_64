@@ -2,9 +2,8 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { ModalProps } from '$lib/utils/utils';
-  import { Button, Modal, ModalBody, ModalFooter, HStack, Heading, IconButton, Text } from '@immich/ui';
-  import NumberStepper from '$lib/components/NumberStepper.svelte';
-  import { mdiInvoiceSend, mdiPencil, mdiTrashCan } from '@mdi/js';
+  import { Button, Modal, ModalBody, HStack, Heading, Text } from '@immich/ui';
+  import { mdiTagEdit } from '@mdi/js';
   import type { MenuItem } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
 
@@ -20,7 +19,7 @@
 
   async function handleAddToOrder() {
     loading = true;
-    await orderManager.addToOrder(item);
+    await orderManager.addToOrder(item, ingredientList);
     loading = false;
 
     states.isAdded = true;
@@ -33,21 +32,26 @@
 
     onClose();
   }
+
+  function addSugar() {
+    ingredientList?.push(ingredientList[0]);
+    currentPrice += ingredientList![0].unitPrice;
+  }
 </script>
 
-<Modal title={t('kiosk_itemModification')} icon={mdiInvoiceSend} {onClose}>
+<Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose}>
   <ModalBody>
     <div class="flex flex-row">
-      <div class="m-3 flex w-7/12 flex-col">
-        <div>
-          <!--Add item mods here-->
+      <div class="mr-4 ml-2 flex w-7/12 flex-col">
+        <div class="grid w-full grid-cols-1 gap-2">
+          <Button onclick={addSugar} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
         </div>
         <div class="grid w-full grid-cols-1 gap-2">
           <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
           <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
         </div>
       </div>
-      <div class="m-3 flex w-1/3 flex-col">
+      <div class="mr-2 ml-4 flex w-1/3 flex-col">
         <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
           <div>
             <Heading size="small">{item.name}</Heading>
@@ -70,10 +74,4 @@
       </div>
     </div>
   </ModalBody>
-  <!-- <ModalFooter>
-    <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={handleAddToOrder} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
-      <Button onclick={cancelItem} shape="round" color="danger">{t('kiosk_cancelItem')}</Button>
-    </div>
-  </ModalFooter> -->
 </Modal>

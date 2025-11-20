@@ -3,7 +3,9 @@ import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
 import type { Ingredient, MenuItem, PaymentMethod } from '$lib/db/types';
+import type { RemoteQuery } from '@sveltejs/kit';
 import type { OrderEntry } from './order_manager.types';
+import { ingredient } from '$lib/db/schema';
 
 function itemHash(menuItem: MenuItem, ingredientIds: Ingredient[]): string {
   // Sort ingredient IDs to ensure consistent hash regardless of order
@@ -23,8 +25,10 @@ class OrderManager {
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
 
-  async addToOrder(menuItem: MenuItem) {
-    const itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+  async addToOrder(menuItem: MenuItem, itemIngredients: Ingredient[] | null = null) {
+    if (!itemIngredients) {
+      itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+    }
     const currentHash = itemHash(menuItem, itemIngredients);
 
     // check if item already exists in order
