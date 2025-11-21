@@ -1,7 +1,8 @@
 <script lang="ts">
   import { t } from '$lib/utils/utils';
-  import { Button, ToastContainer, ToastContent } from '@immich/ui';
+  import { Button, modalManager, ToastContainer, ToastContent } from '@immich/ui';
   import { mdiCartOutline } from '@mdi/js';
+  import CartModal from './CartModal.svelte';
 
   interface Props {
     onClose?: () => void;
@@ -9,6 +10,10 @@
   }
 
   const { onClose, itemName }: Props = $props();
+
+  function onOpenCart() {
+    modalManager.show(CartModal);
+  }
 </script>
 
 <ToastContainer color="primary">
@@ -20,7 +25,7 @@
     {onClose}
   >
     <div class="flex justify-end gap-2 px-2 pb-2">
-      <Button href="/kiosk/cart" color="primary" size="small">{t('cartToast_viewCart')}</Button>
+      <Button color="primary" size="small" onclick={onOpenCart}>{t('cartToast_viewCart')}</Button>
     </div>
   </ToastContent>
 </ToastContainer>

@@ -1,15 +1,23 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { page } from '$app/state';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
-  import { t } from '$lib/utils/utils';
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, ThemeSwitcher } from '@immich/ui';
+  import { t } from '$lib/utils/utils';
+  import {
+    AppShell,
+    AppShellHeader,
+    Avatar,
+    IconButton,
+    initializeTheme,
+    modalManager,
+    ThemeSwitcher,
+  } from '@immich/ui';
   import { mdiCartOutline, mdiEye, mdiPartyPopper, mdiShoppingOutline } from '@mdi/js';
   import { onMount } from 'svelte';
   import '../../app.css';
   import { colorblindMode, type ColorblindMode } from './colorBlind';
+  import CartModal from './order/CartModal.svelte';
 
   let { children } = $props();
 
@@ -33,19 +41,7 @@
   });
 
   function openCart() {
-    goto(cartUrl);
-  }
-
-  function closeCart() {
-    goto(orderUrl);
-  }
-
-  function handleShopModeClick() {
-    if (page.url.pathname === cartUrl) {
-      closeCart();
-    } else {
-      openCart();
-    }
+    modalManager.show(CartModal);
   }
 
   //Color blind stuff
@@ -170,7 +166,7 @@
             shape="round"
             size="medium"
             color="primary"
-            onclick={handleShopModeClick}
+            onclick={openCart}
             aria-label={shopModeLabel}
           />
           <div class="absolute -top-1 -right-1">

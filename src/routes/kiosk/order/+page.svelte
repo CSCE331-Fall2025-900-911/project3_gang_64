@@ -3,7 +3,7 @@
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
   import { t } from '$lib/utils/utils';
-  import { AppShell, AppShellSidebar, NavbarItem } from '@immich/ui';
+  import { AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
   let menu = await getCategorizedMenu();

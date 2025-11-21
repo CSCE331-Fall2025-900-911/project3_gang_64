@@ -15,7 +15,7 @@
 <div class="flex h-full w-full flex-col">
   <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
     {#if orderManager.currentOrder.length == 0}
-      <Text class="pt-6 text-center">{t('cart_noItems')}</Text>
+      <Text class="pt-2 text-center">{t('cart_noItems')}</Text>
     {/if}
 
     {#each orderManager.currentOrder as entry, i}
