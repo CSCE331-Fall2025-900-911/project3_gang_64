@@ -56,7 +56,7 @@
     const hasTopping = ingredientList.some((i) => i.name === topping.name);
     ingredientList!.push(topping);
     currentPrice += topping.unitPrice;
-    if (hasTopping) {
+    if ((hasTopping && baseItems.includes(topping)) || !baseItems.includes(topping)) {
       currentPrice += markup;
     }
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
