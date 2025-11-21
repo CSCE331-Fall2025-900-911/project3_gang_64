@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { orderManager } from '$lib/managers/order_manager.svelte';
   import { getIngredientsForMenuItem, getToppingIngredients } from '$lib/api/ingredient.remote';
+  import type { Ingredient, MenuItem } from '$lib/db/types';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
-  import { Button, Modal, ModalBody, HStack, Heading, Text, Icon, toastManager } from '@immich/ui';
-  import { mdiTagEdit, mdiRestart } from '@mdi/js';
-  import type { MenuItem, Ingredient } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
-  import ItemModDeleteToast from './ItemModDeleteToast.svelte';
+  import { Button, HStack, Heading, IconButton, Modal, ModalBody, Text, toastManager } from '@immich/ui';
+  import { mdiRestart, mdiTagEdit } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
+  import ItemModDeleteToast from './ItemModDeleteToast.svelte';
 
   interface Props {
     item: MenuItem;
@@ -106,7 +106,7 @@
   }
 </script>
 
-<Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose}>
+<Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose} size="large">
   <ModalBody>
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
@@ -172,19 +172,19 @@
           </div>
         </div>
 
-        <div class="mt-2 flex h-12 w-full flex-row items-center">
-          <Button onclick={handleAddToOrder} shape="round" color="primary" class="m-2 h-full w-9/10">
+        <HStack class="mt-4 w-full" gap={2}>
+          <Button onclick={handleAddToOrder} shape="round" color="primary" class="w-9/10" {loading}>
             {t('kiosk_addToCart')}
           </Button>
-          <Button
+          <IconButton
             onclick={restartModification}
             shape="round"
             color="secondary"
-            class="flex h-full w-3/20 items-center justify-center"
-          >
-            <Icon icon={mdiRestart} class="h-full w-full object-contain" />
-          </Button>
-        </div>
+            class="w-1/10"
+            icon={mdiRestart}
+            aria-label={t('kiosk_restartModification')}
+          />
+        </HStack>
       </div>
       <div class="mr-2 ml-4 flex w-1/3 flex-col">
         <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">

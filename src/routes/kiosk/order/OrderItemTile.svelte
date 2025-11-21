@@ -1,11 +1,11 @@
 <script lang="ts">
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
-  import { Heading, IconButton, modalManager, Icon, toastManager } from '@immich/ui';
-  import { mdiPlus, mdiImageOff } from '@mdi/js';
-  import ItemModification from './ItemModification.svelte';
   import { t } from '$lib/utils/utils';
+  import { Heading, Icon, IconButton, modalManager, toastManager } from '@immich/ui';
+  import { mdiImageOff, mdiPlus } from '@mdi/js';
   import CartToast from './CartToast.svelte';
+  import ItemModificationModal from './ItemModificationModal.svelte';
 
   interface Props {
     item: MenuItem;
@@ -31,7 +31,7 @@
 
   async function showSubmitDialog() {
     const states = { isAdded: false };
-    await modalManager.show(ItemModification, { item, states });
+    await modalManager.show(ItemModificationModal, { item, states });
 
     if (states.isAdded) {
       toastManager.custom({ component: CartToast, props: { itemName: item.name } }, { timeout: 5000, closable: true });
