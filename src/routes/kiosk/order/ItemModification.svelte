@@ -95,6 +95,15 @@
 
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
+
+  function validateToppingStock(topping: Ingredient) {
+    let currentToppingAmount = ingredientList.filter((i) => i.name == topping.name).length;
+    if (currentToppingAmount == topping.currentStock) {
+      return true;
+    }
+
+    return false;
+  }
 </script>
 
 <Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose}>
@@ -150,7 +159,13 @@
           <Heading size="small" class="mb-2">Toppings:</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
             {#each toppingsList ?? [] as topping}
-              <Button onclick={() => addTopping(topping)} shape="round" color="danger" class={levelBtn}>
+              <Button
+                onclick={() => addTopping(topping)}
+                shape="round"
+                color="danger"
+                disabled={validateToppingStock(topping)}
+                class={levelBtn}
+              >
                 {topping.name}
               </Button>
             {/each}
