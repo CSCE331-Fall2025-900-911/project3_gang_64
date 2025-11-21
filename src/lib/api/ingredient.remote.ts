@@ -36,7 +36,11 @@ export const getToppingIngredients = query(async () => {
     .select()
     .from(ingredient)
     .where(
-      or(ilike(ingredient.name, '%Pearls%'), ilike(ingredient.name, '%Jelly%'), ilike(ingredient.name, '%Ice Cream%')),
+      or(
+        ilike(ingredient.category, 'Tapioca'),
+        ilike(ingredient.category, 'Jelly'),
+        ilike(ingredient.name, '%Ice Cream%'),
+      ),
     )
     .orderBy(ingredient.name);
 });
