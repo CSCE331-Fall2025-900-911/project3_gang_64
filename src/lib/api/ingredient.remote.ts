@@ -2,7 +2,7 @@ import { command, query } from '$app/server';
 import { getDB } from '$lib/db';
 import { ingredient, menu, recipe } from '$lib/db/schema';
 import { ingredientInsertSchema, ingredientSelectSchema, ingredientUpdateSchema } from '$lib/db/types';
-import { eq } from 'drizzle-orm';
+import { eq, or, ilike } from 'drizzle-orm';
 import * as v from 'valibot';
 
 export const getIngredients = query(async () => {
@@ -27,6 +27,22 @@ export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: st
   }
 
   return ingredients.map((row) => row.ingredient).filter((r) => r !== null);
+});
+
+export const getToppingIngredients = query(async () => {
+  const db = getDB();
+
+  return await db
+    .select()
+    .from(ingredient)
+    .where(
+      or(
+        ilike(ingredient.category, 'Tapioca'),
+        ilike(ingredient.category, 'Jelly'),
+        ilike(ingredient.name, '%Ice Cream%'),
+      ),
+    )
+    .orderBy(ingredient.name);
 });
 
 export const createIngredient = command(ingredientInsertSchema, async (newIngredient) => {

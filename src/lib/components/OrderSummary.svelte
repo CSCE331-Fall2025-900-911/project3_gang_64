@@ -31,7 +31,7 @@
           </div>
         </div>
         <Stack align="end" gap={2}>
-          <Text size="large">${(entry.menuItem.price * entry.quantity).toFixed(2)}</Text>
+          <Text size="large">${(entry.subtotal * entry.quantity).toFixed(2)}</Text>
           <NumberStepper value={entry.quantity} min={1} onChange={(value) => orderManager.updateQuantity(i, value)} />
           <HStack gap={2}>
             <IconButton

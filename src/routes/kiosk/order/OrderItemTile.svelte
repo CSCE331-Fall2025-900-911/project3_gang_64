@@ -1,10 +1,10 @@
 <script lang="ts">
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
-  import { orderManager } from '$lib/managers/order_manager.svelte';
+  import { Heading, IconButton, modalManager, Icon, toastManager } from '@immich/ui';
+  import { mdiPlus, mdiImageOff } from '@mdi/js';
+  import ItemModification from './ItemModification.svelte';
   import { t } from '$lib/utils/utils';
-  import { Heading, Icon, IconButton, toastManager } from '@immich/ui';
-  import { mdiImageOff, mdiPlus } from '@mdi/js';
   import CartToast from './CartToast.svelte';
 
   interface Props {
@@ -29,12 +29,13 @@
     return tempStock;
   });
 
-  async function handleAddToOrder() {
-    loading = true;
-    await orderManager.addToOrder(item);
-    loading = false;
+  async function showSubmitDialog() {
+    const states = { isAdded: false };
+    await modalManager.show(ItemModification, { item, states });
 
-    toastManager.custom({ component: CartToast, props: { itemName: item.name } }, { timeout: 5000, closable: true });
+    if (states.isAdded) {
+      toastManager.custom({ component: CartToast, props: { itemName: item.name } }, { timeout: 5000, closable: true });
+    }
   }
 </script>
 
@@ -61,7 +62,7 @@
       icon={mdiPlus}
       size="large"
       color="info"
-      onclick={handleAddToOrder}
+      onclick={showSubmitDialog}
       disabled={outOfStock || loading}
       aria-label={t('orderItem_addToOrder')}
     />

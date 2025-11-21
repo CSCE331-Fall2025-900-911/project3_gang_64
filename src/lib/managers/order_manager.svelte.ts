@@ -18,16 +18,26 @@ class OrderManager {
   customerName = $state<string>('');
   customerEmail = $state<string>('');
 
-  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.menuItem.price * entry.quantity, 0));
+  subtotal = $derived(this.currentOrder.reduce((sum, entry) => sum + entry.subtotal * entry.quantity, 0));
   tax = $derived(this.subtotal * 0.07);
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
 
-  async addToOrder(menuItem: MenuItem) {
-    const itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+  async addToOrder(
+    menuItem: MenuItem,
+    itemIngredients: Ingredient[] | null = null,
+    itemSubtotal: number | null = null,
+    itemIceLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
+    itemSugarLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
+  ) {
+    const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
+
+    if (!itemIngredients) {
+      itemIngredients = baseItemIngredients;
+    }
+
     const currentHash = itemHash(menuItem, itemIngredients);
 
-    // check if item already exists in order
     const existing = this.currentOrder.find((entry) => {
       const existingHash = itemHash(entry.menuItem, entry.ingredients);
       return existingHash === currentHash;
@@ -38,10 +48,27 @@ class OrderManager {
       return;
     }
 
+    if (!itemSubtotal) {
+      itemSubtotal = menuItem.price;
+    }
+
+    const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
+
+    if (!levelOptions.includes(itemIceLevel)) {
+      itemIceLevel = 'Normal';
+    }
+
+    if (!levelOptions.includes(itemSugarLevel)) {
+      itemSugarLevel = 'Normal';
+    }
+
     this.currentOrder.push({
       menuItem,
       ingredients: itemIngredients,
       quantity: 1,
+      subtotal: itemSubtotal,
+      iceLevel: itemIceLevel,
+      sugarLevel: itemSugarLevel,
     });
   }
 

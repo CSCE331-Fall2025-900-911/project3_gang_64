@@ -23,22 +23,20 @@
   <title>{t('kiosk_order_title')}</title>
 </svelte:head>
 
-<AppShell>
+<div class="flex h-full overflow-hidden">
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
       <NavbarItem
-        href={`/order/kiosk#${category}`}
+        href={`/kiosk/order#${category}`}
         title={category ?? ''}
         active={category === currentCategory.title}
       />
     {/each}
   </AppShellSidebar>
 
-  <div class="flex h-full w-full pb-2">
-    <div class="w-full overflow-y-auto p-4">
-      {#if currentCategory.items}
-        <MenuGroup title={currentCategory.title} items={currentCategory.items} />
-      {/if}
-    </div>
+  <div class="h-full w-full overflow-y-auto p-4">
+    {#if currentCategory.items}
+      <MenuGroup {...currentCategory} />
+    {/if}
   </div>
-</AppShell>
+</div>

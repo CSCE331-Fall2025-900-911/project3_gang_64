@@ -28,10 +28,19 @@
   "kiosk_cart": "Cart",
   "kiosk_order": "Order",
   "kiosk_order_title": "ShareTea",
+  "kiosk_itemModification": "Modify Item",
+  "kiosk_addToCart": "Add To Cart",
+  "kiosk_cancelItem": "Cancel Item Order",
+  "kiosk_itemTotal": "Item Total",
 
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",
   "cartToast_viewCart": "View Cart",
+
+  "itemModDeleteToast_title": "Cannot Delete",
+  "itemModDeleteToast_description": "Too few ingredients. Cannot delete.",
+  "itemModAddToast_title": "Cannot Add",
+  "itemModAddToast_description": "Too many ingredients. Delete one to add more.",
 
   "orderItem_outOfStock": "Out of Stock",
   "orderItem_addToOrder": "Add to Order",
