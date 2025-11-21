@@ -18,7 +18,9 @@
   let loading = $state(false);
   let currentPrice = $state(item.price);
   let shownPrice = $state(item.price);
-  let ingredientList = $state(getIngredientsForMenuItem(item.id).current ?? []);
+  let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
+  // svelte-ignore state_referenced_locally
+  let ingredientList = $state(baseItems);
   let toppingsList = $derived(getToppingIngredients().current ?? []);
   const markup = 0.5;
   const levelBtn = 'flex h-20 items-center justify-center text-center rounded-xl transition';
@@ -51,8 +53,12 @@
       toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
       return;
     }
+    const hasTopping = ingredientList.some((i) => i.name === topping.name);
     ingredientList!.push(topping);
-    currentPrice += topping.unitPrice + markup;
+    currentPrice += topping.unitPrice;
+    if (hasTopping) {
+      currentPrice += markup;
+    }
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
@@ -74,12 +80,42 @@
     currentPrice = item.price;
     shownPrice = item.price;
   }
+
+  function toggleBaseItem(ingredient: Ingredient) {
+    const hasItem = ingredientList.some((i) => i.name === ingredient.name);
+
+    if (hasItem) {
+      let removedIngredientsAmount = ingredientList.filter((i) => i.name == ingredient.name).length;
+      ingredientList = ingredientList.filter((i) => i.name !== ingredient.name);
+      currentPrice -= ingredient.unitPrice * removedIngredientsAmount + (removedIngredientsAmount - 1) * markup;
+    } else {
+      ingredientList = [...ingredientList, ingredient];
+      currentPrice += ingredient.unitPrice;
+    }
+
+    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
+  }
 </script>
 
 <Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose}>
   <ModalBody>
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
+        <div class="mb-4">
+          <Heading size="small" class="mb-2">Base Items:</Heading>
+          <div class="grid w-full grid-cols-3 gap-2">
+            {#each baseItems as baseIngredients}
+              <Button
+                shape="round"
+                color={ingredientList.some((i) => i.name === baseIngredients.name) ? 'danger' : 'secondary'}
+                class={levelBtn}
+                onclick={() => toggleBaseItem(baseIngredients)}
+              >
+                {baseIngredients.name}
+              </Button>
+            {/each}
+          </div>
+        </div>
         <div class="mb-4">
           <Heading size="small" class="mb-2">Ice Level:</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
