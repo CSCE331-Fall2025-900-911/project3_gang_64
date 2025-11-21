@@ -2,10 +2,12 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { getIngredientsForMenuItem, getToppingIngredients } from '$lib/api/ingredient.remote';
   import type { ModalProps } from '$lib/utils/utils';
-  import { Button, Modal, ModalBody, HStack, Heading, Text, Icon } from '@immich/ui';
+  import { Button, Modal, ModalBody, HStack, Heading, Text, Icon, toastManager } from '@immich/ui';
   import { mdiTagEdit, mdiRestart } from '@mdi/js';
   import type { MenuItem, Ingredient } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
+  import ItemModDeleteToast from './ItemModDeleteToast.svelte';
+  import ItemModAddToast from './ItemModAddToast.svelte';
 
   interface Props {
     item: MenuItem;
@@ -16,27 +18,27 @@
   let loading = $state(false);
   let currentPrice = $state(item.price);
   let shownPrice = $state(item.price);
-  let ingredientList = $state(getIngredientsForMenuItem(item.id).current);
+  let ingredientList = $state(getIngredientsForMenuItem(item.id).current ?? []);
   let toppingsList = $derived(getToppingIngredients().current ?? []);
   const markup = 0.5;
-  const levelOptions = ['None', 'Low', 'Normal', 'High'];
   const levelBtn = 'flex h-20 items-center justify-center text-center rounded-xl transition';
+  const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
+  type Level = 'None' | 'Low' | 'Normal' | 'High';
+  let selectedIce = $state<Level>('Normal');
+  let selectedSugar = $state<Level>('Normal');
 
-  let selectedIce = $state('Normal');
-  let selectedSugar = $state('Normal');
-
-  function setIce(option: string) {
+  function setIce(option: Level) {
     selectedIce = option;
   }
 
-  function setSugar(option: string) {
+  function setSugar(option: Level) {
     selectedSugar = option;
   }
 
   async function handleAddToOrder() {
     loading = true;
     currentPrice = currentPrice >= item.price ? currentPrice : item.price;
-    await orderManager.addToOrder(item, ingredientList, currentPrice);
+    await orderManager.addToOrder(item, ingredientList, currentPrice, selectedIce, selectedSugar);
     loading = false;
 
     states.isAdded = true;
@@ -45,12 +47,20 @@
   }
 
   function addTopping(topping: Ingredient) {
+    if (ingredientList.length >= 11) {
+      toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+      return;
+    }
     ingredientList!.push(topping);
     currentPrice += topping.unitPrice + markup;
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
   function removeIngredient(index: number) {
+    if (ingredientList.length <= 1) {
+      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+      return;
+    }
     const ingredient = ingredientList![index];
 
     ingredientList!.splice(index, 1);
@@ -60,7 +70,7 @@
   }
 
   function restartModification() {
-    ingredientList = getIngredientsForMenuItem(item.id).current;
+    ingredientList = getIngredientsForMenuItem(item.id).current ?? [];
     currentPrice = item.price;
     shownPrice = item.price;
   }
