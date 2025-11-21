@@ -1,10 +1,10 @@
 <script lang="ts">
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
+  import { getIngredientsForMenuItem, getToppingIngredients } from '$lib/api/ingredient.remote';
   import type { ModalProps } from '$lib/utils/utils';
   import { Button, Modal, ModalBody, HStack, Heading, Text, Icon } from '@immich/ui';
   import { mdiTagEdit, mdiRestart } from '@mdi/js';
-  import type { MenuItem } from '$lib/db/types';
+  import type { MenuItem, Ingredient } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
 
   interface Props {
@@ -15,11 +15,27 @@
   let { onClose, item, states }: ModalProps & Props = $props();
   let loading = $state(false);
   let currentPrice = $state(item.price);
+  let shownPrice = $state(item.price);
   let ingredientList = $state(getIngredientsForMenuItem(item.id).current);
+  let toppingsList = $derived(getToppingIngredients().current ?? []);
   const markup = 0.5;
+  const levelOptions = ['None', 'Low', 'Normal', 'High'];
+  const levelBtn = 'flex h-20 items-center justify-center text-center rounded-xl transition';
+
+  let selectedIce = $state('Normal');
+  let selectedSugar = $state('Normal');
+
+  function setIce(option: string) {
+    selectedIce = option;
+  }
+
+  function setSugar(option: string) {
+    selectedSugar = option;
+  }
 
   async function handleAddToOrder() {
     loading = true;
+    currentPrice = currentPrice >= item.price ? currentPrice : item.price;
     await orderManager.addToOrder(item, ingredientList, currentPrice);
     loading = false;
 
@@ -28,9 +44,10 @@
     onClose();
   }
 
-  function addSugar() {
-    ingredientList?.push(ingredientList[0]);
-    currentPrice += ingredientList![0].unitPrice + markup;
+  function addTopping(topping: Ingredient) {
+    ingredientList!.push(topping);
+    currentPrice += topping.unitPrice + markup;
+    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
   function removeIngredient(index: number) {
@@ -38,15 +55,14 @@
 
     ingredientList!.splice(index, 1);
     currentPrice -= ingredient.unitPrice + markup;
-    if (currentPrice < item.price) {
-      currentPrice = item.price;
-    }
+    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
     ingredientList = [...ingredientList!];
   }
 
   function restartModification() {
     ingredientList = getIngredientsForMenuItem(item.id).current;
     currentPrice = item.price;
+    shownPrice = item.price;
   }
 </script>
 
@@ -54,10 +70,48 @@
   <ModalBody>
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
-        <div class="mb-2 grid w-full grid-cols-1 gap-2">
-          <Button onclick={addSugar} shape="round" color="primary">{t('kiosk_addToCart')}</Button>
+        <div class="mb-4">
+          <Heading size="small" class="mb-2">Ice Level:</Heading>
+          <div class="grid w-full grid-cols-3 gap-2">
+            {#each levelOptions as option}
+              <Button
+                shape="round"
+                color={selectedIce === option ? 'danger' : 'secondary'}
+                class={levelBtn}
+                onclick={() => setIce(option)}
+              >
+                {option}
+              </Button>
+            {/each}
+          </div>
         </div>
-        <div class="flex h-12 w-full flex-row items-center">
+        <div class="mb-4">
+          <Heading size="small" class="mb-2">Sugar Level:</Heading>
+          <div class="grid w-full grid-cols-3 gap-2">
+            {#each levelOptions as option}
+              <Button
+                shape="round"
+                color={selectedSugar === option ? 'danger' : 'secondary'}
+                class={levelBtn}
+                onclick={() => setSugar(option)}
+              >
+                {option}
+              </Button>
+            {/each}
+          </div>
+        </div>
+        <div class="mb-2">
+          <Heading size="small" class="mb-2">Toppings:</Heading>
+          <div class="grid w-full grid-cols-3 gap-2">
+            {#each toppingsList ?? [] as topping}
+              <Button onclick={() => addTopping(topping)} shape="round" color="danger" class={levelBtn}>
+                {topping.name}
+              </Button>
+            {/each}
+          </div>
+        </div>
+
+        <div class="mt-2 flex h-12 w-full flex-row items-center">
           <Button onclick={handleAddToOrder} shape="round" color="primary" class="m-2 h-full w-9/10">
             {t('kiosk_addToCart')}
           </Button>
@@ -67,7 +121,7 @@
             color="secondary"
             class="flex h-full w-3/20 items-center justify-center"
           >
-            <Icon icon={mdiRestart} class="h-full w-full" />
+            <Icon icon={mdiRestart} class="h-full w-full object-contain" />
           </Button>
         </div>
       </div>
@@ -92,7 +146,7 @@
         <div class="shrink-0 gap-2">
           <HStack class="flex justify-between">
             <Heading size="tiny" fontWeight="normal">{t('kiosk_itemTotal')}</Heading>
-            <p>${currentPrice.toFixed(2)}</p>
+            <p>${shownPrice.toFixed(2)}</p>
           </HStack>
         </div>
       </div>
