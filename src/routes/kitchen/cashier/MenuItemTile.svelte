@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
-  import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { Button, Heading } from '@immich/ui';
+  import { Button, Heading, modalManager } from '@immich/ui';
   import { t } from '$lib/utils/utils';
+  import ItemModificationModal from '../../kiosk/order/ItemModificationModal.svelte';
 
   interface Props {
     item: MenuItem;
@@ -27,10 +27,9 @@
     return tempStock;
   });
 
-  async function handleAddToOrder() {
-    loading = true;
-    await orderManager.addToOrder(item);
-    loading = false;
+  async function showSubmitDialog() {
+    const states = { isAdded: false };
+    await modalManager.show(ItemModificationModal, { item, states });
   }
 </script>
 
@@ -38,7 +37,7 @@
   <Heading size="medium" class="mb-2">{item.name}</Heading>
   <div class="mt-4 flex flex-col justify-between">
     <Heading size="medium" fontWeight="normal" class="mb-2">${item.price.toFixed(2)}</Heading>
-    <Button onclick={handleAddToOrder} {loading} disabled={outOfStock} size="large">
+    <Button onclick={showSubmitDialog} {loading} disabled={outOfStock} size="large">
       {#if outOfStock}
         {t('orderItem_outOfStock')}
       {:else}
