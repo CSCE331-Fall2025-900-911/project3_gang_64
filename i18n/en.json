@@ -33,6 +33,7 @@
   "kiosk_cancelItem": "Cancel Item Order",
   "kiosk_itemTotal": "Item Total",
   "kiosk_restartModification": "Restart Modification",
+  "kiosk_ingredientDelete": "Delete Ingredient",
 
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",

@@ -5,7 +5,7 @@
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
   import { Button, HStack, Heading, IconButton, Modal, ModalBody, Text, toastManager } from '@immich/ui';
-  import { mdiRestart, mdiTagEdit } from '@mdi/js';
+  import { mdiRestart, mdiTagEdit, mdiTrashCan } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
 
@@ -189,16 +189,26 @@
       <div class="mr-2 ml-4 flex w-1/3 flex-col">
         <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
           <div>
-            <Heading size="small">{item.name}</Heading>
+            <Heading size="small" class="mb-2">{item.name}</Heading>
             <div class="gap-3 pl-4">
               {#each ingredientList as ingredient, index}
-                <Text
-                  size="small"
-                  class="text-muted-foreground cursor-pointer transition hover:text-red-500"
-                  onclick={() => removeIngredient(index)}
-                >
-                  {ingredient.name}
-                </Text>
+                <div class="align-items mb-1 flex w-full justify-between">
+                  <Text
+                    size="small"
+                    class="text-muted-foreground cursor-pointer transition hover:text-red-500"
+                    onclick={() => removeIngredient(index)}
+                  >
+                    {ingredient.name}
+                  </Text>
+                  <IconButton
+                    onclick={() => removeIngredient(index)}
+                    shape="round"
+                    color="danger"
+                    class="h-1/8 w-1/8"
+                    icon={mdiTrashCan}
+                    aria-label={t('kiosk_ingredientDelete')}
+                  />
+                </div>
               {/each}
             </div>
           </div>
