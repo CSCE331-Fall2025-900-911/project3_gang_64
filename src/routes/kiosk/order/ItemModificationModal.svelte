@@ -68,9 +68,12 @@
       return;
     }
     const ingredient = ingredientList![index];
-
     ingredientList!.splice(index, 1);
-    currentPrice -= ingredient.unitPrice + markup;
+    const hasItem = ingredientList.some((i) => i.name === ingredient.name);
+    if ((hasItem && baseItems.includes(ingredient)) || !baseItems.includes(ingredient)) {
+      currentPrice -= markup;
+    }
+    currentPrice -= ingredient.unitPrice;
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
     ingredientList = [...ingredientList!];
   }
