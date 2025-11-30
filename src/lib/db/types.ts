@@ -46,6 +46,13 @@ export const BlankIngredient: NewIngredient = {
   orderStock: 0,
   category: '',
   unitPrice: 0,
+  calories: 0,
+  fat_g: 0,
+  sodium_g: 0,
+  carbs_g: 0,
+  sugar_g: 0,
+  caffiene_mg: 0,
+  allergen: [] as string[],
 };
 
 export const customerSelectSchema = createSelectSchema(customer);

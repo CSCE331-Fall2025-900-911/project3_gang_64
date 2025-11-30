@@ -109,7 +109,7 @@ export const ingredient = pgTable('ingredient', {
   carbs_g: integer().notNull(),
   sugar_g: integer().notNull(),
   caffiene_mg: integer().notNull(),
-  allergen: json('allergen').notNull(),
+  allergen: json('allergen').$type<string[]>().notNull(),
 });
 
 export const recipe = pgTable(
