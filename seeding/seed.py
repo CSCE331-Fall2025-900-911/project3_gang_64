@@ -3,12 +3,21 @@ from classtypes import *
 import menu
 import csv
 import random
+import json
 from faker import Faker
 import uuid
 
 fake = Faker()
 
 WEEKS = 39
+
+def convert_allergens_to_json(allergen_string: str) -> str:
+    """Convert allergen string to JSON array format"""
+    if allergen_string == "None" or not allergen_string:
+        return json.dumps([])
+    # Split by semicolon and strip whitespace
+    allergens = [a.strip() for a in allergen_string.split(";")]
+    return json.dumps(allergens)
 
 employees: list[Employee] = [
     Employee(id=uuid.uuid4(), name=fake.name(), email=fake.email(), role=Role.STAFF) for _ in range(1, 6)
@@ -32,21 +41,12 @@ def export_menu_csv():
 
     with open("csv/ingredients.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "name", "category", "current_stock", "order_stock", "unit_price"])
+        writer.writerow(["id", "name", "category", "current_stock", "order_stock", "unit_price", "calories", "fat_g", "sodium_g", "carbs_g", "sugar_g", "caffiene_mg", "allergen"])
         for ingredient in menu.ingredients:
-            writer.writerow([ingredient.id, ingredient.name, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price])
+            # Convert allergen string to JSON array
+            allergen_json = convert_allergens_to_json(ingredient.allergens)
+            writer.writerow([ingredient.id, ingredient.name, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
 
-    with open("csv/nutrition_info.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["ingredient_id", "calories", "fat_g", "sodium_g", "carbs_g", "sugar_g", "caffiene_mg"])
-        for nutrition in menu.nutrition:
-            writer.writerow([nutrition.ingredient_id, nutrition.calories, nutrition.fat_g, nutrition.sodium_g, nutrition.carbs_g, nutrition.sugar_g, nutrition.caffiene_mg])
-
-    with open("csv/allergens.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["ingredient_id", "allergen"])
-        for allergen in menu.allergens:
-            writer.writerow([allergen.ingredient_id, allergen.allergen])
 
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):
     with open("csv/customers.csv", "w", newline="") as f:

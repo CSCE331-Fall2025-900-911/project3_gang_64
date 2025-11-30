@@ -55,6 +55,13 @@ class Ingredient:
     current_stock: int
     order_stock: int
     unit_price: float
+    calories: int = 0
+    fat_g: int = 0
+    sodium_g: int = 0
+    carbs_g: int = 0
+    sugar_g: int = 0
+    caffiene_mg: int = 0
+    allergens: str = "None"
     id: UUID = field(default_factory=uuid.uuid4)
 
 @dataclass
