@@ -4,7 +4,7 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
-  import { Button, HStack, Heading, IconButton, Modal, ModalBody, Text, toastManager } from '@immich/ui';
+  import { Button, HStack, Heading, IconButton, Modal, ModalBody, ModalFooter, Text, toastManager } from '@immich/ui';
   import { mdiRestart, mdiTagEdit, mdiTrashCan } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
@@ -201,21 +201,8 @@
             {/each}
           </div>
         </div>
-
-        <HStack class="mt-4 w-full" gap={2}>
-          <Button onclick={handleAddToOrder} shape="round" color="primary" class="w-9/10" {loading}>
-            {t('kiosk_addToCart')}
-          </Button>
-          <IconButton
-            onclick={restartModification}
-            shape="round"
-            color="secondary"
-            class="w-1/10"
-            icon={mdiRestart}
-            aria-label={t('kiosk_restartModification')}
-          />
-        </HStack>
       </div>
+
       <div class="mr-2 ml-4 flex w-1/3 flex-col">
         <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
           <div class="flex-1">
@@ -270,4 +257,19 @@
       </div>
     </div>
   </ModalBody>
+  <ModalFooter>
+    <HStack class="mt-4 w-full" gap={2}>
+      <Button onclick={handleAddToOrder} shape="round" color="primary" class="w-9/10" {loading}>
+        {t('kiosk_addToCart')}
+      </Button>
+      <IconButton
+        onclick={restartModification}
+        shape="round"
+        color="secondary"
+        class="w-1/10"
+        icon={mdiRestart}
+        aria-label={t('kiosk_restartModification')}
+      />
+    </HStack>
+  </ModalFooter>
 </Modal>
