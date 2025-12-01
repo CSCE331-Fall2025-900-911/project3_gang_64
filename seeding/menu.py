@@ -2,42 +2,42 @@ from classtypes import *
 
 
 ingredients = [
-    Ingredient("Black Tea", "Tea", 100, 0, 0.10), #0
-    Ingredient("Green Tea", "Tea", 100, 0, 0.12), #1
-    Ingredient("Oolong Tea", "Tea", 100, 0, 0.15), #2
-    Ingredient("Thai Tea Mix", "Tea", 100, 0, 0.20), #3
-    Ingredient("Matcha Powder", "Tea", 100, 0, 0.50), #4
-    Ingredient("Coffee", "Coffee", 100, 0, 0.25), #5
-    Ingredient("Whole Milk", "Dairy", 100, 0, 0.30), #6
-    Ingredient("Sweetened Condensed Milk", "Dairy", 100, 0, 0.40), #7
-    Ingredient("Coconut Milk", "Dairy", 100, 0, 0.35), #8
-    Ingredient("Heavy Cream", "Dairy", 100, 0, 0.45), #9
-    Ingredient("Cream Cheese", "Dairy", 100, 0, 0.60), #10
-    Ingredient("Vanilla Ice Cream", "Dairy", 100, 0, 0.75), #11
-    Ingredient("Ube Ice Cream", "Dairy", 100, 0, 0.90), #12
-    Ingredient("Simple Syrup", "Syrup", 100, 0, 0.05), #13
-    Ingredient("Honey", "Syrup", 100, 0, 0.20), #14
-    Ingredient("Brown Sugar Syrup", "Syrup", 100, 0, 0.25), #15
-    Ingredient("Caramel Syrup", "Syrup", 100, 0, 0.30), #16
-    Ingredient("Mango Purée", "Fruit", 100, 0, 0.40), #17
-    Ingredient("Passion Fruit Syrup", "Fruit", 100, 0, 0.45), #18
-    Ingredient("Peach Syrup", "Fruit", 100, 0, 0.35), #19
-    Ingredient("Strawberry Purée", "Fruit", 100, 0, 0.40), #20
-    Ingredient("Pineapple Juice", "Fruit", 100, 0, 0.30), #21
-    Ingredient("Taro Powder", "Taro", 100, 0, 0.50), #22
-    Ingredient("Black Tapioca Pearls", "Tapioca", 100, 0, 0.15), #23
-    Ingredient("Brown Sugar Pearls", "Tapioca", 100, 0, 0.20), #24
-    Ingredient("Coffee Jelly", "Jelly", 100, 0, 0.25), #25
-    Ingredient("Honey Jelly", "Jelly", 100, 0, 0.25), #26
-    Ingredient("Lychee Jelly", "Jelly", 100, 0, 0.25), #27
-    Ingredient("Grass Jelly", "Jelly", 100, 0, 0.25), #28
-    Ingredient("Red Beans (Sweetened)", "Beans", 100, 0, 0.20), #29
-    Ingredient("Nata de Coco", "Coconut", 100, 0, 0.25), #30
-    Ingredient("Oreo Cookies", "Cookies", 100, 0, 0.10), #31
-    Ingredient("Lemon Juice", "Fruit", 100, 0, 0.15), #32
-    Ingredient("Salt", "Seasoning", 100, 0, 0.02), #33
-    Ingredient("Ice Cubes", "Ice", 100, 0, 0.01), #34
-    Ingredient("Crushed Ice", "Ice", 100, 0, 0.01), #35
+    Ingredient("Black Tea", "Tea", 100, 0, 0.10, 2, 0, 0, 0, 0, 50, "None"), #0
+    Ingredient("Green Tea", "Tea", 100, 0, 0.12, 2, 0, 0, 0, 0, 35, "None"), #1
+    Ingredient("Oolong Tea", "Tea", 100, 0, 0.15, 2, 0, 0, 0, 0, 40, "None"), #2
+    Ingredient("Thai Tea Mix", "Tea", 100, 0, 0.20, 120, 0, 50, 28, 24, 40, "None"), #3
+    Ingredient("Matcha Powder", "Tea", 100, 0, 0.50, 5, 0, 0, 1, 0, 35, "None"), #4
+    Ingredient("Coffee", "Coffee", 100, 0, 0.25, 2, 0, 0, 0, 0, 95, "None"), #5
+    Ingredient("Whole Milk", "Dairy", 100, 0, 0.30, 150, 8, 120, 12, 12, 0, "Milk"), #6
+    Ingredient("Sweetened Condensed Milk", "Dairy", 100, 0, 0.40, 130, 3, 50, 22, 22, 0, "Milk"), #7
+    Ingredient("Coconut Milk", "Dairy", 100, 0, 0.35, 45, 4, 15, 2, 1, 0, "Tree nuts (Coconut)"), #8
+    Ingredient("Heavy Cream", "Dairy", 100, 0, 0.45, 200, 22, 40, 2, 1, 0, "Milk"), #9
+    Ingredient("Cream Cheese", "Dairy", 100, 0, 0.60, 80, 8, 90, 1, 1, 0, "Milk"), #10
+    Ingredient("Vanilla Ice Cream", "Dairy", 100, 0, 0.75, 210, 11, 80, 24, 20, 0, "Milk"), #11
+    Ingredient("Ube Ice Cream", "Dairy", 100, 0, 0.90, 220, 11, 80, 26, 22, 0, "Milk"), #12
+    Ingredient("Simple Syrup", "Syrup", 100, 0, 0.05, 50, 0, 0, 14, 14, 0, "None"), #13
+    Ingredient("Honey", "Syrup", 100, 0, 0.20, 64, 0, 1, 17, 17, 0, "None"), #14
+    Ingredient("Brown Sugar Syrup", "Syrup", 100, 0, 0.25, 60, 0, 0, 16, 16, 0, "None"), #15
+    Ingredient("Caramel Syrup", "Syrup", 100, 0, 0.30, 70, 0, 5, 18, 17, 0, "None"), #16
+    Ingredient("Mango Purée", "Fruit", 100, 0, 0.40, 60, 0, 1, 15, 13, 0, "Mango"), #17
+    Ingredient("Passion Fruit Syrup", "Fruit", 100, 0, 0.45, 50, 0, 1, 13, 12, 0, "Passion Fruit"), #18
+    Ingredient("Peach Syrup", "Fruit", 100, 0, 0.35, 45, 0, 1, 12, 11, 0, "Peach"), #19
+    Ingredient("Strawberry Purée", "Fruit", 100, 0, 0.40, 50, 0, 1, 12, 10, 0, "Strawberry"), #20
+    Ingredient("Pineapple Juice", "Fruit", 100, 0, 0.30, 60, 0, 2, 15, 13, 0, "Pineapple"), #21
+    Ingredient("Taro Powder", "Taro", 100, 0, 0.50, 100, 0, 10, 24, 6, 0, "None"), #22
+    Ingredient("Black Tapioca Pearls", "Tapioca", 100, 0, 0.15, 100, 0, 5, 26, 15, 0, "None"), #23
+    Ingredient("Brown Sugar Pearls", "Tapioca", 100, 0, 0.20, 110, 0, 5, 28, 18, 0, "None"), #24
+    Ingredient("Coffee Jelly", "Jelly", 100, 0, 0.25, 20, 0, 5, 5, 3, 10, "None"), #25
+    Ingredient("Honey Jelly", "Jelly", 100, 0, 0.25, 40, 0, 5, 10, 8, 0, "None"), #26
+    Ingredient("Lychee Jelly", "Jelly", 100, 0, 0.25, 35, 0, 5, 9, 7, 0, "Lychee"), #27
+    Ingredient("Grass Jelly", "Jelly", 100, 0, 0.25, 30, 0, 5, 8, 6, 0, "None"), #28
+    Ingredient("Red Beans (Sweetened)", "Beans", 100, 0, 0.20, 120, 0, 5, 24, 12, 0, "None"), #29
+    Ingredient("Nata de Coco", "Coconut", 100, 0, 0.25, 40, 0, 10, 11, 9, 0, "Tree nuts (Coconut)"), #30
+    Ingredient("Oreo Cookies", "Cookies", 100, 0, 0.10, 53, 3, 40, 8, 4, 0, "Wheat; Milk; Soybeans"), #31
+    Ingredient("Lemon Juice", "Fruit", 100, 0, 0.15, 7, 0, 1, 2, 1, 0, "None"), #32
+    Ingredient("Salt", "Seasoning", 100, 0, 0.02, 0, 0, 0, 0, 0, 0, "None"), #33
+    Ingredient("Ice Cubes", "Ice", 100, 0, 0.01, 0, 0, 0, 0, 0, 0, "None"), #34
+    Ingredient("Crushed Ice", "Ice", 100, 0, 0.01, 0, 0, 0, 0, 0, 0, "None"), #35
 ]
 
 # of items = 16
@@ -175,84 +175,4 @@ recipes = [
     Recipe(items[15].id, ingredients[21].id, 1),  # Pineapple Juice
     Recipe(items[15].id, ingredients[20].id, 1),  # Strawberry Purée
     Recipe(items[15].id, ingredients[35].id, 1),  # Crushed Ice
-]
-
-nutrition = [
-    NutritionInfo(ingredients[0].id, 2, 0, 0, 0, 0, 50),   # Black Tea
-    NutritionInfo(ingredients[1].id, 2, 0, 0, 0, 0, 35),   # Green Tea
-    NutritionInfo(ingredients[2].id, 2, 0, 0, 0, 0, 40),   # Oolong Tea
-    NutritionInfo(ingredients[3].id, 120, 0, 50, 28, 24, 40), # Thai Tea Mix
-    NutritionInfo(ingredients[4].id, 5, 0, 0, 1, 0, 35),   # Matcha Powder
-    NutritionInfo(ingredients[5].id, 2, 0, 0, 0, 0, 95),   # Coffee
-    NutritionInfo(ingredients[6].id, 150, 8, 120, 12, 12, 0), # Whole Milk
-    NutritionInfo(ingredients[7].id, 130, 3, 50, 22, 22, 0), # Sweetened Condensed Milk
-    NutritionInfo(ingredients[8].id, 45, 4, 15, 2, 1, 0),  # Coconut Milk
-    NutritionInfo(ingredients[9].id, 200, 22, 40, 2, 1, 0), # Heavy Cream
-    NutritionInfo(ingredients[10].id, 80, 8, 90, 1, 1, 0),  # Cream Cheese
-    NutritionInfo(ingredients[11].id, 210, 11, 80, 24, 20, 0), # Vanilla Ice Cream
-    NutritionInfo(ingredients[12].id, 220, 11, 80, 26, 22, 0), # Ube Ice Cream
-    NutritionInfo(ingredients[13].id, 50, 0, 0, 14, 14, 0), # Simple Syrup
-    NutritionInfo(ingredients[14].id, 64, 0, 1, 17, 17, 0), # Honey
-    NutritionInfo(ingredients[15].id, 60, 0, 0, 16, 16, 0), # Brown Sugar Syrup
-    NutritionInfo(ingredients[16].id, 70, 0, 5, 18, 17, 0), # Caramel Syrup
-    NutritionInfo(ingredients[17].id, 60, 0, 1, 15, 13, 0), # Mango Purée
-    NutritionInfo(ingredients[18].id, 50, 0, 1, 13, 12, 0), # Passion Fruit Syrup
-    NutritionInfo(ingredients[19].id, 45, 0, 1, 12, 11, 0), # Peach Syrup
-    NutritionInfo(ingredients[20].id, 50, 0, 1, 12, 10, 0), # Strawberry Purée
-    NutritionInfo(ingredients[21].id, 60, 0, 2, 15, 13, 0), # Pineapple Juice
-    NutritionInfo(ingredients[22].id, 100, 0, 10, 24, 6, 0), # Taro Powder
-    NutritionInfo(ingredients[23].id, 100, 0, 5, 26, 15, 0), # Black Tapioca Pearls
-    NutritionInfo(ingredients[24].id, 110, 0, 5, 28, 18, 0), # Brown Sugar Pearls
-    NutritionInfo(ingredients[25].id, 20, 0, 5, 5, 3, 10),  # Coffee Jelly
-    NutritionInfo(ingredients[26].id, 40, 0, 5, 10, 8, 0),  # Honey Jelly
-    NutritionInfo(ingredients[27].id, 35, 0, 5, 9, 7, 0),   # Lychee Jelly
-    NutritionInfo(ingredients[28].id, 30, 0, 5, 8, 6, 0),   # Grass Jelly
-    NutritionInfo(ingredients[29].id, 120, 0, 5, 24, 12, 0), # Red Beans (Sweetened)
-    NutritionInfo(ingredients[30].id, 40, 0, 10, 11, 9, 0), # Nata de Coco
-    NutritionInfo(ingredients[31].id, 53, 3, 40, 8, 4, 0),  # Oreo Cookies (per cookie)
-    NutritionInfo(ingredients[32].id, 7, 0, 1, 2, 1, 0),    # Lemon Juice
-    NutritionInfo(ingredients[33].id, 0, 0, 0, 0, 0, 0),    # Salt
-    NutritionInfo(ingredients[34].id, 0, 0, 0, 0, 0, 0),    # Ice Cubes
-    NutritionInfo(ingredients[35].id, 0, 0, 0, 0, 0, 0),    # Crushed Ice
-]
-
-allergens = [
-    AllergenInfo(ingredients[0].id, "None"),                     # Black Tea
-    AllergenInfo(ingredients[1].id, "None"),                     # Green Tea
-    AllergenInfo(ingredients[2].id, "None"),                     # Oolong Tea
-    AllergenInfo(ingredients[3].id, "None"),                     # Thai Tea Mix
-    AllergenInfo(ingredients[4].id, "None"),                     # Matcha Powder
-    AllergenInfo(ingredients[5].id, "None"),                     # Coffee
-    AllergenInfo(ingredients[6].id, "Milk"),                     # Whole Milk
-    AllergenInfo(ingredients[7].id, "Milk"),                     # Sweetened Condensed Milk
-    AllergenInfo(ingredients[8].id, "Tree nuts (Coconut)"),      # Coconut Milk
-    AllergenInfo(ingredients[9].id, "Milk"),                     # Heavy Cream
-    AllergenInfo(ingredients[10].id, "Milk"),                    # Cream Cheese
-    AllergenInfo(ingredients[11].id, "Milk"),                    # Vanilla Ice Cream
-    AllergenInfo(ingredients[12].id, "Milk"),                    # Ube Ice Cream
-    AllergenInfo(ingredients[13].id, "None"),                    # Simple Syrup
-    AllergenInfo(ingredients[14].id, "None"),                    # Honey
-    AllergenInfo(ingredients[15].id, "None"),                    # Brown Sugar Syrup
-    AllergenInfo(ingredients[16].id, "None"),                    # Caramel Syrup
-    AllergenInfo(ingredients[17].id, "Mango"),                   # Mango Purée
-    AllergenInfo(ingredients[18].id, "Passion Fruit"),           # Passion Fruit Syrup
-    AllergenInfo(ingredients[19].id, "Peach"),                   # Peach Syrup
-    AllergenInfo(ingredients[20].id, "Strawberry"),              # Strawberry Purée
-    AllergenInfo(ingredients[21].id, "Pineapple"),               # Pineapple Juice
-    AllergenInfo(ingredients[22].id, "None"),                    # Taro Powder
-    AllergenInfo(ingredients[23].id, "None"),                    # Black Tapioca Pearls
-    AllergenInfo(ingredients[24].id, "None"),                    # Brown Sugar Pearls
-    AllergenInfo(ingredients[25].id, "None"),                    # Coffee Jelly
-    AllergenInfo(ingredients[26].id, "None"),                    # Honey Jelly
-    AllergenInfo(ingredients[27].id, "Lychee"),                  # Lychee Jelly
-    AllergenInfo(ingredients[28].id, "None"),                    # Grass Jelly
-    AllergenInfo(ingredients[29].id, "None"),                    # Red Beans (Sweetened)
-    AllergenInfo(ingredients[30].id, "Tree nuts (Coconut)"),     # Nata de Coco
-    AllergenInfo(ingredients[31].id, "Wheat"),                   # Oreo Cookies (per cookie)
-    AllergenInfo(ingredients[31].id, "Milk"),                    # Oreo Cookies (per cookie)
-    AllergenInfo(ingredients[31].id, "Soybeans"),                # Oreo Cookies (per cookie)
-    AllergenInfo(ingredients[32].id, "None"),                    # Lemon Juice
-    AllergenInfo(ingredients[33].id, "None"),                    # Salt
-    AllergenInfo(ingredients[34].id, "None"),                    # Ice Cubes
-    AllergenInfo(ingredients[35].id, "None"),                    # Crushed Ice
 ]

@@ -29,6 +29,27 @@
   let selectedIce = $state<Level>('Normal');
   let selectedSugar = $state<Level>('Normal');
 
+  let totalNutrition = $derived.by(() => {
+    return {
+      calories: ingredientList.reduce((sum, ing) => sum + (ing.calories || 0), 0),
+      fat_g: ingredientList.reduce((sum, ing) => sum + (ing.fat_g || 0), 0),
+      sodium_g: ingredientList.reduce((sum, ing) => sum + (ing.sodium_g || 0), 0),
+      carbs_g: ingredientList.reduce((sum, ing) => sum + (ing.carbs_g || 0), 0),
+      sugar_g: ingredientList.reduce((sum, ing) => sum + (ing.sugar_g || 0), 0),
+      caffiene_mg: ingredientList.reduce((sum, ing) => sum + (ing.caffiene_mg || 0), 0),
+    };
+  });
+
+  let allergenList = $derived.by(() => {
+    const allergens = new Set<string>();
+    ingredientList.forEach((ing) => {
+      if (ing.allergen && Array.isArray(ing.allergen)) {
+        ing.allergen.forEach((allergen) => allergens.add(allergen));
+      }
+    });
+    return Array.from(allergens).sort();
+  });
+
   function setIce(option: Level) {
     selectedIce = option;
   }
@@ -114,7 +135,7 @@
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
         <div class="mb-4">
-          <Heading size="small" class="mb-2">Base Items:</Heading>
+          <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
             {#each baseItems as baseIngredients}
               <Button
@@ -129,7 +150,7 @@
           </div>
         </div>
         <div class="mb-4">
-          <Heading size="small" class="mb-2">Ice Level:</Heading>
+          <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
             {#each levelOptions as option}
               <Button
@@ -144,7 +165,7 @@
           </div>
         </div>
         <div class="mb-4">
-          <Heading size="small" class="mb-2">Sugar Level:</Heading>
+          <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
             {#each levelOptions as option}
               <Button
@@ -159,7 +180,7 @@
           </div>
         </div>
         <div class="mb-2">
-          <Heading size="small" class="mb-2">Toppings:</Heading>
+          <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
             {#each toppingsList ?? [] as topping}
               <Button
@@ -191,9 +212,10 @@
       </div>
       <div class="mr-2 ml-4 flex w-1/3 flex-col">
         <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
-          <div>
-            <Heading size="small" class="mb-2">{item.name}</Heading>
-            <div class="gap-3 pl-4">
+          <div class="flex-1">
+            <Heading size="medium" class="mb-2">{item.name}</Heading>
+            <Heading size="small" class="mb-2">{t('kiosk_ingredients')}</Heading>
+            <div class="mb-4 gap-3 border-b pb-3 pl-4">
               {#each ingredientList as ingredient, index}
                 <div class="align-items mb-1 flex w-full justify-between">
                   <Text
@@ -214,11 +236,27 @@
                 </div>
               {/each}
             </div>
+            <Heading size="small" class="mb-2">{t('kiosk_nutrition')}</Heading>
+            <div class="flex flex-col gap-1 border-b pb-3 pl-4">
+              <Text size="small">{t('kiosk_nutrition_calories')}: {totalNutrition.calories.toFixed(1)}</Text>
+              <Text size="small">{t('kiosk_nutrition_fat')}: {totalNutrition.fat_g.toFixed(1)}g</Text>
+              <Text size="small">{t('kiosk_nutrition_sodium')}: {totalNutrition.sodium_g.toFixed(1)}g</Text>
+              <Text size="small">{t('kiosk_nutrition_carbs')}: {totalNutrition.carbs_g.toFixed(1)}g</Text>
+              <Text size="small">{t('kiosk_nutrition_sugar')}: {totalNutrition.sugar_g.toFixed(1)}g</Text>
+              <Text size="small">{t('kiosk_nutrition_caffeine')}: {totalNutrition.caffiene_mg.toFixed(1)}mg</Text>
+            </div>
+            <Heading size="small" class="mt-3 mb-2">{t('kiosk_allergens')}</Heading>
+            <div class="flex flex-col gap-1 pl-4">
+              {#if allergenList.length > 0}
+                {#each allergenList as allergen}
+                  <Text size="small">{allergen}</Text>
+                {/each}
+              {:else}
+                <Text size="small" class="text-muted-foreground">{t('kiosk_allergens_none')}</Text>
+              {/if}
+            </div>
           </div>
-        </div>
-
-        <div class="shrink-0 gap-2">
-          <HStack class="flex justify-between">
+          <HStack class="flex-en mt-auto flex justify-between">
             <Heading size="tiny" fontWeight="normal">{t('kiosk_itemTotal')}</Heading>
             <p>${shownPrice.toFixed(2)}</p>
           </HStack>

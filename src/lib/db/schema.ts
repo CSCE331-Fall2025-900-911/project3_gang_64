@@ -1,5 +1,16 @@
 import { sql } from 'drizzle-orm';
-import { boolean, doublePrecision, foreignKey, integer, pgEnum, pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  doublePrecision,
+  foreignKey,
+  integer,
+  json,
+  pgEnum,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core';
 import { v4 as uuidv4 } from 'uuid';
 import { luxonTimestamp } from './columns';
 
@@ -92,6 +103,13 @@ export const ingredient = pgTable('ingredient', {
   currentStock: integer('current_stock').notNull(),
   orderStock: integer('order_stock').notNull(),
   unitPrice: doublePrecision('unit_price').notNull(),
+  calories: integer().notNull(),
+  fat_g: integer().notNull(),
+  sodium_g: integer().notNull(),
+  carbs_g: integer().notNull(),
+  sugar_g: integer().notNull(),
+  caffiene_mg: integer().notNull(),
+  allergen: json('allergen').$type<string[]>().notNull(),
 });
 
 export const recipe = pgTable(
@@ -120,38 +138,3 @@ export const zReport = pgTable('z_report', {
     .default(sql`(CURRENT_TIMESTAMP - '1 day'::interval)`)
     .notNull(),
 });
-
-export const nutrition_info = pgTable(
-  'nutrition_info',
-  {
-    ingredientId: uuid('ingredient_id').notNull(),
-    calories: integer().notNull(),
-    fat_g: integer().notNull(),
-    sodium_g: integer().notNull(),
-    carbs_g: integer().notNull(),
-    sugar_g: integer().notNull(),
-    caffiene_mg: integer().notNull(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.ingredientId],
-      foreignColumns: [ingredient.id],
-      name: 'recipe_ingredient_id_fkey',
-    }),
-  ],
-);
-
-export const allergens = pgTable(
-  'allergens',
-  {
-    ingredientId: uuid('ingredient_id').notNull(),
-    allergen: varchar({ length: 255 }).notNull(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.ingredientId],
-      foreignColumns: [ingredient.id],
-      name: 'recipe_ingredient_id_fkey',
-    }),
-  ],
-);
