@@ -28,7 +28,8 @@
   type Level = 'None' | 'Low' | 'Normal' | 'High';
   let selectedIce = $state<Level>('Normal');
   let selectedSugar = $state<Level>('Normal');
-
+  let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
+  let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
   let totalNutrition = $derived.by(() => {
     return {
       calories: ingredientList.reduce((sum, ing) => sum + (ing.calories || 0), 0),
@@ -49,10 +50,6 @@
     });
     return Array.from(allergens).sort();
   });
-
-  function setIce(option: Level) {
-    selectedIce = option;
-  }
 
   function setSugar(option: Level) {
     selectedSugar = option;
@@ -149,36 +146,45 @@
             {/each}
           </div>
         </div>
+
         <div class="mb-4">
           <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
-          <div class="grid w-full grid-cols-3 gap-2">
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max={levelOptions.length - 1}
+              step="1"
+              bind:value={selectedIceIndex}
+              oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
+            />
+          </div>
+          <div class="labels">
             {#each levelOptions as option}
-              <Button
-                shape="round"
-                color={selectedIce === option ? 'danger' : 'secondary'}
-                class={levelBtn}
-                onclick={() => setIce(option)}
-              >
-                {option}
-              </Button>
+              <span>{option}</span>
             {/each}
           </div>
         </div>
+
         <div class="mb-4">
           <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
-          <div class="grid w-full grid-cols-3 gap-2">
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max={levelOptions.length - 1}
+              step="1"
+              bind:value={selectedSugarIndex}
+              oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
+            />
+          </div>
+          <div class="labels">
             {#each levelOptions as option}
-              <Button
-                shape="round"
-                color={selectedSugar === option ? 'danger' : 'secondary'}
-                class={levelBtn}
-                onclick={() => setSugar(option)}
-              >
-                {option}
-              </Button>
+              <span>{option}</span>
             {/each}
           </div>
         </div>
+
         <div class="mb-2">
           <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
           <div class="grid w-full grid-cols-3 gap-2">
