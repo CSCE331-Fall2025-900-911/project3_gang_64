@@ -12,6 +12,12 @@
   import { DateTime } from 'luxon';
 
   let dailyOrders = getDayOrderCount(DateTime.now());
+  let lastWeekOrders = getDayOrderCount(DateTime.now().minus({ days: 7 }));
+  let ordersPercentageChange = $derived(
+    dailyOrders.ready && lastWeekOrders.ready
+      ? ((dailyOrders.current - lastWeekOrders.current) / (lastWeekOrders.current || 1)) * 100
+      : undefined,
+  );
 
   let dailyRevenue = getDayRevenue(DateTime.now());
   let lastWeekRevenue = getDayRevenue(DateTime.now().minus({ days: 7 }));
@@ -50,11 +56,10 @@
   />
 
   <!-- Total Orders Card -->
-  <!-- TODO: Implement percentage calculation -->
   <DashboardCard
     title={t('manager_dashboard_total_orders')}
     value={dailyOrders.current}
-    percentChange={-2.89}
+    percentChange={ordersPercentageChange}
     icon={mdiShoppingOutline}
   />
 
