@@ -91,6 +91,8 @@ class OrderManager {
   clearOrder() {
     this.currentOrder = [];
     this.paymentMethod = null;
+    this.customerName = '';
+    this.customerEmail = '';
   }
 
   async submit() {

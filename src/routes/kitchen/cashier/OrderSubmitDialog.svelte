@@ -1,18 +1,21 @@
 <script lang="ts">
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
+  import { t } from '$lib/utils/utils';
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
-  import { t } from '$lib/utils/utils';
 
   let { onClose }: ModalProps = $props();
 
   const isValid = $derived(
     orderManager.customerName.trim().length > 0 && orderManager.currentOrder.length > 0 && orderManager.paymentMethod,
   );
+  let submittingOrder = $state(false);
 
-  const handleSubmit = () => {
-    orderManager.submit();
+  const handleSubmit = async () => {
+    submittingOrder = true;
+    await orderManager.submit();
+    submittingOrder = false;
     onClose();
   };
 </script>
@@ -48,8 +51,8 @@
     </Stack>
   </ModalBody>
   <ModalFooter>
-    <div class="grid w-full grid-cols-1 gap-2">
-      <Button onclick={handleSubmit} shape="round" color="primary" disabled={!isValid}>{t('order_create')}</Button>
-    </div>
+    <Button fullWidth onclick={handleSubmit} shape="round" color="primary" disabled={!isValid} loading={submittingOrder}
+      >{t('order_create')}</Button
+    >
   </ModalFooter>
 </Modal>
