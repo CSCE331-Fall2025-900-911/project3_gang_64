@@ -62,6 +62,8 @@
   "kiosk_nutrition_sugar": "Sugar",
   "kiosk_nutrition_caffeine": "Caffeine",
   "kiosk_allergens_none": "No allergens",
+  "kiosk_nutritionButton": "Nutrition",
+  "kiosk_nutritionModal_title": "Nutritional Information",
 
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",

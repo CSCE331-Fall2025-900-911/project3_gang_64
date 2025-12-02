@@ -4,10 +4,23 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
-  import { Button, HStack, Heading, IconButton, Modal, ModalBody, ModalFooter, Text, toastManager } from '@immich/ui';
+  import {
+    Button,
+    HStack,
+    Heading,
+    IconButton,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    Text,
+    toastManager,
+    modalManager,
+    ModalHeader,
+  } from '@immich/ui';
   import { mdiRestart, mdiTagEdit, mdiTrashCan } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
+  import NutritionInfoModal from './NutritionInfoModal.svelte';
 
   interface Props {
     item: MenuItem;
@@ -30,30 +43,6 @@
   let selectedSugar = $state<Level>('Normal');
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
-  let totalNutrition = $derived.by(() => {
-    return {
-      calories: ingredientList.reduce((sum, ing) => sum + (ing.calories || 0), 0),
-      fat_g: ingredientList.reduce((sum, ing) => sum + (ing.fat_g || 0), 0),
-      sodium_g: ingredientList.reduce((sum, ing) => sum + (ing.sodium_g || 0), 0),
-      carbs_g: ingredientList.reduce((sum, ing) => sum + (ing.carbs_g || 0), 0),
-      sugar_g: ingredientList.reduce((sum, ing) => sum + (ing.sugar_g || 0), 0),
-      caffiene_mg: ingredientList.reduce((sum, ing) => sum + (ing.caffiene_mg || 0), 0),
-    };
-  });
-
-  let allergenList = $derived.by(() => {
-    const allergens = new Set<string>();
-    ingredientList.forEach((ing) => {
-      if (ing.allergen && Array.isArray(ing.allergen)) {
-        ing.allergen.forEach((allergen) => allergens.add(allergen));
-      }
-    });
-    return Array.from(allergens).sort();
-  });
-
-  function setSugar(option: Level) {
-    selectedSugar = option;
-  }
 
   async function handleAddToOrder() {
     loading = true;
@@ -64,6 +53,10 @@
     states.isAdded = true;
 
     onClose();
+  }
+
+  async function showNutritionInfo() {
+    await modalManager.show(NutritionInfoModal, { ingredientList });
   }
 
   function addTopping(topping: Ingredient) {
@@ -127,7 +120,20 @@
   }
 </script>
 
-<Modal title={t('kiosk_itemModification')} icon={mdiTagEdit} {onClose} size="large">
+<Modal {onClose} closeOnBackdropClick size="large">
+  <ModalHeader>
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col">
+        <Heading size="large">{item.name}</Heading>
+        <Text>${shownPrice.toFixed(2)}</Text>
+      </div>
+      <div>
+        <Button onclick={showNutritionInfo} shape="semi-round" color="warning" {loading}>
+          {t('kiosk_nutritionButton')}
+        </Button>
+      </div>
+    </div>
+  </ModalHeader>
   <ModalBody>
     <div class="flex flex-row">
       <div class="mr-4 ml-2 flex w-7/12 flex-col">
@@ -228,25 +234,6 @@
                   />
                 </div>
               {/each}
-            </div>
-            <Heading size="small" class="mb-2">{t('kiosk_nutrition')}</Heading>
-            <div class="flex flex-col gap-1 border-b pb-3 pl-4">
-              <Text size="small">{t('kiosk_nutrition_calories')}: {totalNutrition.calories.toFixed(1)}</Text>
-              <Text size="small">{t('kiosk_nutrition_fat')}: {totalNutrition.fat_g.toFixed(1)}g</Text>
-              <Text size="small">{t('kiosk_nutrition_sodium')}: {totalNutrition.sodium_g.toFixed(1)}g</Text>
-              <Text size="small">{t('kiosk_nutrition_carbs')}: {totalNutrition.carbs_g.toFixed(1)}g</Text>
-              <Text size="small">{t('kiosk_nutrition_sugar')}: {totalNutrition.sugar_g.toFixed(1)}g</Text>
-              <Text size="small">{t('kiosk_nutrition_caffeine')}: {totalNutrition.caffiene_mg.toFixed(1)}mg</Text>
-            </div>
-            <Heading size="small" class="mt-3 mb-2">{t('kiosk_allergens')}</Heading>
-            <div class="flex flex-col gap-1 pl-4">
-              {#if allergenList.length > 0}
-                {#each allergenList as allergen}
-                  <Text size="small">{allergen}</Text>
-                {/each}
-              {:else}
-                <Text size="small" class="text-muted-foreground">{t('kiosk_allergens_none')}</Text>
-              {/if}
             </div>
           </div>
           <HStack class="flex-en mt-auto flex justify-between">
