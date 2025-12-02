@@ -2,9 +2,9 @@
   import { getIngredients } from '$lib/api/ingredient.remote';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Ingredient } from '$lib/db/types';
-  import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { t } from '$lib/utils/utils';
-  import { mdiMagnify, mdiPencil, mdiPlus, mdiTrashCan, mdiTruck } from '@mdi/js';
+  import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
+  import { mdiMagnify, mdiPencil, mdiPlus, mdiTruck } from '@mdi/js';
   import InventoryItemModal from './InventoryItemModal.svelte';
   import InventoryManageModal from './InventoryManageModal.svelte';
 
@@ -24,21 +24,6 @@
 
   function showTruckModal(ingredient: Ingredient) {
     modalManager.show(InventoryManageModal, { ingredient });
-  }
-
-  async function confirmDelete(ingredient: Ingredient) {
-    const confirm = await modalManager.showDialog({
-      title: t('manager_delete_ingredient_title'),
-      prompt: t('manager_delete_ingredient_prompt'),
-      confirmText: t('manager_delete_confirm_yes'),
-      confirmColor: 'success',
-      icon: mdiTrashCan,
-    });
-
-    if (confirm) {
-      // TODO: implement deletion logic
-      alert(`deleting ingredients not implemented`);
-    }
   }
 </script>
 
@@ -80,7 +65,7 @@
           <TableCell width="w-2/12">{ingredient.currentStock}</TableCell>
           <TableCell width="w-2/12">{ingredient.orderStock}</TableCell>
           <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>
-          <TableCell width="w-2/12" class="flex gap-2">
+          <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton
               icon={mdiTruck}
               color="success"
@@ -91,12 +76,6 @@
               icon={mdiPencil}
               aria-label={t('manager_inventory_edit_aria')}
               onclick={() => showEditModal(ingredient)}
-            />
-            <IconButton
-              icon={mdiTrashCan}
-              color="danger"
-              aria-label={t('manager_inventory_delete_aria')}
-              onclick={() => confirmDelete(ingredient)}
             />
           </TableCell>
         </TableRow>

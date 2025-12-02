@@ -44,7 +44,6 @@
 <div class="mb-6 flex items-center justify-between">
   <Heading size="large">{t('manager_orders_title')}</Heading>
 
-  <!-- TODO: Implement date filtering -->
   <div class="flex w-1/4 items-end justify-end gap-2">
     <DatePicker bind:value={dateFilter} maxDate={DateTime.now()} />
   </div>

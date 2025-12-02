@@ -2,6 +2,7 @@ import { createOrSelectCustomer } from '$lib/api/customer.remote';
 import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
+import { currentEmployee } from '$lib/auth/employee.svelte';
 import type { Ingredient, MenuItem, PaymentMethod } from '$lib/db/types';
 import type { OrderEntry } from './order_manager.types';
 
@@ -102,8 +103,7 @@ class OrderManager {
       email: this.customerEmail,
     });
 
-    // TODO: get employee ID from kitchen or kiosk session
-    const employee = (await getEmployees())[0];
+    const employee = currentEmployee() ?? (await getEmployees())[0];
 
     // Submit the order
     await submitOrder({
