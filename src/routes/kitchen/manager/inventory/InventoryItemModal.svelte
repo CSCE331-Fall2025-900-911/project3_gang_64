@@ -1,9 +1,10 @@
 <script lang="ts">
   import { createIngredient, updateIngredient } from '$lib/api/ingredient.remote';
+  import PriceInput from '$lib/components/PriceInput.svelte';
   import { BlankIngredient, type CreateOrUpdate, type Ingredient, type NewIngredient } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
-  import { Button, Field, Heading, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
   import { t } from '$lib/utils/utils';
+  import { Button, Field, Heading, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
   import { mdiPackage } from '@mdi/js';
 
   interface Props extends ModalProps {
@@ -75,7 +76,7 @@
       </HStack>
 
       <Field label={t('manager_inventory_item_label_unit_price')}>
-        <NumberInput placeholder={t('manager_inventory_item_placeholder_number')} bind:value={item.unitPrice} min={0} />
+        <PriceInput placeholder={t('manager_inventory_item_placeholder_number')} bind:value={item.unitPrice} />
       </Field>
 
       <Heading size="small" class="mt-2">{t('manager_inventory_nutrition_section')}</Heading>

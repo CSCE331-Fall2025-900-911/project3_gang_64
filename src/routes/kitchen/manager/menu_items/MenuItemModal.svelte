@@ -2,6 +2,7 @@
   import { getIngredients, getIngredientsForMenuItem, updateRecipe } from '$lib/api/ingredient.remote';
   import { createMenuItem, updateMenuItem } from '$lib/api/menu.remote';
   import ImageUpload from '$lib/components/ImageUpload.svelte';
+  import PriceInput from '$lib/components/PriceInput.svelte';
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
@@ -16,7 +17,6 @@
     Modal,
     ModalBody,
     ModalFooter,
-    NumberInput,
     Select,
     type SelectItem,
     Stack,
@@ -123,7 +123,7 @@
         </Field>
 
         <Field label={t('manager_menuitem_label_price')}>
-          <NumberInput placeholder={t('manager_menuitem_placeholder_number')} bind:value={item.price} min={0} />
+          <PriceInput placeholder={t('manager_menuitem_placeholder_number')} bind:value={item.price} />
         </Field>
       </Stack>
 
