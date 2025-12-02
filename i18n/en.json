@@ -10,6 +10,11 @@
   "title": "ShareTea",
   "logoAlt": "ShareTea Logo",
 
+  "accessibility_options_label": "Accessibility Options",
+  "colorblind_mode_label": "Colorblind Mode",
+  "dark_mode_label": "Dark Mode",
+  "light_mode_label": "Light Mode",
+
   "imageUpload_uploading": "Uploading...",
   "imageUpload_previewAlt": "Preview",
   "imageUpload_removeImage": "Remove Image",

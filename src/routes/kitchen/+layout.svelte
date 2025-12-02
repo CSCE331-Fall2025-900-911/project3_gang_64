@@ -3,6 +3,8 @@
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
   import { currentEmployee } from '$lib/auth/employee.svelte';
+  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
+  import ColorblindFilter from '$lib/components/ColorblindFilter.svelte';
   import UserModal from '$lib/components/UserModal.svelte';
   import { t } from '$lib/utils/utils';
   import {
@@ -11,12 +13,13 @@
     Avatar,
     Heading,
     HStack,
+    IconButton,
     initializeTheme,
     modalManager,
     Select,
-    ThemeSwitcher,
     type SelectItem,
   } from '@immich/ui';
+  import { mdiWheelchair } from '@mdi/js';
   import '../../app.css';
 
   let { children } = $props();
@@ -41,6 +44,8 @@
   let employee = currentEmployee();
 </script>
 
+<ColorblindFilter />
+
 <svelte:head>
   <link rel="icon" href={favicon} />
   <title>{t('title')} | {mode.label}</title>
@@ -57,7 +62,14 @@
             <Select data={modes} onChange={handleModeChange} bind:value={mode} />
           </HStack>
         {/if}
-        <ThemeSwitcher size="large"/>
+        <IconButton
+          icon={mdiWheelchair}
+          size="large"
+          variant="outline"
+          shape="round"
+          onclick={() => modalManager.show(AccessibiltyModal)}
+          aria-label={t('accessibility_options_label')}
+        />
         <button onclick={openUserProfile}>
           <Avatar name={employee?.name ?? t('avatar_defaultName')} />
         </button>
