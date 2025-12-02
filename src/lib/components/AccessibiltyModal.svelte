@@ -29,6 +29,16 @@
     console.log('Selected mode:', selected.value);
     accessibilityManager.setColorblindMode(selected.value as ColorblindMode);
   }
+
+  let selectedMode = $derived(
+    selectorModes.find((item) => {
+      if (accessibilityManager.colorblindMode === 'normal') {
+        return item.value === 'off';
+      } else {
+        return item.value === accessibilityManager.colorblindMode;
+      }
+    }) ?? selectorModes[0],
+  );
 </script>
 
 <Modal title={t('accessibility_options_label')} size="small" {onClose} icon={mdiWheelchair}>
@@ -56,7 +66,7 @@
         </HStack>
       </Stack>
       <Field label={t('colorblind_mode_label')}>
-        <Select data={selectorModes} onChange={onModeChange} />
+        <Select data={selectorModes} onChange={onModeChange} bind:value={selectedMode} />
       </Field>
     </Stack>
   </ModalBody>
