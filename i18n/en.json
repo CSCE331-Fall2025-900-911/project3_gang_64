@@ -1,6 +1,5 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-
   "sign_out": "Sign out",
   "email": "Email",
   "role": "Role",
@@ -9,26 +8,22 @@
   "cashier": "Cashier",
   "title": "ShareTea",
   "logoAlt": "ShareTea Logo",
-
   "accessibility_options_label": "Accessibility Options",
+  "change_language_label": "Change Language",
   "colorblind_mode_label": "Colorblind Mode",
   "dark_mode_label": "Dark Mode",
   "light_mode_label": "Light Mode",
-
   "imageUpload_uploading": "Uploading...",
   "imageUpload_previewAlt": "Preview",
   "imageUpload_removeImage": "Remove Image",
   "imageUpload_clickToUpload": "Click to upload",
   "imageUpload_orDragAndDrop": "or drag and drop",
   "imageUpload_fileTypes": "PNG, JPG, GIF up to 10MB",
-
   "pageStepper_previousPage": "Previous Page",
   "pageStepper_nextPage": "Next Page",
   "pageStepper_page": "Page",
-
   "signInWithGoogle_login": "Login with Google",
   "signInWithGoogle_googleLogoAlt": "Google logo",
-
   "authLayout_title": "ShareTea | Authentication",
   "kiosk_cart": "Cart",
   "kiosk_order": "Order",
@@ -62,18 +57,13 @@
   "kiosk_nutrition_sugar": "Sugar",
   "kiosk_nutrition_caffeine": "Caffeine",
   "kiosk_allergens_none": "No allergens",
-  "kiosk_nutritionButton": "Nutrition",
-  "kiosk_nutritionModal_title": "Nutritional Information",
-
   "cartToast_title": "Added to Order",
   "cartToast_description": "{item_name} added to order",
   "cartToast_viewCart": "View Cart",
-
   "itemModDeleteToast_title": "Cannot Delete",
   "itemModDeleteToast_description": "Orders must have at least one ingredient.",
   "itemModAddToast_title": "Cannot Add",
-  "itemModAddToast_description": "Ingredient limit reached. Delete one to add more.",
-
+  "itemModAddToast_description": "Too many ingredients. Delete one to add more.",
   "orderItem_outOfStock": "Out of Stock",
   "orderItem_addToOrder": "Add to Order",
   "cart_noItems": "No items in order",
@@ -83,7 +73,6 @@
   "cart_tax": "Tax",
   "cart_total": "Total",
   "cart_submitOrder": "Submit Order",
-
   "mode_label": "Mode:",
   "avatar_defaultName": "Share Tea",
   "cart_editItem": "Edit Item",
@@ -102,7 +91,6 @@
   "manager_orders": "Orders",
   "manager_customers": "Customers",
   "manager_inventory": "Inventory",
-
   "manager_customers_title": "Customers",
   "manager_customers_search_placeholder": "Search customers...",
   "manager_customers_search_aria": "Search customers",
@@ -111,7 +99,6 @@
   "manager_customers_table_email": "Email",
   "manager_customers_per_page": "Customers per page",
   "manager_customers_no_results": "No customers found",
-
   "manager_dashboard_title": "Dashboard",
   "manager_dashboard_total_sales": "Total Sales",
   "manager_dashboard_total_orders": "Total Orders",
@@ -122,7 +109,6 @@
   "manager_dashboard_table_customer": "Customer",
   "manager_dashboard_table_payment_method": "Payment Method",
   "manager_dashboard_table_total": "Total",
-
   "manager_employees_title": "Employees",
   "manager_employees_add_aria": "Add Employee",
   "manager_employees_search_placeholder": "Search",
@@ -142,7 +128,6 @@
   "manager_employee_placeholder_email": "johndoe@example.com",
   "manager_employee_create": "Create",
   "manager_employee_update": "Update",
-
   "manager_inventory_title": "Inventory",
   "manager_inventory_add_aria": "Add Ingredient",
   "manager_inventory_search_placeholder": "Search",
@@ -186,7 +171,6 @@
   "manager_inventory_order_label": "Order Inventory",
   "manager_inventory_place_order_btn": "Place Order",
   "manager_inventory_close_btn": "Close",
-
   "manager_menu_items_title": "Menu Items",
   "manager_menu_items_search_placeholder": "Search",
   "manager_menu_items_error_loading": "Error loading menu",
@@ -198,7 +182,6 @@
   "manager_menu_items_delete_aria": "Delete Menu Item",
   "manager_delete_menu_item_title": "Delete Menu Item",
   "manager_delete_menu_item_prompt": "Are you sure you want to delete?",
-
   "manager_menuitem_create_title": "Create Menu Item",
   "manager_menuitem_edit_title": "Edit Menu Item",
   "manager_menuitem_kiosk_image": "Kiosk Image",
@@ -215,7 +198,6 @@
   "manager_menuitem_remove_ingredient_aria": "Remove Ingredient",
   "manager_menuitem_create": "Create",
   "manager_menuitem_update": "Update",
-
   "manager_orders_title": "Orders",
   "manager_orders_error_loading": "Error loading orders",
   "manager_orders_table_order_date": "Order Date",
@@ -224,7 +206,6 @@
   "manager_orders_table_total": "Total",
   "manager_orders_per_page": "Orders per page",
   "manager_orders_no_orders": "No orders for the selected date",
-
   "manager_reports_title": "Reports",
   "manager_reports_x_title": "X-Report",
   "manager_reports_x_info": "X-Report information",
