@@ -5,6 +5,7 @@
   import { AppShellSidebar, modalManager, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
+  import { localizeHref } from '$lib/i18n/runtime';
 
   let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
@@ -26,7 +27,7 @@
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
       <NavbarItem
-        href={`/kitchen/cashier#${category}`}
+        href={localizeHref(`/kitchen/cashier#${category}`)}
         title={category ?? ''}
         active={category === currentCategory.title}
       />
