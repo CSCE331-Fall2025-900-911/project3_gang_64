@@ -17,10 +17,11 @@
     modalManager,
     ModalHeader,
   } from '@immich/ui';
-  import { mdiRestart, mdiTagEdit, mdiTrashCan } from '@mdi/js';
+  import { mdiRestart } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
   import NutritionInfoModal from './NutritionInfoModal.svelte';
+  import NumberStepper from '$lib/components/NumberStepper.svelte';
 
   interface Props {
     item: MenuItem;
@@ -36,13 +37,14 @@
   let ingredientList = $state(baseItems);
   let toppingsList = $derived(getToppingIngredients().current ?? []);
   const markup = 0.5;
-  const levelBtn = 'flex h-20 items-center justify-center text-center rounded-xl transition';
   const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
   type Level = 'None' | 'Low' | 'Normal' | 'High';
   let selectedIce = $state<Level>('Normal');
   let selectedSugar = $state<Level>('Normal');
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
+  const positive = 1;
+  const negative = -1;
 
   async function handleAddToOrder() {
     loading = true;
@@ -59,64 +61,54 @@
     await modalManager.show(NutritionInfoModal, { ingredientList });
   }
 
-  function addTopping(topping: Ingredient) {
-    if (ingredientList.length >= 11) {
-      toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
-      return;
+  function changeIngredientsList(ingredient: Ingredient, newAmt: number) {
+    let oldAmt = ingredientList.filter((i) => i.name === ingredient.name).length;
+    if (oldAmt > newAmt) {
+      removeOneIngredient(ingredient);
+
+      if (ingredientList.length <= 1) {
+        toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+        return;
+      }
+    } else {
+      addOneIngredient(ingredient);
+
+      if (ingredientList.length == 10) {
+        toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+        return;
+      }
     }
-    const hasTopping = ingredientList.some((i) => i.name === topping.name);
-    ingredientList!.push(topping);
-    currentPrice += topping.unitPrice;
-    if ((hasTopping && baseItems.includes(topping)) || !baseItems.includes(topping)) {
-      currentPrice += markup;
-    }
-    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
-  function removeIngredient(index: number) {
-    if (ingredientList.length <= 1) {
-      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
-      return;
+  function removeOneIngredient(target: Ingredient) {
+    const index = ingredientList.findIndex((item) => item.id === target.id);
+    if (index !== -1) {
+      ingredientList.splice(index, 1);
+      ingredientList = [...ingredientList];
     }
-    const ingredient = ingredientList![index];
-    ingredientList!.splice(index, 1);
-    const hasItem = ingredientList.some((i) => i.name === ingredient.name);
-    if ((hasItem && baseItems.includes(ingredient)) || !baseItems.includes(ingredient)) {
-      currentPrice -= markup;
+    updatePricing(target, negative);
+  }
+
+  function addOneIngredient(target: Ingredient) {
+    ingredientList = [...ingredientList, target];
+    updatePricing(target, positive);
+  }
+
+  function updatePricing(target: Ingredient, direction: number) {
+    const isBaseItem = baseItems.some((i) => i.id === target.id);
+    const count = ingredientList.filter((i) => i.id === target.id).length;
+    if (!isBaseItem || (count > 1 && direction == positive) || (count >= 1 && direction == negative)) {
+      currentPrice += markup * direction;
     }
-    currentPrice -= ingredient.unitPrice;
+
+    currentPrice += target.unitPrice * direction;
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
-    ingredientList = [...ingredientList!];
   }
 
   function restartModification() {
     ingredientList = getIngredientsForMenuItem(item.id).current ?? [];
     currentPrice = item.price;
     shownPrice = item.price;
-  }
-
-  function toggleBaseItem(ingredient: Ingredient) {
-    const hasItem = ingredientList.some((i) => i.name === ingredient.name);
-
-    if (hasItem) {
-      let removedIngredientsAmount = ingredientList.filter((i) => i.name == ingredient.name).length;
-      ingredientList = ingredientList.filter((i) => i.name !== ingredient.name);
-      currentPrice -= ingredient.unitPrice * removedIngredientsAmount + (removedIngredientsAmount - 1) * markup;
-    } else {
-      ingredientList = [...ingredientList, ingredient];
-      currentPrice += ingredient.unitPrice;
-    }
-
-    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
-  }
-
-  function validateToppingStock(topping: Ingredient) {
-    let currentToppingAmount = ingredientList.filter((i) => i.name == topping.name).length;
-    if (currentToppingAmount == topping.currentStock) {
-      return true;
-    }
-
-    return false;
   }
 </script>
 
@@ -128,7 +120,7 @@
         <Text>${shownPrice.toFixed(2)}</Text>
       </div>
       <div>
-        <Button onclick={showNutritionInfo} shape="semi-round" color="warning" {loading}>
+        <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
           {t('kiosk_nutritionButton')}
         </Button>
       </div>
@@ -136,19 +128,28 @@
   </ModalHeader>
   <ModalBody>
     <div class="flex flex-row">
-      <div class="mr-4 ml-2 flex w-7/12 flex-col">
+      <div class="mr-4 ml-2 flex w-full flex-col">
         <div class="mb-4">
           <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
-          <div class="grid w-full grid-cols-3 gap-2">
-            {#each baseItems as baseIngredients}
-              <Button
-                shape="round"
-                color={ingredientList.some((i) => i.name === baseIngredients.name) ? 'danger' : 'secondary'}
-                class={levelBtn}
-                onclick={() => toggleBaseItem(baseIngredients)}
-              >
-                {baseIngredients.name}
-              </Button>
+          <div class="w-full gap-2">
+            {#each baseItems as ing}
+              {#if ing.name != 'Ice Cubes'}
+                {@const count = ingredientList.filter((i) => i.name == ing.name).length}
+                {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
+                {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex flex-col">
+                    <Text>{ing.name}</Text>
+                    <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
+                  </div>
+                  <NumberStepper
+                    value={count}
+                    min={minAmt}
+                    max={maxAmt}
+                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
+                  />
+                </div>
+              {/if}
             {/each}
           </div>
         </div>
@@ -193,60 +194,34 @@
 
         <div class="mb-2">
           <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
-          <div class="grid w-full grid-cols-3 gap-2">
-            {#each toppingsList ?? [] as topping}
-              <Button
-                onclick={() => addTopping(topping)}
-                shape="round"
-                color="danger"
-                disabled={validateToppingStock(topping)}
-                class={levelBtn}
-              >
-                {topping.name}
-              </Button>
-            {/each}
-          </div>
-        </div>
-      </div>
-
-      <div class="mr-2 ml-4 flex w-1/3 flex-col">
-        <div class="bg-level-1 mb-4 flex flex-1 flex-col overflow-y-auto rounded-xl p-3">
-          <div class="flex-1">
-            <Heading size="medium" class="mb-2">{item.name}</Heading>
-            <Heading size="small" class="mb-2">{t('kiosk_ingredients')}</Heading>
-            <div class="mb-4 gap-3 border-b pb-3 pl-4">
-              {#each ingredientList as ingredient, index}
-                <div class="align-items mb-1 flex w-full justify-between">
-                  <Text
-                    size="small"
-                    class="text-muted-foreground cursor-pointer transition hover:text-red-500"
-                    onclick={() => removeIngredient(index)}
-                  >
-                    {ingredient.name}
-                  </Text>
-                  <IconButton
-                    onclick={() => removeIngredient(index)}
-                    shape="round"
-                    color="danger"
-                    class="h-1/8 w-1/8"
-                    icon={mdiTrashCan}
-                    aria-label={t('kiosk_ingredientDelete')}
+          <div class="w-full gap-2">
+            {#each toppingsList ?? [] as ing}
+              {#if !baseItems.some((x) => x.name == ing.name)}
+                {@const count = ingredientList.filter((i) => i.name == ing.name).length}
+                {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
+                {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
+                <div class="mb-2 flex items-center justify-between">
+                  <div class="flex flex-col">
+                    <Text>{ing.name}</Text>
+                    <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
+                  </div>
+                  <NumberStepper
+                    value={count}
+                    min={minAmt}
+                    max={maxAmt}
+                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
                   />
                 </div>
-              {/each}
-            </div>
+              {/if}
+            {/each}
           </div>
-          <HStack class="flex-en mt-auto flex justify-between">
-            <Heading size="tiny" fontWeight="normal">{t('kiosk_itemTotal')}</Heading>
-            <p>${shownPrice.toFixed(2)}</p>
-          </HStack>
         </div>
       </div>
     </div>
   </ModalBody>
   <ModalFooter>
     <HStack class="mt-4 w-full" gap={2}>
-      <Button onclick={handleAddToOrder} shape="round" color="primary" class="w-9/10" {loading}>
+      <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
         {t('kiosk_addToCart')}
       </Button>
       <IconButton

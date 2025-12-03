@@ -70,9 +70,9 @@
   "cartToast_viewCart": "View Cart",
 
   "itemModDeleteToast_title": "Cannot Delete",
-  "itemModDeleteToast_description": "Too few ingredients. Cannot delete.",
+  "itemModDeleteToast_description": "Orders must have at least one ingredient.",
   "itemModAddToast_title": "Cannot Add",
-  "itemModAddToast_description": "Too many ingredients. Delete one to add more.",
+  "itemModAddToast_description": "Ingredient limit reached. Delete one to add more.",
 
   "orderItem_outOfStock": "Out of Stock",
   "orderItem_addToOrder": "Add to Order",
