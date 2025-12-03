@@ -80,3 +80,38 @@ html.colorblind-tritanopia {
 html.colorblind-grayscale {
   filter: grayscale(100%);
 }
+
+/* Kiosk Slider */
+
+.kiosk-slider-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-top: 1rem;
+}
+
+input[type='range'] {
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #ddd;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1649b6;
+  cursor: pointer;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}

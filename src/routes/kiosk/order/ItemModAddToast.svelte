@@ -13,7 +13,7 @@
 <ToastContainer color="primary">
   <ToastContent
     icon={mdiCartOutline}
-    color="danger"
+    color="warning"
     title={t('itemModAddToast_title')}
     description={t('itemModAddToast_description')}
     {onClose}
