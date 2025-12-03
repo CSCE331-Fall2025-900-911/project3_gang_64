@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import logo from '$lib/assets/logo.png';
   import { Button, Card, CardBody, CardHeader, CardTitle } from '@immich/ui';
+  import { localizeHref } from '$lib/i18n/runtime';
 
   const error = page.url.searchParams.get('error');
 
@@ -26,7 +27,7 @@
       <CardBody>
         <p>{errorMessage}</p>
 
-        <Button fullWidth href="/auth/login" color="primary" class="mt-4">Return to Login</Button>
+        <Button fullWidth href={localizeHref('/auth/login')} color="primary" class="mt-4">Return to Login</Button>
       </CardBody>
     </Card>
   </div>

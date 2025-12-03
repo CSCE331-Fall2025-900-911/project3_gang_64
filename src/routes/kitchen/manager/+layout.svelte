@@ -10,21 +10,34 @@
     mdiPackageVariantClosed,
     mdiSilverware,
   } from '@mdi/js';
+  import { localizeHref } from '$lib/i18n/runtime';
 
   let { children } = $props();
 </script>
 
 <div>
   <AppShellSidebar class="gap-2 pt-2 pr-4">
-    <NavbarItem href="/kitchen/manager/dashboard" title={t('manager_dashboard')} icon={mdiGauge} />
-    <NavbarItem href="/kitchen/manager/employees" title={t('manager_employees')} icon={mdiBadgeAccount} />
+    <NavbarItem href={localizeHref('/kitchen/manager/dashboard')} title={t('manager_dashboard')} icon={mdiGauge} />
+    <NavbarItem
+      href={localizeHref('/kitchen/manager/employees')}
+      title={t('manager_employees')}
+      icon={mdiBadgeAccount}
+    />
     <NavbarGroup title="Sales" />
-    <NavbarItem href="/kitchen/manager/orders" title={t('manager_orders')} icon={mdiFileDocument} />
-    <NavbarItem href="/kitchen/manager/customers" title={t('manager_customers')} icon={mdiAccount} />
-    <NavbarItem href="/kitchen/manager/reports" title="Reports" icon={mdiCurrencyUsd} />
+    <NavbarItem href={localizeHref('/kitchen/manager/orders')} title={t('manager_orders')} icon={mdiFileDocument} />
+    <NavbarItem href={localizeHref('/kitchen/manager/customers')} title={t('manager_customers')} icon={mdiAccount} />
+    <NavbarItem href={localizeHref('/kitchen/manager/reports')} title="Reports" icon={mdiCurrencyUsd} />
     <NavbarGroup title="Menu" />
-    <NavbarItem href="/kitchen/manager/menu_items" title={t('manager_menu_items')} icon={mdiSilverware} />
-    <NavbarItem href="/kitchen/manager/inventory" title={t('manager_inventory')} icon={mdiPackageVariantClosed} />
+    <NavbarItem
+      href={localizeHref('/kitchen/manager/menu_items')}
+      title={t('manager_menu_items')}
+      icon={mdiSilverware}
+    />
+    <NavbarItem
+      href={localizeHref('/kitchen/manager/inventory')}
+      title={t('manager_inventory')}
+      icon={mdiPackageVariantClosed}
+    />
   </AppShellSidebar>
 
   <div class="grow p-4">
