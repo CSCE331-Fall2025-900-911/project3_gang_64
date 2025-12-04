@@ -1,7 +1,7 @@
 import { command, query } from '$app/server';
-import { customer } from '$lib/db/schema';
+import { customer, order } from '$lib/db/schema';
 import { customerInsertSchema, customerSelectSchema, type NewCustomer } from '$lib/db/types';
-import { eq, like, or, sql } from 'drizzle-orm';
+import { desc, eq, like, or, sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { getDB } from '../db';
 
@@ -78,4 +78,42 @@ export const createOrSelectCustomer = command(customerInsertSchema, async (newCu
 export const deleteCustomer = command(customerSelectSchema.entries.id, async (id) => {
   const db = getDB();
   await db.delete(customer).where(eq(customer.id, id));
+});
+
+export const getCustomerDetails = query(customerSelectSchema.entries.id, async (customerId) => {
+  const db = getDB();
+
+  // Get customer info
+  const [customerInfo] = await db.select().from(customer).where(eq(customer.id, customerId));
+
+  if (!customerInfo) {
+    throw new Error('Customer not found');
+  }
+
+  // Get order count
+  const [orderCountResult] = await db
+    .select({
+      count: sql<number>`COUNT(${order.id})`,
+    })
+    .from(order)
+    .where(eq(order.customerId, customerId));
+
+  // Get all orders for this customer
+  const orders = await db
+    .select({
+      id: order.id,
+      total: order.total,
+      date: order.date,
+      paymentMethod: order.paymentMethod,
+      itemQuantity: order.itemQuantity,
+    })
+    .from(order)
+    .where(eq(order.customerId, customerId))
+    .orderBy(desc(order.date));
+
+  return {
+    ...customerInfo,
+    orderCount: orderCountResult.count,
+    orders,
+  };
 });

@@ -3,8 +3,9 @@
   import PageStepper from '$lib/components/PageStepper.svelte';
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import { t } from '$lib/utils/utils';
-  import { Heading, HStack, IconButton, Input, LoadingSpinner, Select, Text } from '@immich/ui';
-  import { mdiMagnify } from '@mdi/js';
+  import { Heading, HStack, IconButton, Input, LoadingSpinner, modalManager, Select, Text } from '@immich/ui';
+  import { mdiEye, mdiMagnify } from '@mdi/js';
+  import CustomerDetailModal from './CustomerDetailModal.svelte';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -29,6 +30,10 @@
   function searchCustomers() {
     searchState = searchField;
     customerPage = 1;
+  }
+
+  function showCustomerDetail(customerId: string) {
+    modalManager.show(CustomerDetailModal, { customerId });
   }
 </script>
 
@@ -56,14 +61,22 @@
 {:else}
   <Table>
     <TableHeader>
-      <TableHeaderCell width="w-1/3">{t('manager_customers_table_name')}</TableHeaderCell>
-      <TableHeaderCell width="w-2/3">{t('manager_customers_table_email')}</TableHeaderCell>
+      <TableHeaderCell width="w-4/12">{t('manager_customers_table_name')}</TableHeaderCell>
+      <TableHeaderCell width="w-6/12" align="left">{t('manager_customers_table_email')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_orders_table_actions')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each customers as customer}
         <TableRow>
-          <TableCell width="w-1/3">{customer.name}</TableCell>
-          <TableCell width="w-2/3">{customer.email}</TableCell>
+          <TableCell width="w-4/12">{customer.name}</TableCell>
+          <TableCell width="w-6/12" align="left">{customer.email}</TableCell>
+          <TableCell width="w-2/12" class="flex justify-center">
+            <IconButton
+              icon={mdiEye}
+              aria-label={t('manager_customers_view_details_aria')}
+              onclick={() => showCustomerDetail(customer.id)}
+            />
+          </TableCell>
         </TableRow>
       {/each}
       {#if customers.length === 0}
