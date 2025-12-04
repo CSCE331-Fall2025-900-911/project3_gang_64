@@ -1,5 +1,7 @@
 import { getLocale } from '$lib/i18n/runtime';
 import { createTranslation, updateTranslation, findTranslationByText } from '$lib/api/translate.remote';
+import { translateToLocales } from '$lib/api/googletranslate.remote';
+import type { NewTranslation } from '$lib/db/types';
 
 let translations = $state<Record<string, Record<string, string>>>({});
 
@@ -16,13 +18,21 @@ export function td(uuid: string): string {
   return translations[uuid]?.[locale] ?? uuid;
 }
 
-export function createLocaleOnlyTranslation(text: string): { en: string; es: string; de: string; fr: string } {
+export async function generateTranslation(text: string): Promise<NewTranslation> {
   const locale = getLocale() as 'en' | 'es' | 'de' | 'fr';
+  const translateList = ['en', 'es', 'de', 'fr'].filter((loc) => loc !== locale);
+
+  const translatedTexts: Record<string, string> = await translateToLocales({
+    text,
+    sourceLocale: locale,
+    locales: translateList,
+  });
+
   return {
-    en: locale === 'en' ? text : '',
-    es: locale === 'es' ? text : '',
-    de: locale === 'de' ? text : '',
-    fr: locale === 'fr' ? text : '',
+    en: translatedTexts['en'] || (locale === 'en' ? text : ''),
+    es: translatedTexts['es'] || (locale === 'es' ? text : ''),
+    de: translatedTexts['de'] || (locale === 'de' ? text : ''),
+    fr: translatedTexts['fr'] || (locale === 'fr' ? text : ''),
   };
 }
 
@@ -32,7 +42,7 @@ export async function generateNewTranslation(text: string): Promise<string> {
     return existingTranslationId;
   }
 
-  const translation = createLocaleOnlyTranslation(text);
+  const translation = await generateTranslation(text);
   const translationId = (await createTranslation(translation)).id;
   addTranslation(translationId, translation);
   return translationId;
@@ -48,7 +58,7 @@ export async function updateExistingTranslation(id: string | undefined, text: st
     return existingTranslationId;
   }
 
-  const translation = createLocaleOnlyTranslation(text);
+  const translation = await generateTranslation(text);
   await updateTranslation({ id, ...translation });
   addTranslation(id, translation);
   return id;

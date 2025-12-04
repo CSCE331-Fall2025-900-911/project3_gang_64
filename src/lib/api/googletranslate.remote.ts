@@ -1,40 +1,50 @@
 import { query } from '$app/server';
 import { env } from '$env/dynamic/private';
 import * as v from 'valibot';
-import { getLocale } from '$lib/i18n/runtime';
 
 const BASE_URL = 'https://translation.googleapis.com/language/translate/v2';
 
-const translateTextParams = v.object({
-  segments: v.array(v.string()),
-  target: v.string(),
+const translateToLocalesParams = v.object({
+  text: v.string(),
+  locales: v.array(v.string()),
+  sourceLocale: v.optional(v.string()),
 });
 
-export const translateText = query(translateTextParams, async ({ segments }) => {
+export const translateToLocales = query(translateToLocalesParams, async ({ text, locales, sourceLocale }) => {
   const url = `${BASE_URL}?key=${env.INLANG_GOOGLE_TRANSLATE_API_KEY}`;
 
-  if (segments.length > 128) {
-    throw new Error('Exceeded maximum number of segments (128).');
+  const translations: Record<string, string> = {};
+
+  if (sourceLocale) {
+    translations[sourceLocale] = text;
   }
 
-  const payload = {
-    q: segments,
-    target: getLocale,
-    format: 'text',
-  };
+  for (const locale of locales) {
+    const payload = {
+      q: [text],
+      target: locale,
+      ...(sourceLocale && { source: sourceLocale }),
+      format: 'text',
+    };
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Google Translate API failed: ${response.status} - ${response.statusText}. Response: ${errorText}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Google Translate API failed for locale ${locale}: ${response.status} - ${response.statusText}. Response: ${errorText}`,
+      );
+    }
+
+    const result = await response.json();
+    translations[locale] = result.data.translations[0].translatedText;
   }
 
-  return await response.json();
+  return translations;
 });
