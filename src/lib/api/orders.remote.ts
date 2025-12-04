@@ -77,7 +77,7 @@ export const submitOrder = command(
   async ({ customerId, paymentMethod, order: submittedOrder, employeeId }) => {
     const db = getDB();
 
-    const subtotal = submittedOrder.reduce((sum, entry) => sum + entry.subtotal, 0);
+    const subtotal = submittedOrder.reduce((sum, entry) => sum + entry.subtotal * entry.quantity, 0);
     const tax = subtotal * 0.07;
     const total = subtotal + tax;
 
