@@ -21,7 +21,7 @@ export const menu = pgTable(
   {
     id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
     name: uuid('name').$defaultFn(uuidv4).notNull(),
-    category: varchar({ length: 100 }).notNull(),
+    category: uuid('category').$defaultFn(uuidv4).notNull(),
     price: doublePrecision().notNull(),
     imageUrl: varchar({ length: 255 }),
     archived: boolean().default(false).notNull(),
@@ -31,6 +31,11 @@ export const menu = pgTable(
       columns: [table.name],
       foreignColumns: [translation.id],
       name: 'menu_name_fkey',
+    }),
+    foreignKey({
+      columns: [table.category],
+      foreignColumns: [translation.id],
+      name: 'menu_category_fkey',
     }),
   ],
 );
@@ -110,7 +115,7 @@ export const ingredient = pgTable(
   {
     id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
     name: uuid('name').$defaultFn(uuidv4).notNull(),
-    category: varchar({ length: 100 }).notNull(),
+    category: uuid('category').$defaultFn(uuidv4).notNull(),
     currentStock: integer('current_stock').notNull(),
     orderStock: integer('order_stock').notNull(),
     unitPrice: doublePrecision('unit_price').notNull(),
@@ -127,6 +132,16 @@ export const ingredient = pgTable(
       columns: [table.name],
       foreignColumns: [translation.id],
       name: 'ingredient_name_fkey',
+    }),
+    foreignKey({
+      columns: [table.name],
+      foreignColumns: [translation.id],
+      name: 'ingredient_name_fkey',
+    }),
+    foreignKey({
+      columns: [table.category],
+      foreignColumns: [translation.id],
+      name: 'ingredient_category_fkey',
     }),
   ],
 );

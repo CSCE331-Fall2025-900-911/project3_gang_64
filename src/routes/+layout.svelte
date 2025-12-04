@@ -3,12 +3,12 @@
   import { locales, localizeHref } from '$lib/i18n/runtime';
   import { setTranslations } from '$lib/contexts/translations.svelte';
 
-  let { data } = $props();
+  let { data, children } = $props();
 
   setTranslations(data.translations);
 </script>
 
-<slot></slot>
+{@render children()}
 
 <div style="display:none">
   {#each locales as locale}

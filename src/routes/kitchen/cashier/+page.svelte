@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import OrderSummary from '$lib/components/OrderSummary.svelte';
+  import { td } from '$lib/contexts/translations.svelte';
   import { localizeHref } from '$lib/i18n/runtime';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShellSidebar, modalManager, NavbarItem } from '@immich/ui';
@@ -11,11 +12,11 @@
   let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
     const hash = decodeURI(page.url.hash);
-    const title = hash ? hash.substring(1) : Object.keys(menu)[0];
+    const id = hash ? hash.substring(1) : Object.keys(menu)[0];
 
     return {
-      title,
-      items: menu[title] ?? [],
+      id,
+      items: menu[id] ?? [],
     };
   });
 
@@ -29,8 +30,8 @@
     {#each Object.keys(menu) as category}
       <NavbarItem
         href={localizeHref(`/kitchen/cashier#${category}`)}
-        title={category ?? ''}
-        active={category === currentCategory.title}
+        title={td(category) ?? ''}
+        active={category === currentCategory.id}
       />
     {/each}
   </AppShellSidebar>

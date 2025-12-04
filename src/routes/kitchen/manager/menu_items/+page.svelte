@@ -15,8 +15,8 @@
       ?.filter((item) => item.archived === false)
       .filter(
         (item) =>
-          item.name.toUpperCase().includes(searchTerm.toUpperCase()) ||
-          item.category.toUpperCase().includes(searchTerm.toUpperCase()),
+          td(item.name).toUpperCase().includes(searchTerm.toUpperCase()) ||
+          td(item.category).toUpperCase().includes(searchTerm.toUpperCase()),
       ) || [],
   );
 
@@ -81,7 +81,7 @@
       {#each searchedMenuItems as item}
         <TableRow>
           <TableCell width="w-5/12">{td(item.name)}</TableCell>
-          <TableCell width="w-4/12">{item.category}</TableCell>
+          <TableCell width="w-4/12">{td(item.category)}</TableCell>
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">
             <IconButton

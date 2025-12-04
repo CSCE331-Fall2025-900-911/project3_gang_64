@@ -3,6 +3,7 @@
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
@@ -10,10 +11,10 @@
 
   let currentCategory = $derived.by(() => {
     const hash = decodeURI(page.url.hash);
-    const title = hash ? hash.substring(1) : Object.keys(menu)[0];
+    const id = hash ? hash.substring(1) : Object.keys(menu)[0];
     return {
-      title,
-      items: menu[title] ?? [],
+      id,
+      items: menu[id] ?? [],
     };
   });
 </script>
@@ -28,8 +29,8 @@
     {#each Object.keys(menu) as category}
       <NavbarItem
         href={`/kiosk/order#${category}`}
-        title={category ?? ''}
-        active={category === currentCategory.title}
+        title={td(category) ?? ''}
+        active={category === currentCategory.id}
       />
     {/each}
   </AppShellSidebar>

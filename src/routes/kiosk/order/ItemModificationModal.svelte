@@ -140,7 +140,7 @@
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
                 <div class="mb-2 flex items-center justify-between">
                   <div class="flex flex-col">
-                    <Text>{ing.name}</Text>
+                    <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
                   <NumberStepper

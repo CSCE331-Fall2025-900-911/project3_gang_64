@@ -2,17 +2,17 @@
   import type { MenuItem } from '$lib/db/types';
   import { Heading } from '@immich/ui';
   import MenuItemTile from './MenuItemTile.svelte';
-
+  import { td } from '$lib/contexts/translations.svelte';
   interface Props {
     items: MenuItem[];
-    title: string;
+    id: string;
   }
 
-  let { items, title }: Props = $props();
+  let { items, id }: Props = $props();
 </script>
 
 <div>
-  <Heading size="large" class="mb-4">{title}</Heading>
+  <Heading size="large" class="mb-4">{td(id)}</Heading>
 
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
     {#each items as item}
