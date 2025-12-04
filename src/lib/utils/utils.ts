@@ -1,5 +1,4 @@
 import { m } from '$lib/i18n/messages';
-import { getLocale } from '$lib/paraglide/runtime';
 import { DateTime } from 'luxon';
 import { custom } from 'valibot';
 
