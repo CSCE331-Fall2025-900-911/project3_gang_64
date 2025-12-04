@@ -8,6 +8,10 @@ import { translation } from '$lib/db/schema';
 // Cache translations at module level - loaded once on server startup
 let translationsCache: Record<string, Record<string, string>> | null = null;
 
+export function invalidateTranslationsCache() {
+  translationsCache = null;
+}
+
 async function loadTranslations() {
   if (translationsCache) {
     return translationsCache;
@@ -16,7 +20,6 @@ async function loadTranslations() {
   const db = getDB();
   const translations = await db.select().from(translation);
 
-  // Convert to Record<uuid, Record<locale, translation>>
   translationsCache = translations.reduce(
     (acc, t) => {
       acc[t.id] = {

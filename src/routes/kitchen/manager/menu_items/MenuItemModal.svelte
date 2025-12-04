@@ -6,7 +6,7 @@
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
-  import { td } from '$lib/contexts/translations.svelte';
+  import { td, generateNewTranslation, updateExistingTranslation } from '$lib/contexts/translations.svelte';
 
   import {
     Button,
@@ -32,12 +32,30 @@
 
   let { onClose, mode }: Props = $props();
 
+  let item: NewMenuItem = $state(mode.type === 'edit' ? mode.item : BlankMenuItem);
+  let submitting = $state(false);
+
+  // Store original values to detect changes
+  const originalItemName = $derived(item.name ? td(item.name) : '');
+  const originalCategoryName = $derived(item.category ? td(item.category) : '');
+
+  let itemName = $state('');
+  let categoryName = $state('');
+
+  $effect(() => {
+    itemName = originalItemName;
+    categoryName = originalCategoryName;
+  });
+
   async function submit() {
     submitting = true;
 
     let createdItem: MenuItem | null = null;
 
     if (mode.type === 'new') {
+      item.name = await generateNewTranslation(itemName);
+      item.category = await generateNewTranslation(categoryName);
+
       createdItem = await createMenuItem(item);
       if (createdItem) {
         item = createdItem as NewMenuItem;
@@ -46,6 +64,14 @@
         return;
       }
     } else {
+      if (itemName !== originalItemName) {
+        item.name = await updateExistingTranslation(item.name, itemName);
+      }
+
+      if (categoryName !== originalCategoryName) {
+        item.category = await generateNewTranslation(categoryName);
+      }
+
       await updateMenuItem({ id: mode.item.id, ...item });
     }
 
@@ -85,14 +111,11 @@
     }
   });
 
-  let item: NewMenuItem = $state(mode.type === 'edit' ? mode.item : BlankMenuItem);
-  let submitting = $state(false);
-
   let existingRecipe = $derived(
     mode.type === 'edit' ? getIngredientsForMenuItem(item.id!) : { loading: false, error: null, current: [] },
   );
   let recipe = $state<Ingredient[]>([]);
-  let valid = $derived(td(item.name ?? '').trim().length > 0);
+  let valid = $derived(itemName.trim().length > 0);
 
   let ingredients = getIngredients();
   let ingredientOptions = $derived(
@@ -133,11 +156,11 @@
         </Stack>
 
         <Field label={t('manager_menuitem_label_name')}>
-          <Input placeholder={t('manager_menuitem_placeholder_name')} bind:value={item.name} />
+          <Input placeholder={t('manager_menuitem_placeholder_name')} bind:value={itemName} />
         </Field>
 
         <Field label={t('manager_menuitem_label_category')}>
-          <Input placeholder={t('manager_menuitem_placeholder_category')} bind:value={item.category} />
+          <Input placeholder={t('manager_menuitem_placeholder_category')} bind:value={categoryName} />
         </Field>
 
         <Field label={t('manager_menuitem_label_price')}>
