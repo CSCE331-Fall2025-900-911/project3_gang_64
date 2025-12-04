@@ -161,9 +161,9 @@ if __name__ == "__main__":
     export_sales_csv(customers, orders, order_contents)
 
 
-    employees.append(Employee(name="Matthew Warren", email="mcwarren922@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(name="Brandon Wees", email="bwees@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(name="Raniv Gupta", email="rgupt@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(name="Tobias Bui", email="tobiasbui@tamu.edu", role=Role.MANAGER))
-    employees.append(Employee(name="Reveille Bubbletea", email="reveille_bubbletea@gmail.com", role=Role.MANAGER))
+    employees.append(Employee(name="Matthew Warren", email="mcwarren922@tamu.edu", role=Role.MANAGER, id=uuid.UUID("0b57a236-5e78-482f-9d2b-6623c957f06c")))
+    employees.append(Employee(name="Brandon Wees", email="bwees@tamu.edu", role=Role.MANAGER, id=uuid.UUID("2bd66ab8-4caf-4ed9-b0a3-0806a16a18ad")))
+    employees.append(Employee(name="Raniv Gupta", email="rgupt@tamu.edu", role=Role.MANAGER, id=uuid.UUID("075303a5-99db-4e04-ad8e-7ec02ef09f02")))
+    employees.append(Employee(name="Tobias Bui", email="tobiasbui@tamu.edu", role=Role.MANAGER, id=uuid.UUID("8cb65fb2-ee78-4628-ae5d-8b1bfd8b5df4")))
+    employees.append(Employee(name="Reveille Bubbletea", email="reveille_bubbletea@gmail.com", role=Role.MANAGER, id=uuid.UUID("7a86a45a-9123-4c57-9694-c498c1f32188")))
     export_employees_csv()
