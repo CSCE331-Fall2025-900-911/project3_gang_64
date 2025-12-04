@@ -6,6 +6,7 @@
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+
   import {
     Button,
     Field,
@@ -98,6 +99,21 @@
   );
 
   let selectedIngredient = $state<SelectItem | undefined>(undefined);
+  let ingredientCost = $derived(recipe.reduce((total, ing) => total + (ing.unitPrice ?? 0), 0));
+  let profit = $derived(item.price - ingredientCost);
+
+  let nutritionInfo = $derived(
+    recipe.length > 0
+      ? {
+          calories: recipe.reduce((total, ing) => total + (ing.calories ?? 0), 0),
+          carbs: recipe.reduce((total, ing) => total + (ing.carbs_g ?? 0), 0),
+          fat: recipe.reduce((total, ing) => total + (ing.fat_g ?? 0), 0),
+          caffeine: recipe.reduce((total, ing) => total + (ing.caffiene_mg ?? 0), 0),
+          sodium: recipe.reduce((total, ing) => total + (ing.sodium_g ?? 0), 0),
+          sugar: recipe.reduce((total, ing) => total + (ing.sugar_g ?? 0), 0),
+        }
+      : null,
+  );
 </script>
 
 <Modal
@@ -125,11 +141,57 @@
         <Field label={t('manager_menuitem_label_price')}>
           <PriceInput placeholder={t('manager_menuitem_placeholder_number')} bind:value={item.price} />
         </Field>
+        <Stack>
+          {#if ingredients.loading || existingRecipe.loading}
+            <div class="flex w-full justify-center">
+              <LoadingSpinner size="large" />
+            </div>
+          {:else if ingredients.error || existingRecipe.error}{:else}
+            <div class="my-2 h-px w-full bg-gray-300 dark:bg-gray-600"></div>
+
+            <div class="flex w-full items-center justify-between rounded-md border p-2 dark:border-gray-500">
+              <HStack class="w-full justify-between">
+                <HStack gap={1}>
+                  <Text size="small" class="font-semibold">{t('profit')}:</Text>
+                  <Text size="small">${profit.toFixed(2)}</Text>
+                </HStack>
+                <HStack gap={1}>
+                  <Text size="small" class="font-semibold">{t('ingredient_cost')}:</Text>
+                  <Text size="small">${ingredientCost.toFixed(2)}</Text>
+                </HStack>
+              </HStack>
+            </div>
+            <Stack class="flex w-full items-center justify-between rounded-md border p-2 dark:border-gray-500">
+              <Heading size="small" class="w-full font-semibold">{t('nutrition_info')}</Heading>
+              <Stack class="flex w-full" gap={1} align="start">
+                {#if nutritionInfo}
+                  <Text size="small">
+                    {nutritionInfo.calories} kcal
+                  </Text>
+                  <Text size="small">
+                    {nutritionInfo.carbs}g Carbs
+                  </Text>
+                  <Text size="small">
+                    {nutritionInfo.fat}g Fat
+                  </Text>
+                  <Text size="small">
+                    {nutritionInfo.sugar}g Sugar
+                  </Text>
+                  <Text size="small">
+                    {nutritionInfo.sodium}g Sodium
+                  </Text>
+                  <Text size="small">
+                    {nutritionInfo.caffeine}mg Caffeine
+                  </Text>
+                {:else}{/if}
+              </Stack>
+            </Stack>
+          {/if}
+        </Stack>
       </Stack>
 
       <Stack gap={2} class="h-full w-1/2" align="start">
         <Heading size="medium">{t('manager_menuitem_recipe')}</Heading>
-
         {#if ingredients.loading || existingRecipe.loading}
           <div class="flex w-full justify-center">
             <LoadingSpinner size="large" />
