@@ -4,6 +4,7 @@
   import { BlankIngredient, type CreateOrUpdate, type Ingredient, type NewIngredient } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { Button, Field, Heading, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
   import { mdiPackage } from '@mdi/js';
 
@@ -39,7 +40,7 @@
       .filter((a) => a.length > 0) as any;
   }
 
-  let valid = $derived(item.name.trim().length > 0 && item.currentStock >= 0 && item.orderStock >= 0);
+  let valid = $derived(td(item.name ?? '').trim().length > 0 && item.currentStock >= 0 && item.orderStock >= 0);
 </script>
 
 <Modal

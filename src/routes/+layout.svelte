@@ -1,6 +1,11 @@
 <script>
   import { page } from '$app/state';
   import { locales, localizeHref } from '$lib/i18n/runtime';
+  import { setTranslations } from '$lib/contexts/translations.svelte';
+
+  let { data } = $props();
+
+  setTranslations(data.translations);
 </script>
 
 <slot></slot>

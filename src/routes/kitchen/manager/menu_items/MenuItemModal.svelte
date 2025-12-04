@@ -6,6 +6,7 @@
   import { BlankMenuItem, type CreateOrUpdate, type Ingredient, type MenuItem, type NewMenuItem } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
 
   import {
     Button,
@@ -91,11 +92,12 @@
     mode.type === 'edit' ? getIngredientsForMenuItem(item.id!) : { loading: false, error: null, current: [] },
   );
   let recipe = $state<Ingredient[]>([]);
-  let valid = $derived(item.name.trim().length > 0);
+  let valid = $derived(td(item.name ?? '').trim().length > 0);
 
   let ingredients = getIngredients();
   let ingredientOptions = $derived(
-    ingredients.current?.map((ing) => ({ label: `${ing.name}`, value: ing.id, disabled: hasIngredient(ing) })) ?? [],
+    ingredients.current?.map((ing) => ({ label: `${td(ing.name)}`, value: ing.id, disabled: hasIngredient(ing) })) ??
+      [],
   );
 
   let selectedIngredient = $state<SelectItem | undefined>(undefined);
@@ -219,7 +221,7 @@
 
           {#each recipe as ingredient}
             <div class="flex w-full items-center justify-between rounded-md border p-2 dark:border-gray-500">
-              <span>{ingredient.name}</span>
+              <span>{td(ingredient.name)}</span>
               <div class="flex items-center gap-2">
                 <span class="font-semibold">${ingredient.unitPrice.toFixed(2)}</span>
                 <IconButton

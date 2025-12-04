@@ -17,8 +17,8 @@ export const BlankEmployee: NewEmployee = {
 export const menuItemSelectSchema = createSelectSchema(menu);
 export const menuItemUpdateSchema = createUpdateSchema(menu);
 export const menuItemInsertSchema = createInsertSchema(menu);
-export type MenuItem = typeof menu.$inferSelect;
-export type NewMenuItem = typeof menu.$inferInsert;
+export type MenuItem = typeof menu.$inferSelect & { translations?: Record<string, string>[] };
+export type NewMenuItem = typeof menu.$inferInsert & { translations?: Record<string, string>[] };
 
 export const BlankMenuItem: NewMenuItem = {
   name: '',
@@ -26,6 +26,7 @@ export const BlankMenuItem: NewMenuItem = {
   category: '',
   archived: false,
   imageUrl: '',
+  translations: [],
 };
 
 export const recipeSelectSchema = createSelectSchema(recipe);
@@ -37,8 +38,8 @@ export type NewRecipe = typeof recipe.$inferInsert;
 export const ingredientSelectSchema = createSelectSchema(ingredient);
 export const ingredientUpdateSchema = createUpdateSchema(ingredient);
 export const ingredientInsertSchema = createInsertSchema(ingredient);
-export type Ingredient = typeof ingredient.$inferSelect;
-export type NewIngredient = typeof ingredient.$inferInsert;
+export type Ingredient = typeof ingredient.$inferSelect & { translations?: Record<string, string>[] };
+export type NewIngredient = typeof ingredient.$inferInsert & { translations?: Record<string, string>[] };
 
 export const BlankIngredient: NewIngredient = {
   name: '',
@@ -53,6 +54,7 @@ export const BlankIngredient: NewIngredient = {
   sugar_g: 0,
   caffiene_mg: 0,
   allergen: [] as string[],
+  translations: [],
 };
 
 export const customerSelectSchema = createSelectSchema(customer);

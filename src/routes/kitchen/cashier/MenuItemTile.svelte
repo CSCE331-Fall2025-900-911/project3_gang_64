@@ -3,6 +3,7 @@
   import type { MenuItem } from '$lib/db/types';
   import { Button, Heading, modalManager } from '@immich/ui';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import ItemModificationModal from '../../kiosk/order/ItemModificationModal.svelte';
 
   interface Props {
@@ -34,7 +35,7 @@
 </script>
 
 <div class="flex flex-col justify-between rounded-lg border p-4">
-  <Heading size="medium" class="mb-2">{item.name}</Heading>
+  <Heading size="medium" class="mb-2">{td(item.name)}</Heading>
   <div class="mt-4 flex flex-col justify-between">
     <Heading size="medium" fontWeight="normal" class="mb-2">${item.price.toFixed(2)}</Heading>
     <Button onclick={showSubmitDialog} {loading} disabled={outOfStock} size="large">

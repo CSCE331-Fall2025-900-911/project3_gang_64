@@ -4,6 +4,7 @@
   import type { MenuItem } from '$lib/db/types';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { mdiMagnify, mdiPencil, mdiTrashCan, mdiPlus } from '@mdi/js';
   import MenuItemModal from './MenuItemModal.svelte';
 
@@ -22,7 +23,7 @@
   async function showDeleteModal(item: MenuItem) {
     const confirm = await modalManager.showDialog({
       title: t('manager_delete_menu_item_title'),
-      prompt: `${t('manager_delete_menu_item_prompt')} ${item.name}?`,
+      prompt: `${t('manager_delete_menu_item_prompt')} ${td(item.name)}?`,
       confirmText: t('manager_delete_confirm_text'),
       confirmColor: 'danger',
       icon: mdiTrashCan,
@@ -79,7 +80,7 @@
     <TableBody>
       {#each searchedMenuItems as item}
         <TableRow>
-          <TableCell width="w-5/12">{item.name}</TableCell>
+          <TableCell width="w-5/12">{td(item.name)}</TableCell>
           <TableCell width="w-4/12">{item.category}</TableCell>
           <TableCell width="w-3/12">${item.price.toFixed(2)}</TableCell>
           <TableCell width="w-2/12" class="flex justify-center gap-2">

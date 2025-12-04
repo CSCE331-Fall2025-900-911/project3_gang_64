@@ -4,6 +4,7 @@
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import {
     Button,
     HStack,
@@ -116,12 +117,12 @@
   <ModalHeader>
     <div class="flex items-center justify-between">
       <div class="flex flex-col">
-        <Heading size="large">{item.name}</Heading>
+        <Heading size="large">{td(item.name)}</Heading>
         <Text>${shownPrice.toFixed(2)}</Text>
       </div>
       <div>
         <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
-          {t('kiosk_nutritionButton')}
+          {t('kiosk_nutrition')}
         </Button>
       </div>
     </div>
@@ -202,7 +203,7 @@
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
                 <div class="mb-2 flex items-center justify-between">
                   <div class="flex flex-col">
-                    <Text>{ing.name}</Text>
+                    <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
                   <NumberStepper

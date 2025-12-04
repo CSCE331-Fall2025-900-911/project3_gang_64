@@ -8,9 +8,11 @@ declare global {
     // interface Error {}
     interface Locals {
       employee: Employee?;
+      translations: Record<string, Record<string, string>>;
     }
     interface PageData {
       employee: Employee?;
+      translations: Record<string, Record<string, string>>;
     }
     // interface PageState {}
     // interface Platform {}

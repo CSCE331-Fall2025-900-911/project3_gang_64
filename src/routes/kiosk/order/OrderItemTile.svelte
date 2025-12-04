@@ -2,6 +2,7 @@
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { MenuItem } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { Heading, Icon, IconButton, modalManager, toastManager } from '@immich/ui';
   import { mdiImageOff, mdiPlus } from '@mdi/js';
   import CartToast from './CartToast.svelte';
@@ -34,7 +35,10 @@
     await modalManager.show(ItemModificationModal, { item, states });
 
     if (states.isAdded) {
-      toastManager.custom({ component: CartToast, props: { itemName: item.name } }, { timeout: 5000, closable: true });
+      toastManager.custom(
+        { component: CartToast, props: { itemName: td(item.name) } },
+        { timeout: 5000, closable: true },
+      );
     }
   }
 </script>
@@ -43,7 +47,7 @@
   <div class="relative mb-5">
     <div class="bg-level-2 flex h-50 w-full items-center justify-center rounded-md border object-cover">
       {#if item.imageUrl}
-        <img src={item.imageUrl} alt={item.name} />
+        <img src={item.imageUrl} alt={td(item.name)} />
       {:else}
         <Icon icon={mdiImageOff} size="96" class="" />
       {/if}
@@ -55,7 +59,7 @@
       </div>
     {/if}
   </div>
-  <Heading size="large" class="mb-2">{item.name}</Heading>
+  <Heading size="large" class="mb-2">{td(item.name)}</Heading>
   <div class="mt-2 flex items-center justify-between">
     <Heading size="medium" fontWeight="normal">${item.price.toFixed(2)}</Heading>
     <IconButton
