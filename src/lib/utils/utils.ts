@@ -34,3 +34,15 @@ export function t<K extends keyof typeof m>(key: K, input: Parameters<(typeof m)
 }
 
 export const luxonDatetime = custom<DateTime>((input) => (input instanceof DateTime ? input.isValid : false));
+
+/**
+ * Creates a hash string for an order item based on menu item ID and ingredient IDs.
+ * Used to identify identical order entries for quantity grouping.
+ */
+export function itemHash(
+  menuItem: { id: string },
+  ingredients: { id: string }[],
+): string {
+  const sortedIngredients = [...ingredients].sort((a, b) => a.id.localeCompare(b.id));
+  return `${menuItem.id}-${sortedIngredients.map((i) => i.id).join(',')}`;
+}

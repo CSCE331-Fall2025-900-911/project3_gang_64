@@ -2,10 +2,11 @@
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import OrderSummary from '$lib/components/OrderSummary.svelte';
+  import { localizeHref } from '$lib/i18n/runtime';
+  import { orderManager } from '$lib/managers/order_manager.svelte';
   import { AppShellSidebar, modalManager, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
   import OrderSubmitDialog from './OrderSubmitDialog.svelte';
-  import { localizeHref } from '$lib/i18n/runtime';
 
   let menu = await getCategorizedMenu();
   let currentCategory = $derived.by(() => {
@@ -19,7 +20,7 @@
   });
 
   function showSubmitDialog() {
-    modalManager.show(OrderSubmitDialog);
+    modalManager.show(OrderSubmitDialog, { isCashier: true });
   }
 </script>
 
@@ -43,7 +44,16 @@
     </div>
 
     <div class="flex w-1/3 border-l p-4">
-      <OrderSummary {showSubmitDialog} />
+      <OrderSummary
+        entries={orderManager.currentOrder}
+        subtotal={orderManager.subtotal}
+        tax={orderManager.tax}
+        total={orderManager.total}
+        editable={true}
+        {showSubmitDialog}
+        onUpdateQuantity={(i, value) => orderManager.updateQuantity(i, value)}
+        onRemoveEntry={(i) => orderManager.removeFromOrder(i)}
+      />
     </div>
   </div>
 </div>

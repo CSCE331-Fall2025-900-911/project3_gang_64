@@ -4,9 +4,10 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { PaymentMethod } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
-  import { DatePicker, Heading, Icon, LoadingSpinner, Select, Text } from '@immich/ui';
-  import { mdiCardBulleted, mdiCashMultiple } from '@mdi/js';
+  import { DatePicker, Heading, Icon, IconButton, LoadingSpinner, modalManager, Select, Text } from '@immich/ui';
+  import { mdiCardBulleted, mdiCashMultiple, mdiEye } from '@mdi/js';
   import { DateTime } from 'luxon';
+  import OrderDetailModal from './OrderDetailModal.svelte';
 
   const PAGE_OPTIONS = [
     { label: '10', value: '10' },
@@ -39,6 +40,10 @@
         return mdiCardBulleted;
     }
   }
+
+  function showOrderDetails(orderId: string) {
+    modalManager.show(OrderDetailModal, { orderId });
+  }
 </script>
 
 <div class="mb-6 flex items-center justify-between">
@@ -59,19 +64,27 @@
   <Table>
     <TableHeader>
       <TableHeaderCell width="w-3/12">{t('manager_orders_table_order_date')}</TableHeaderCell>
-      <TableHeaderCell width="w-4/12" align="left">{t('manager_orders_table_customer')}</TableHeaderCell>
-      <TableHeaderCell width="w-3/12">{t('manager_orders_table_payment_method')}</TableHeaderCell>
+      <TableHeaderCell width="w-3/12" align="left">{t('manager_orders_table_customer')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_orders_table_payment_method')}</TableHeaderCell>
       <TableHeaderCell width="w-2/12">{t('manager_orders_table_total')}</TableHeaderCell>
+      <TableHeaderCell width="w-2/12">{t('manager_orders_table_actions')}</TableHeaderCell>
     </TableHeader>
     <TableBody>
       {#each orders as order}
         <TableRow>
           <TableCell width="w-3/12">{order.date.toLocaleString(DateTime.DATETIME_MED)}</TableCell>
-          <TableCell width="w-4/12" align="left">{order.customer}</TableCell>
-          <TableCell width="w-3/12" class="flex items-center justify-center">
+          <TableCell width="w-3/12" align="left">{order.customer}</TableCell>
+          <TableCell width="w-2/12" class="flex items-center justify-center">
             <Icon icon={getPaymentMethodIcon(order.paymethod)} size="36" />
           </TableCell>
           <TableCell width="w-2/12">${order.total.toFixed(2)}</TableCell>
+          <TableCell width="w-2/12" class="flex justify-center">
+            <IconButton
+              icon={mdiEye}
+              aria-label={t('manager_orders_view_details_aria')}
+              onclick={() => showOrderDetails(order.id)}
+            />
+          </TableCell>
         </TableRow>
       {/each}
       {#if orders?.length === 0}

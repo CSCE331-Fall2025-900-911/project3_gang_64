@@ -4,13 +4,8 @@ import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
 import { currentEmployee } from '$lib/auth/employee.svelte';
 import type { Ingredient, MenuItem, PaymentMethod } from '$lib/db/types';
+import { itemHash } from '$lib/utils/utils';
 import type { OrderEntry } from './order_manager.types';
-
-function itemHash(menuItem: MenuItem, ingredientIds: Ingredient[]): string {
-  // Sort ingredient IDs to ensure consistent hash regardless of order
-  const sortedIngredients = [...ingredientIds].sort((a, b) => a.id.localeCompare(b.id));
-  return `${menuItem.id}-${sortedIngredients.map((i) => i.id).join(',')}`;
-}
 
 class OrderManager {
   currentOrder = $state<OrderEntry[]>([]);
@@ -96,21 +91,21 @@ class OrderManager {
     this.customerEmail = '';
   }
 
-  async submit() {
+  async submit(isCashier: boolean) {
     // Create customer
     const customer = await createOrSelectCustomer({
       name: this.customerName,
       email: this.customerEmail,
     });
 
-    const employee = currentEmployee() ?? (await getEmployees())[0];
+    const employee = isCashier ? (currentEmployee() ?? (await getEmployees())[0]) : null;
 
     // Submit the order
     await submitOrder({
       customerId: customer.id,
       paymentMethod: this.paymentMethod!,
       order: this.currentOrder,
-      employeeId: employee.id,
+      employeeId: employee?.id ?? null,
     });
 
     this.clearOrder();

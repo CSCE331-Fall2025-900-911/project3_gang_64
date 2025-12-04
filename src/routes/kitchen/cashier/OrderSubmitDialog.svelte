@@ -5,7 +5,11 @@
   import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 
-  let { onClose }: ModalProps = $props();
+  interface Props extends ModalProps {
+    isCashier: boolean;
+  }
+
+  let { onClose, isCashier }: Props = $props();
 
   const isValid = $derived(
     orderManager.customerName.trim().length > 0 && orderManager.currentOrder.length > 0 && orderManager.paymentMethod,
@@ -14,7 +18,7 @@
 
   const handleSubmit = async () => {
     submittingOrder = true;
-    await orderManager.submit();
+    await orderManager.submit(isCashier);
     submittingOrder = false;
     onClose();
   };

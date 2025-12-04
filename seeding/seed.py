@@ -97,8 +97,10 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
 
         price += menu_item.price
 
+        # All ingredients for the same menu item entry share the same order_entry_id
+        entry_id = uuid.uuid4()
         for i in ingredients:
-            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=uuid.uuid4()))
+            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id))
 
     # round to 2 decimal places
     price = round(price, 2)
