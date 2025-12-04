@@ -17,7 +17,13 @@ def convert_allergens_to_json(allergen_string: str) -> str:
         return json.dumps([])
     # Split by semicolon and strip whitespace
     allergens = [a.strip() for a in allergen_string.split(";")]
-    return json.dumps(allergens)
+    name_ids: list[UUID] = []
+    for allergen in allergens:
+        name_id = uuid.uuid4()
+        append_to_translation_csv(name_id, allergen)
+        name_ids.append(name_id)
+    # Convert UUIDs to strings for JSON serialization
+    return json.dumps([str(uid) for uid in name_ids])
 
 employees: list[Employee] = [
     Employee(id=uuid.uuid4(), name=fake.name(), email=fake.email(), role=Role.STAFF) for _ in range(1, 6)
@@ -25,13 +31,25 @@ employees: list[Employee] = [
 
 employees[0].role = Role.MANAGER
 
+def generate_translation_csv():
+    with open("csv/translations.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["id", "en", "es", "fr", "de"])
+
+def append_to_translation_csv(id : UUID, text: str):
+    with open("csv/translations.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([id, text, text, text, text])
+
 # export a csv of the menu items, recipes, and ingredients
 def export_menu_csv():
     with open("csv/menu_items.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["id", "name", "category", "price", "imageUrl", "archived"])
         for item in menu.items:
-            writer.writerow([item.id, item.name, item.category, item.price, item.image_url, item.archived])
+            name_id = uuid.uuid4()
+            append_to_translation_csv(name_id, item.name)
+            writer.writerow([item.id, name_id, item.category, item.price, item.image_url, item.archived])
 
     with open("csv/recipes.csv", "w", newline="") as f:
         writer = csv.writer(f)
@@ -45,7 +63,10 @@ def export_menu_csv():
         for ingredient in menu.ingredients:
             # Convert allergen string to JSON array
             allergen_json = convert_allergens_to_json(ingredient.allergens)
-            writer.writerow([ingredient.id, ingredient.name, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
+            name_id = uuid.uuid4()
+            append_to_translation_csv(name_id, ingredient.name)
+
+            writer.writerow([ingredient.id, name_id, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
 
 
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):
@@ -73,6 +94,7 @@ def export_employees_csv():
         writer.writerow(["id", "name", "email", "role", "archived"])
         for employee in employees:
             writer.writerow([employee.id, employee.name, employee.email, employee.role.value, False])
+
 
 def generateRandomOrder(clock: datetime, existing_emails: set[str]):
     global next_order_entry_id
@@ -124,6 +146,7 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
 
 
 if __name__ == "__main__":
+    generate_translation_csv()
     export_menu_csv()
 
     # get days going back 39 weeks

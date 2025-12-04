@@ -50,7 +50,7 @@ class Order:
 
 @dataclass
 class Ingredient:
-    name: Optional[str]
+    name: str
     category: str
     current_stock: int
     order_stock: int
