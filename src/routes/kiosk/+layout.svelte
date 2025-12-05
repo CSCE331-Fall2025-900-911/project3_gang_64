@@ -63,10 +63,6 @@
     modalManager.show(CartModal);
   }
 
-  const timeOutLength = 12;
-  let timer = $derived(timeOutLength);
-  let showModal = $derived(false);
-
   //timeout logic and set up
   const resetTimer = () => {
     timer = timeOutLength;
