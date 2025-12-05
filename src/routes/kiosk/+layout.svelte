@@ -6,8 +6,18 @@
   import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { t } from '$lib/utils/utils';
-  import { AppShell, AppShellHeader, Avatar, IconButton, initializeTheme, modalManager } from '@immich/ui';
-  import { mdiCartOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+  import {
+    AppShell,
+    AppShellHeader,
+    Avatar,
+    IconButton,
+    initializeTheme,
+    Modal,
+    ModalBody,
+    modalManager,
+  } from '@immich/ui';
+  import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+  import { onMount } from 'svelte';
   import '../../app.css';
   import CartModal from './order/CartModal.svelte';
 
@@ -15,8 +25,139 @@
 
   initializeTheme();
 
+  const orderUrl: string = '/kiosk/order';
+  const cartUrl: string = '/kiosk/cart';
+  const cartLabel: string = t('kiosk_cart');
+  const orderLabel: string = t('kiosk_order');
+
+  const timeOutLength = 5;
+  let timer = $derived(timeOutLength);
+  let showModal = $derived(false);
+
+  const shopModeIcon = $derived.by(() => {
+    return page.url.pathname === cartUrl ? mdiShoppingOutline : mdiCartOutline;
+  });
+
+  const shopModeLabel = $derived.by(() => {
+    return page.url.pathname === cartUrl ? orderLabel : cartLabel;
+  });
+
+  const colorBlindModeLabel = $derived.by(() => {
+    return currentMode;
+  });
+
   function openCart() {
     modalManager.show(CartModal);
+  }
+
+  function closeCart() {
+    goto(orderUrl);
+  }
+
+  function handleShopModeClick() {
+    if (page.url.pathname === cartUrl) {
+      closeCart();
+    } else {
+      openCart();
+    }
+  }
+
+  //Color blind stuff
+  let currentMode: ColorblindMode = $state('normal');
+  const modes: ColorblindMode[] = ['normal', 'protanopia', 'deuteranopia', 'tritanopia', 'grayscale'];
+
+  function isColorblindMode(value: string): value is ColorblindMode {
+    return modes.includes(value as ColorblindMode);
+  }
+
+  //timeout logic and set up
+  const resetTimer = () => {
+    timer = timeOutLength;
+    showModal = false;
+  };
+
+  const listenerSetup = () => {
+    const events = ['mousemove', 'keydown', 'click', 'touchstart'];
+    events.forEach((ev) => window.addEventListener(ev, resetTimer));
+
+    return () => events.forEach((ev) => window.removeEventListener(ev, resetTimer));
+  };
+
+  function countD() {
+    const listeners = listenerSetup();
+    timer = timeOutLength;
+
+    let countDown = setInterval(() => {
+      --timer;
+      if (!showModal && timer <= 30) {
+        showModal = true;
+      }
+      if (timer <= 0) {
+        clearInterval(countDown);
+        orderManager.clearOrder();
+        showModal = false;
+        goto('/kiosk/home');
+      }
+    }, 1000);
+
+    return () => {
+      listeners();
+      clearInterval(countDown);
+    };
+  }
+
+  function timeOut() {
+    if (window.location.pathname !== '/kiosk/home') {
+      countD();
+
+      return countD();
+    }
+  }
+
+  onMount(() => {
+    const saved = localStorage.getItem('colorblindMode');
+    if (saved && isColorblindMode(saved)) {
+      colorblindMode.set(saved);
+    }
+
+    //timeout
+    const timeout = timeOut();
+
+    return () => {
+      timeOut();
+    };
+  });
+
+  onNavigate(() => timeOut());
+
+  $effect(() => {
+    const unsubscribe = colorblindMode.subscribe((mode) => {
+      currentMode = mode;
+      document.documentElement.className = '';
+      document.documentElement.classList.add(`colorblind-${mode}`);
+      localStorage.setItem('colorblindMode', mode);
+    });
+    return unsubscribe;
+  });
+
+  function toggleMode() {
+    const nextIndex = (modes.indexOf(currentMode) + 1) % modes.length;
+    colorblindMode.set(modes[nextIndex]);
+  }
+
+  let intervalId: number | null = null;
+
+  function startStopRepeating(toggleDisco: () => void, delay = 100): void {
+    if (intervalId === null) {
+      intervalId = window.setInterval(toggleDisco, delay);
+    } else {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  function discoooo() {
+    startStopRepeating(toggleMode, 100);
   }
 </script>
 
@@ -68,6 +209,13 @@
       </div>
     </div>
   </AppShellHeader>
+  {#if showModal}
+    <Modal title="Are you still there?">
+      <ModalBody>
+        Your order will be cleared in {timer} seconds
+      </ModalBody>
+    </Modal>
+  {/if}
 
   {@render children?.()}
 </AppShell>

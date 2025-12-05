@@ -6,6 +6,6 @@
 </script>
 
 <div class="bg-amber-50 w-full h-full z-50">
-  <img src={logo} alt="ShareTea logo" onclick={goto(orderUrl)}/>
+  <img src={logo} alt="ShareTea logo" onclick={() => goto(orderUrl)}/>
 </div>
 
