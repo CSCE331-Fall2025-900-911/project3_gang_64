@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getIngredientsForMenuItem, getToppingIngredients } from '$lib/api/ingredient.remote';
+  import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
   import type { Ingredient, MenuItem } from '$lib/db/types';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
@@ -36,7 +36,6 @@
   let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
   // svelte-ignore state_referenced_locally
   let ingredientList = $state(baseItems);
-  let toppingsList = $derived(getToppingIngredients().current ?? []);
   const markup = 0.5;
   const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
   type Level = 'None' | 'Low' | 'Normal' | 'High';
@@ -134,7 +133,7 @@
           <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
           <div class="w-full gap-2">
             {#each baseItems as ing}
-              {#if ing.name != 'Ice Cubes'}
+              {#if !ing.ice && !ing.topping}
                 {@const count = ingredientList.filter((i) => i.name == ing.name).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
@@ -196,8 +195,8 @@
         <div class="mb-2">
           <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
           <div class="w-full gap-2">
-            {#each toppingsList ?? [] as ing}
-              {#if !baseItems.some((x) => x.name == ing.name)}
+            {#each baseItems ?? [] as ing}
+              {#if ing.topping}
                 {@const count = ingredientList.filter((i) => i.name == ing.name).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}

@@ -29,22 +29,6 @@ export const getIngredientsForMenuItem = query(v.string(), async (menuItemId: st
   return ingredients.map((row) => row.ingredient).filter((r) => r !== null);
 });
 
-export const getToppingIngredients = query(async () => {
-  const db = getDB();
-
-  return await db
-    .select()
-    .from(ingredient)
-    .where(
-      or(
-        ilike(ingredient.category, 'Tapioca'),
-        ilike(ingredient.category, 'Jelly'),
-        ilike(ingredient.name, '%Ice Cream%'),
-      ),
-    )
-    .orderBy(ingredient.name);
-});
-
 export const createIngredient = command(ingredientInsertSchema, async (newIngredient) => {
   const db = getDB();
   const created = await db.insert(ingredient).values(newIngredient).returning();
