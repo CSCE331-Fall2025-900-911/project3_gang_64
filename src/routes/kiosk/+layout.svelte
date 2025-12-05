@@ -129,35 +129,7 @@
 
   onNavigate(() => timeOut);
 
-  $effect(() => {
-    const unsubscribe = colorblindMode.subscribe((mode) => {
-      currentMode = mode;
-      document.documentElement.className = '';
-      document.documentElement.classList.add(`colorblind-${mode}`);
-      localStorage.setItem('colorblindMode', mode);
-    });
-    return unsubscribe;
-  });
 
-  function toggleMode() {
-    const nextIndex = (modes.indexOf(currentMode) + 1) % modes.length;
-    colorblindMode.set(modes[nextIndex]);
-  }
-
-  let intervalId: number | null = null;
-
-  function startStopRepeating(toggleDisco: () => void, delay = 100): void {
-    if (intervalId === null) {
-      intervalId = window.setInterval(toggleDisco, delay);
-    } else {
-      clearInterval(intervalId);
-      intervalId = null;
-    }
-  }
-
-  function discoooo() {
-    startStopRepeating(toggleMode, 100);
-  }
 </script>
 
 <ColorblindFilter />
