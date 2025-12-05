@@ -6,7 +6,6 @@
   import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
   import ColorblindFilter from '$lib/components/ColorblindFilter.svelte';
   import UserModal from '$lib/components/UserModal.svelte';
-  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
   import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
   import { t } from '$lib/utils/utils';
   import {
