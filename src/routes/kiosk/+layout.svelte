@@ -33,6 +33,8 @@
   import { onMount } from 'svelte';
   import '../../app.css';
   import CartModal from './order/CartModal.svelte';
+  import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
+  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
 
   let { children } = $props();
 
