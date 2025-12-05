@@ -21,6 +21,7 @@
     Select,
     type SelectItem,
   } from '@immich/ui';
+  import { locales } from '$lib/i18n/runtime';
   import { mdiTranslate, mdiWheelchair } from '@mdi/js';
   import '../../app.css';
 
@@ -33,7 +34,13 @@
     { label: t('cashier'), value: 'cashier' },
   ];
 
-  let mode = $derived(modes.find((item) => item.value === page.url.pathname.split('/')[2]) ?? modes[0]);
+  let mode = $derived(
+    modes.find(
+      (item) =>
+        item.value ===
+        page.url.pathname.split('/').filter((segment) => !locales.includes(segment as (typeof locales)[0]))[2],
+    ) ?? modes[0],
+  );
 
   function handleModeChange(selected: SelectItem) {
     window.location.href = localizeHref(`/kitchen/${selected.value}/`);
