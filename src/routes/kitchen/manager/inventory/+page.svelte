@@ -3,6 +3,7 @@
   import { Table, TableBody, TableCell, TableHeader, TableHeaderCell, TableRow } from '$lib/components/Table';
   import type { Ingredient } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { Heading, IconButton, Input, LoadingSpinner, modalManager } from '@immich/ui';
   import { mdiMagnify, mdiPencil, mdiPlus, mdiTruck } from '@mdi/js';
   import InventoryItemModal from './InventoryItemModal.svelte';
@@ -60,8 +61,8 @@
     <TableBody>
       {#each searchedIngredients as ingredient}
         <TableRow>
-          <TableCell width="w-4/12" align="left" class="pl-6">{ingredient.name}</TableCell>
-          <TableCell width="w-3/12">{ingredient.category}</TableCell>
+          <TableCell width="w-4/12" align="left" class="pl-6">{td(ingredient.name)}</TableCell>
+          <TableCell width="w-3/12">{td(ingredient.category)}</TableCell>
           <TableCell width="w-2/12">{ingredient.currentStock}</TableCell>
           <TableCell width="w-2/12">{ingredient.orderStock}</TableCell>
           <TableCell width="w-2/12">${ingredient.unitPrice.toFixed(2)}</TableCell>

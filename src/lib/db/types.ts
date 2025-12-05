@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-valibot';
-import { customer, employee, ingredient, menu, order, orderContent, paymethod, recipe } from './schema';
+import { customer, employee, ingredient, menu, order, orderContent, paymethod, recipe, translation } from './schema';
 
 export const employeeSelectSchema = createSelectSchema(employee);
 export const employeeUpdateSchema = createUpdateSchema(employee);
@@ -76,3 +76,16 @@ export type NewOrder = typeof order.$inferInsert;
 export type PaymentMethod = (typeof paymethod.enumValues)[number];
 
 export type CreateOrUpdate<T> = { type: 'new' } | { type: 'edit'; item: T };
+
+export const translationSelectSchema = createSelectSchema(translation);
+export const translationUpdateSchema = createUpdateSchema(translation);
+export const translationInsertSchema = createInsertSchema(translation);
+export type Translation = typeof translation.$inferSelect;
+export type NewTranslation = typeof translation.$inferInsert;
+
+export const BlankTranslation: NewTranslation = {
+  en: '',
+  es: '',
+  de: '',
+  fr: '',
+};

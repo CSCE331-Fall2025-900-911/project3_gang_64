@@ -11,13 +11,29 @@ fake = Faker()
 
 WEEKS = 39
 
+# Global cache for allergen deduplication
+allergen_cache: dict[str, UUID] = {}
+
 def convert_allergens_to_json(allergen_string: str) -> str:
     """Convert allergen string to JSON array format"""
     if allergen_string == "None" or not allergen_string:
         return json.dumps([])
     # Split by semicolon and strip whitespace
     allergens = [a.strip() for a in allergen_string.split(";")]
-    return json.dumps(allergens)
+    name_ids: list[UUID] = []
+    for allergen in allergens:
+        # Check if we've already seen this allergen
+        if allergen not in allergen_cache:
+            name_id = uuid.uuid4()
+            allergen_cache[allergen] = name_id
+            # Create a Translation object with same text for all languages
+            allergen_translation = Translation(en=allergen, es=allergen, de=allergen, fr=allergen)
+            append_to_translation_csv(name_id, allergen_translation)
+        else:
+            name_id = allergen_cache[allergen]
+        name_ids.append(name_id)
+    # Convert UUIDs to strings for JSON serialization
+    return json.dumps([str(uid) for uid in name_ids])
 
 employees: list[Employee] = [
     Employee(id=uuid.uuid4(), name=fake.name(), email=fake.email(), role=Role.STAFF) for _ in range(1, 6)
@@ -25,13 +41,40 @@ employees: list[Employee] = [
 
 employees[0].role = Role.MANAGER
 
+def generate_translation_csv():
+    with open("csv/translations.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["id", "en", "es", "fr", "de"])
+
+def append_to_translation_csv(id : UUID, translation: Translation):
+    with open("csv/translations.csv", "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([id, translation.en, translation.es, translation.de, translation.fr])
+
 # export a csv of the menu items, recipes, and ingredients
 def export_menu_csv():
+    # Track unique categories to avoid duplicates
+    category_cache: dict[tuple[str, str, str, str], UUID] = {}
+    
+    def get_or_create_category_id(category: Translation) -> UUID:
+        """Get existing category UUID or create new one if not seen before"""
+        key = (category.en, category.es, category.de, category.fr)
+        if key not in category_cache:
+            category_id = uuid.uuid4()
+            category_cache[key] = category_id
+            append_to_translation_csv(category_id, category)
+        return category_cache[key]
+    
     with open("csv/menu_items.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["id", "name", "category", "price", "imageUrl", "archived"])
         for item in menu.items:
-            writer.writerow([item.id, item.name, item.category, item.price, item.image_url, item.archived])
+            name_id = uuid.uuid4()
+            item_name: Translation = item.name
+            item_category: Translation = item.category
+            append_to_translation_csv(name_id, item_name)
+            category_id = get_or_create_category_id(item_category)
+            writer.writerow([item.id, name_id, category_id, item.price, item.image_url, item.archived])
 
     with open("csv/recipes.csv", "w", newline="") as f:
         writer = csv.writer(f)
@@ -45,7 +88,11 @@ def export_menu_csv():
         for ingredient in menu.ingredients:
             # Convert allergen string to JSON array
             allergen_json = convert_allergens_to_json(ingredient.allergens)
-            writer.writerow([ingredient.id, ingredient.name, ingredient.category, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
+            name_id = uuid.uuid4()
+            append_to_translation_csv(name_id, ingredient.name)
+            category_id = get_or_create_category_id(ingredient.category)
+
+            writer.writerow([ingredient.id, name_id, category_id, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
 
 
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):
@@ -73,6 +120,7 @@ def export_employees_csv():
         writer.writerow(["id", "name", "email", "role", "archived"])
         for employee in employees:
             writer.writerow([employee.id, employee.name, employee.email, employee.role.value, False])
+
 
 def generateRandomOrder(clock: datetime, existing_emails: set[str]):
     global next_order_entry_id
@@ -124,6 +172,7 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
 
 
 if __name__ == "__main__":
+    generate_translation_csv()
     export_menu_csv()
 
     # get days going back 39 weeks

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+  import { td } from '$lib/contexts/translations.svelte';
   import { Modal, ModalBody, Heading, Text, ModalFooter } from '@immich/ui';
   import { mdiInformationBoxOutline } from '@mdi/js';
   import type { Ingredient } from '$lib/db/types';
@@ -33,7 +34,7 @@
   });
 </script>
 
-<Modal title={t('kiosk_nutritionModal_title')} icon={mdiInformationBoxOutline} {onClose} size="large">
+<Modal title={t('kiosk_nutrition')} icon={mdiInformationBoxOutline} {onClose} size="large">
   <ModalBody>
     <Heading size="small" class="mb-2">{t('kiosk_nutrition')}</Heading>
     <div class="flex flex-col gap-1 border-b pb-3 pl-4">
@@ -48,7 +49,7 @@
     <div class="flex flex-col gap-1 pl-4">
       {#if allergenList.length > 0}
         {#each allergenList as allergen}
-          <Text size="small">{allergen}</Text>
+          <Text size="small">{td(allergen)}</Text>
         {/each}
       {:else}
         <Text size="small" class="text-muted-foreground">{t('kiosk_allergens_none')}</Text>

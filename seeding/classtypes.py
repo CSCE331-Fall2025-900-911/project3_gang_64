@@ -5,6 +5,14 @@ from typing import Optional
 from uuid import UUID
 import uuid
 
+
+@dataclass
+class Translation:
+    en: str
+    es: str
+    de: str
+    fr: str
+    
 class Role(Enum):
     MANAGER = "manager"
     STAFF = "staff"
@@ -29,8 +37,8 @@ class Customer:
 
 @dataclass
 class Menu:
-    name: str
-    category: str
+    name: Translation
+    category: Translation
     price: float
     image_url: Optional[str] = None
     archived: bool = False
@@ -50,8 +58,8 @@ class Order:
 
 @dataclass
 class Ingredient:
-    name: Optional[str]
-    category: str
+    name: Translation
+    category: Translation
     current_stock: int
     order_stock: int
     unit_price: float

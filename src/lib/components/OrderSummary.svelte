@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { td } from '$lib/contexts/translations.svelte';
   import type { OrderEntry } from '$lib/managers/order_manager.types';
   import { t } from '$lib/utils/utils';
   import { Button, Heading, HStack, IconButton, Stack, Text } from '@immich/ui';
@@ -55,11 +56,11 @@
     {#each entries as entry, i}
       <div class="mb-2 flex justify-between border-b pb-2">
         <div>
-          <Heading size="small">{entry.menuItem.name}</Heading>
+          <Heading size="small">{td(entry.menuItem.name)}</Heading>
           <div class="gap-3 pl-4">
             {#each groupIngredients(entry.ingredients) as ingredient}
               <Text size="small" class="text-muted-foreground">
-                {ingredient.name}
+                {td(ingredient.name)}
                 {#if ingredient.count > 1}
                   (x{ingredient.count}){/if}
               </Text>

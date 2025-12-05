@@ -4,7 +4,9 @@
   import { BlankIngredient, type CreateOrUpdate, type Ingredient, type NewIngredient } from '$lib/db/types';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
+  import { td, generateNewTranslation, updateExistingTranslation } from '$lib/contexts/translations.svelte';
   import { Button, Field, Heading, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
+
   import { mdiPackage } from '@mdi/js';
 
   interface Props extends ModalProps {
@@ -17,8 +19,31 @@
     submitting = true;
 
     if (mode.type === 'new') {
+      item.name = await generateNewTranslation(itemName);
+      item.category = await generateNewTranslation(categoryName);
+      item.allergen = await Promise.all(
+        allergenList.map(async (a) => {
+          return await generateNewTranslation(a);
+        }),
+      );
       await createIngredient(item);
     } else {
+      if (itemName !== originalItemName) {
+        item.name = await updateExistingTranslation(item.name, itemName);
+      }
+
+      if (categoryName !== originalCategoryName) {
+        item.category = await generateNewTranslation(categoryName);
+      }
+
+      if (allergenInput !== originalAllergenInput) {
+        item.allergen = await Promise.all(
+          allergenList.map(async (a) => {
+            return await generateNewTranslation(a);
+          }),
+        );
+      }
+
       await updateIngredient({ id: mode.item.id, ...item });
     }
 
@@ -28,18 +53,35 @@
   let item: NewIngredient = $state(mode.type === 'edit' ? mode.item : BlankIngredient);
   let submitting = $state(false);
 
-  // Convert allergen array to comma-separated string for input
-  let allergenInput = $state(Array.isArray(item.allergen) ? item.allergen.join(', ') : '');
+  // Store original values to detect changes
+  const originalItemName = $derived(item.name ? td(item.name) : '');
+  const originalCategoryName = $derived(item.category ? td(item.category) : '');
+  const originalAllergenInput = $derived(
+    Array.isArray(item.allergen) ? item.allergen.map((uuid) => td(uuid)).join(', ') : '',
+  );
 
-  function updateAllergens() {
-    // Convert comma-separated string to array
-    item.allergen = allergenInput
+  let itemName = $state('');
+  let categoryName = $state('');
+  let allergenInput = $state('');
+
+  $effect(() => {
+    itemName = originalItemName;
+    categoryName = originalCategoryName;
+    allergenInput = originalAllergenInput;
+  });
+
+  let allergenList = $derived.by(() => {
+    return allergenInput
       .split(',')
       .map((a) => a.trim())
-      .filter((a) => a.length > 0) as any;
-  }
+      .filter((a) => a.length > 0);
+  });
 
-  let valid = $derived(item.name.trim().length > 0 && item.currentStock >= 0 && item.orderStock >= 0);
+  let valid = $derived.by(() => {
+    return (
+      itemName.trim().length > 0 && categoryName.trim().length > 0 && item.currentStock >= 0 && item.orderStock >= 0
+    );
+  });
 </script>
 
 <Modal
@@ -50,11 +92,11 @@
   <ModalBody>
     <Stack gap={4}>
       <Field label="Name">
-        <Input placeholder={t('manager_inventory_item_placeholder_name')} bind:value={item.name} />
+        <Input placeholder={t('manager_inventory_item_placeholder_name')} bind:value={itemName} />
       </Field>
 
       <Field label="Category">
-        <Input placeholder={t('manager_inventory_item_placeholder_category')} bind:value={item.category} />
+        <Input placeholder={t('manager_inventory_item_placeholder_category')} bind:value={categoryName} />
       </Field>
 
       <HStack gap={4}>
@@ -121,11 +163,7 @@
         </Field>
       </HStack>
       <Field label={t('manager_inventory_item_label_allergens')}>
-        <Input
-          placeholder={t('manager_inventory_item_placeholder_allergens')}
-          bind:value={allergenInput}
-          onchange={updateAllergens}
-        />
+        <Input placeholder={t('manager_inventory_item_placeholder_allergens')} bind:value={allergenInput} />
       </Field>
     </Stack>
   </ModalBody>
