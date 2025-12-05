@@ -26,7 +26,9 @@
     ThemeSwitcher, 
     Modal, 
     ModalBody,
-    modalManager } from '@immich/ui';
+    ModalHeader,
+    modalManager,
+    Button } from '@immich/ui';
   import { mdiCartOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
   import { onMount } from 'svelte';
   import '../../app.css';
@@ -61,14 +63,7 @@
     modalManager.show(CartModal);
   }
 
-  //Color blind stuff
-  let currentMode: ColorblindMode = $state('normal');
-  const modes: ColorblindMode[] = ['normal', 'protanopia', 'deuteranopia', 'tritanopia', 'grayscale'];
-
-  function isColorblindMode(value: string): value is ColorblindMode {
-    return modes.includes(value as ColorblindMode);
-  }
-  const timeOutLength = 5;
+  const timeOutLength = 12;
   let timer = $derived(timeOutLength);
   let showModal = $derived(false);
 
@@ -97,7 +92,7 @@
 
     let countDown = setInterval(() => {
       --timer;
-      if (!showModal && timer <= 30){
+      if (!showModal && timer <= 10){
         showModal = true;
       }
       if (timer <= 0) {
@@ -126,11 +121,6 @@
   }
 
   onMount(() => {
-    const saved = localStorage.getItem('colorblindMode');
-    if (saved && isColorblindMode(saved)) {
-      colorblindMode.set(saved);
-    }
-
     //timeout
     const time = timeOut();
 
@@ -219,9 +209,15 @@
     </div>
   </AppShellHeader>
   {#if showModal}
-    <Modal title="Are you still there?">
+    <Modal class="w-90 text-center">
+      <ModalHeader>
+        <div class="my-3 text-4xl">Are you still there?</div>
+      </ModalHeader>
       <ModalBody>
-        Your order will be cleared in {timer} seconds
+        <div class="flex flex-col justify-center text-3xl">
+          Your order will be cleared in {timer} seconds
+          <Button onclick={resetTimer} class="my-5">I'm still here!</Button>
+        </div>
       </ModalBody>
     </Modal>
   {/if}
