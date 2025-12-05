@@ -3,9 +3,10 @@
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
   import { currentEmployee } from '$lib/auth/employee.svelte';
-  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
+  import { localizeHref } from '$lib/i18n/runtime';
   import ColorblindFilter from '$lib/components/ColorblindFilter.svelte';
   import UserModal from '$lib/components/UserModal.svelte';
+  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
   import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
   import { t } from '$lib/utils/utils';
   import {
@@ -20,7 +21,8 @@
     Select,
     type SelectItem,
   } from '@immich/ui';
-  import { mdiWheelchair } from '@mdi/js';
+  import { locales } from '$lib/i18n/runtime';
+  import { mdiTranslate, mdiWheelchair } from '@mdi/js';
   import '../../app.css';
 
   let { children } = $props();
@@ -76,6 +78,14 @@
           shape="round"
           onclick={() => modalManager.show(AccessibiltyModal)}
           aria-label={t('accessibility_options_label')}
+        />
+        <IconButton
+          icon={mdiTranslate}
+          size="large"
+          variant="outline"
+          shape="round"
+          onclick={() => modalManager.show(LanguageSelectModal)}
+          aria-label={t('change_language_label')}
         />
         <button onclick={openUserProfile}>
           <Avatar name={employee?.name ?? t('avatar_defaultName')} />
