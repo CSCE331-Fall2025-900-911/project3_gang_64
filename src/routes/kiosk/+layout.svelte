@@ -19,9 +19,6 @@
     modalManager,
   } from '@immich/ui';
   import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
-  import { onMount } from 'svelte';
-  import '../../app.css';
-  import CartModal from './order/CartModal.svelte';
 
   let { children } = $props();
 
@@ -50,18 +47,6 @@
 
   function openCart() {
     modalManager.show(CartModal);
-  }
-
-  function closeCart() {
-    goto(orderUrl);
-  }
-
-  function handleShopModeClick() {
-    if (page.url.pathname === cartUrl) {
-      closeCart();
-    } else {
-      openCart();
-    }
   }
 
   //Color blind stuff
@@ -205,7 +190,7 @@
             size="medium"
             color="primary"
             onclick={openCart}
-            aria-label={t('kiosk_cart')}
+            aria-label={shopModeLabel}
           />
           <div class="absolute -top-1 -right-1">
             <Avatar
