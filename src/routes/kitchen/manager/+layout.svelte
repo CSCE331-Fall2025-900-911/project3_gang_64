@@ -1,16 +1,17 @@
 <script lang="ts">
+  import { localizeHref } from '$lib/i18n/runtime';
   import { t } from '$lib/utils/utils';
   import { AppShellSidebar, NavbarGroup, NavbarItem } from '@immich/ui';
   import {
     mdiAccount,
     mdiBadgeAccount,
+    mdiChartBar,
     mdiCurrencyUsd,
     mdiFileDocument,
     mdiGauge,
     mdiPackageVariantClosed,
     mdiSilverware,
   } from '@mdi/js';
-  import { localizeHref } from '$lib/i18n/runtime';
 
   let { children } = $props();
 </script>
@@ -37,6 +38,11 @@
       href={localizeHref('/kitchen/manager/inventory')}
       title={t('manager_inventory')}
       icon={mdiPackageVariantClosed}
+    />
+    <NavbarItem
+      href={localizeHref('/kitchen/manager/usage_report')}
+      title={t('manager_inventory_usage')}
+      icon={mdiChartBar}
     />
   </AppShellSidebar>
 

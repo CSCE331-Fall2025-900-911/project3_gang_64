@@ -229,5 +229,12 @@
   "manager_reports_x_title": "X-Report",
   "manager_reports_x_info": "X-Report information",
   "manager_reports_z_title": "Z-Report",
-  "manager_reports_z_info": "Z-Report information"
+  "manager_reports_z_info": "Z-Report information",
+  "manager_inventory_usage": "Inventory Usage",
+  "manager_inventory_usage_title": "Inventory Usage",
+  "manager_inventory_usage_error": "Error loading inventory usage",
+  "manager_inventory_usage_table_name": "Ingredient Name",
+  "manager_inventory_usage_table_category": "Category",
+  "manager_inventory_usage_table_usage": "Usage Count",
+  "manager_inventory_usage_no_data": "No inventory usage data for the selected date"
 }
