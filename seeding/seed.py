@@ -84,7 +84,7 @@ def export_menu_csv():
 
     with open("csv/ingredients.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "name", "category", "current_stock", "order_stock", "unit_price", "calories", "fat_g", "sodium_g", "carbs_g", "sugar_g", "caffiene_mg", "allergen"])
+        writer.writerow(["id", "name", "category", "topping", "ice", "current_stock", "order_stock", "unit_price", "calories", "fat_g", "sodium_g", "carbs_g", "sugar_g", "caffiene_mg", "allergen"])
         for ingredient in menu.ingredients:
             # Convert allergen string to JSON array
             allergen_json = convert_allergens_to_json(ingredient.allergens)
@@ -92,7 +92,7 @@ def export_menu_csv():
             append_to_translation_csv(name_id, ingredient.name)
             category_id = get_or_create_category_id(ingredient.category)
 
-            writer.writerow([ingredient.id, name_id, category_id, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
+            writer.writerow([ingredient.id, name_id, category_id, ingredient.topping, ingredient.ice, ingredient.current_stock, ingredient.order_stock, ingredient.unit_price, ingredient.calories, ingredient.fat_g, ingredient.sodium_g, ingredient.carbs_g, ingredient.sugar_g, ingredient.caffiene_mg, allergen_json])
 
 
 def export_sales_csv(customers: list[Customer], orders: list[Order], order_contents: list[OrderContent]):

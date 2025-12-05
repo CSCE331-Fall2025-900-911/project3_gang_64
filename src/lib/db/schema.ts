@@ -116,6 +116,8 @@ export const ingredient = pgTable(
     id: uuid('id').$defaultFn(uuidv4).primaryKey().notNull(),
     name: uuid('name').$defaultFn(uuidv4).notNull(),
     category: uuid('category').$defaultFn(uuidv4).notNull(),
+    topping: boolean().default(false).notNull(),
+    ice: boolean().default(false).notNull(),
     currentStock: integer('current_stock').notNull(),
     orderStock: integer('order_stock').notNull(),
     unitPrice: doublePrecision('unit_price').notNull(),
