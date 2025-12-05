@@ -5,7 +5,19 @@
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
   import { td, generateNewTranslation, updateExistingTranslation } from '$lib/contexts/translations.svelte';
-  import { Button, Field, Heading, HStack, Input, Modal, ModalBody, ModalFooter, NumberInput, Stack } from '@immich/ui';
+  import {
+    Button,
+    Field,
+    Heading,
+    HStack,
+    Input,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    NumberInput,
+    Stack,
+    Checkbox,
+  } from '@immich/ui';
 
   import { mdiPackage } from '@mdi/js';
 
@@ -95,9 +107,17 @@
         <Input placeholder={t('manager_inventory_item_placeholder_name')} bind:value={itemName} />
       </Field>
 
-      <Field label="Category">
-        <Input placeholder={t('manager_inventory_item_placeholder_category')} bind:value={categoryName} />
-      </Field>
+      <HStack gap={4}>
+        <Field label="Category">
+          <Input placeholder={t('manager_inventory_item_placeholder_category')} bind:value={categoryName} />
+        </Field>
+
+        <div class="w-auto">
+          <Field label={t('inventory_modal_topping_label')}>
+            <Checkbox bind:checked={item.topping} />
+          </Field>
+        </div>
+      </HStack>
 
       <HStack gap={4}>
         <Field label={t('manager_inventory_item_label_current_stock')}>

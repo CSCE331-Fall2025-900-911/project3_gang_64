@@ -225,5 +225,17 @@
   "manager_inventory_usage_table_name": "Nombre del ingrediente",
   "manager_inventory_usage_table_category": "Categoría",
   "manager_inventory_usage_table_usage": "Cantidad usada",
-  "manager_inventory_usage_no_data": "No hay datos de uso de inventario para la fecha seleccionada"
+  "manager_inventory_usage_no_data": "No hay datos de uso de inventario para la fecha seleccionada",
+  "profit": "Ganancia",
+  "ingredient_cost": "Costo de los ingredientes",
+  "inventory_modal_topping_label": "Cubierta",
+  "nutrition_info": "Información nutricional",
+  "manager_customers_detail_title": "Detalles del cliente",
+  "manager_customers_detail_error": "Error al cargar los detalles del cliente",
+  "manager_customers_detail_info": "Información del cliente",
+  "manager_customers_detail_order_count": "Pedidos totales",
+  "manager_customers_detail_orders": "Historial de pedidos",
+  "manager_customers_detail_no_orders": "No se encontraron pedidos para este cliente",
+  "manager_customers_view_details_aria": "Ver detalles del cliente",
+  "manager_orders_table_items": "Elementos"
 }

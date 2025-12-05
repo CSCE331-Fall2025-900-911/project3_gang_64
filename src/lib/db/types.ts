@@ -45,6 +45,8 @@ export const BlankIngredient: NewIngredient = {
   currentStock: 0,
   orderStock: 0,
   category: '',
+  topping: false,
+  ice: false,
   unitPrice: 0,
   calories: 0,
   fat_g: 0,

@@ -225,5 +225,17 @@
   "manager_inventory_usage_table_name": "Zutatname",
   "manager_inventory_usage_table_category": "Kategorie",
   "manager_inventory_usage_table_usage": "Verbrauchsmenge",
-  "manager_inventory_usage_no_data": "Keine Bestandsverbrauchsdaten für das ausgewählte Datum"
+  "manager_inventory_usage_no_data": "Keine Bestandsverbrauchsdaten für das ausgewählte Datum",
+  "profit": "Profitieren",
+  "ingredient_cost": "Zutatenkosten",
+  "inventory_modal_topping_label": "Belag",
+  "nutrition_info": "Nährwertangaben",
+  "manager_customers_detail_title": "Kundendaten",
+  "manager_customers_detail_error": "Fehler beim Laden der Kundendaten",
+  "manager_customers_detail_info": "Kundeninformationen",
+  "manager_customers_detail_order_count": "Gesamtbestellungen",
+  "manager_customers_detail_orders": "Bestellhistorie",
+  "manager_customers_detail_no_orders": "Für diesen Kunden wurden keine Bestellungen gefunden.",
+  "manager_customers_view_details_aria": "Kundendetails anzeigen",
+  "manager_orders_table_items": "Artikel"
 }

@@ -225,5 +225,17 @@
   "manager_inventory_usage_table_name": "Nom de l'ingrédient",
   "manager_inventory_usage_table_category": "Catégorie",
   "manager_inventory_usage_table_usage": "Quantité utilisée",
-  "manager_inventory_usage_no_data": "Aucune donnée d'utilisation des stocks pour la date sélectionnée"
+  "manager_inventory_usage_no_data": "Aucune donnée d'utilisation des stocks pour la date sélectionnée",
+  "profit": "Profit",
+  "ingredient_cost": "Coût des ingrédients",
+  "inventory_modal_topping_label": "Garniture",
+  "nutrition_info": "Informations nutritionnelles",
+  "manager_customers_detail_title": "Détails du client",
+  "manager_customers_detail_error": "Erreur lors du chargement des informations client",
+  "manager_customers_detail_info": "Informations client",
+  "manager_customers_detail_order_count": "Commandes totales",
+  "manager_customers_detail_orders": "Historique des commandes",
+  "manager_customers_detail_no_orders": "Aucune commande trouvée pour ce client",
+  "manager_customers_view_details_aria": "Afficher les détails du client",
+  "manager_orders_table_items": "Articles"
 }

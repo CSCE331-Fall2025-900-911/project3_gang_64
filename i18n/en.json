@@ -44,6 +44,7 @@
   "kiosk_iceLevel": "Ice Level",
   "kiosk_sugarLevel": "Sugar Level",
   "kiosk_toppings": "Toppings",
+  "inventory_modal_topping_label": "Topping",
   "kiosk_iceLevel_none": "None",
   "kiosk_iceLevel_low": "Low",
   "kiosk_iceLevel_normal": "Normal",

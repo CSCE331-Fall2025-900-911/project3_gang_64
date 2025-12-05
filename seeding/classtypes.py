@@ -63,6 +63,8 @@ class Ingredient:
     current_stock: int
     order_stock: int
     unit_price: float
+    topping: bool = False
+    ice: bool = False
     calories: int = 0
     fat_g: int = 0
     sodium_g: int = 0
