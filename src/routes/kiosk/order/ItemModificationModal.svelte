@@ -5,6 +5,7 @@
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
   import { td } from '$lib/contexts/translations.svelte';
+  import { toppingsManager } from '$lib/managers/toppings.svelte';
   import {
     Button,
     HStack,
@@ -30,12 +31,14 @@
   }
 
   let { onClose, item, states }: ModalProps & Props = $props();
+  toppingsManager.load();
   let loading = $state(false);
   let currentPrice = $state(item.price);
   let shownPrice = $state(item.price);
   let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
   // svelte-ignore state_referenced_locally
   let ingredientList = $state(baseItems);
+  const toppingsList = $derived(toppingsManager.toppings);
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
@@ -48,14 +51,14 @@
   let ingredientSelection = $state<Record<string, Level>>({});
   $effect(() => {
     for (const ing of baseItems) {
-      if (!ingredientSelection[ing.name]) {
-        ingredientSelection[ing.name] = 'Normal';
+      if (!ingredientSelection[ing.id]) {
+        ingredientSelection[ing.id] = 'Normal';
       }
     }
   });
 
   function selectOption(ing: Ingredient, option: Level) {
-    ingredientSelection[ing.name] = option;
+    ingredientSelection[ing.id] = option;
     removeOneIngredient(ing);
     removeOneIngredient(ing);
     switch (option) {
@@ -155,16 +158,16 @@
           <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
           <div class="w-full gap-2">
             {#each baseItems as ing}
-              {#if !ing.category.includes('Ice')}
+              {#if !td(ing.category).toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
                 <div class="mb-2 flex items-center justify-between">
-                  <Text>{ing.name}</Text>
+                  <Text>{td(ing.name)}</Text>
 
                   <div class="flex flex-row">
                     <Button
                       class="w-1/3"
                       shape="semi-round"
                       size="tiny"
-                      color={ingredientSelection[ing.name] === 'Less' ? 'primary' : 'secondary'}
+                      color={ingredientSelection[ing.id] === 'Less' ? 'primary' : 'secondary'}
                       onclick={() => selectOption(ing, 'Less')}
                     >
                       {t('kiosk_iceLevel_low')}
@@ -173,7 +176,7 @@
                       class="ml-1 w-1/3"
                       shape="semi-round"
                       size="tiny"
-                      color={ingredientSelection[ing.name] === 'Normal' ? 'primary' : 'secondary'}
+                      color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                       onclick={() => selectOption(ing, 'Normal')}
                     >
                       {t('kiosk_iceLevel_normal')}
@@ -182,7 +185,7 @@
                       class="ml-1 w-1/3"
                       shape="semi-round"
                       size="tiny"
-                      color={ingredientSelection[ing.name] === 'Extra' ? 'primary' : 'secondary'}
+                      color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                       onclick={() => selectOption(ing, 'Extra')}
                     >
                       <div class="flex flex-col items-center align-middle">
@@ -238,24 +241,22 @@
         <div class="mb-2">
           <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
           <div class="w-full gap-2">
-            {#each baseItems ?? [] as ing}
-              {#if ing.topping}
-                {@const count = ingredientList.filter((i) => i.name == ing.name).length}
-                {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
-                {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
-                <div class="mb-2 flex items-center justify-between">
-                  <div class="flex flex-col">
-                    <Text>{td(ing.name)}</Text>
-                    <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
-                  </div>
-                  <NumberStepper
-                    value={count}
-                    min={minAmt}
-                    max={maxAmt}
-                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
-                  />
+            {#each toppingsList ?? [] as ing}
+              {@const count = ingredientList.filter((i) => i.id == ing.id).length}
+              {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
+              {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
+              <div class="mb-2 flex items-center justify-between">
+                <div class="flex flex-col">
+                  <Text>{td(ing.name)}</Text>
+                  <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                 </div>
-              {/if}
+                <NumberStepper
+                  value={count}
+                  min={minAmt}
+                  max={maxAmt}
+                  onChange={(newValue) => changeIngredientsList(ing, newValue)}
+                />
+              </div>
             {/each}
           </div>
         </div>
