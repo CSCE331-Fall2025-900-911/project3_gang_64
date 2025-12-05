@@ -2,14 +2,10 @@ import { createOrSelectCustomer } from '$lib/api/customer.remote';
 import { getEmployees } from '$lib/api/employee.remote';
 import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
 import { submitOrder } from '$lib/api/orders.remote';
+import { currentEmployee } from '$lib/auth/employee.svelte';
 import type { Ingredient, MenuItem, PaymentMethod } from '$lib/db/types';
+import { itemHash } from '$lib/utils/utils';
 import type { OrderEntry } from './order_manager.types';
-
-function itemHash(menuItem: MenuItem, ingredientIds: Ingredient[]): string {
-  // Sort ingredient IDs to ensure consistent hash regardless of order
-  const sortedIngredients = [...ingredientIds].sort((a, b) => a.id.localeCompare(b.id));
-  return `${menuItem.id}-${sortedIngredients.map((i) => i.id).join(',')}`;
-}
 
 class OrderManager {
   currentOrder = $state<OrderEntry[]>([]);
@@ -23,11 +19,21 @@ class OrderManager {
   total = $derived(this.subtotal + this.tax);
   isValidOrder = $derived(this.currentOrder.length > 0);
 
-  async addToOrder(menuItem: MenuItem) {
-    const itemIngredients = await getIngredientsForMenuItem(menuItem.id);
+  async addToOrder(
+    menuItem: MenuItem,
+    itemIngredients: Ingredient[] | null = null,
+    itemSubtotal: number | null = null,
+    itemIceLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
+    itemSugarLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
+  ) {
+    const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
+
+    if (!itemIngredients) {
+      itemIngredients = baseItemIngredients;
+    }
+
     const currentHash = itemHash(menuItem, itemIngredients);
 
-    // check if item already exists in order
     const existing = this.currentOrder.find((entry) => {
       const existingHash = itemHash(entry.menuItem, entry.ingredients);
       return existingHash === currentHash;
@@ -36,6 +42,20 @@ class OrderManager {
     if (existing) {
       existing.quantity += 1;
       return;
+    }
+
+    if (!itemSubtotal) {
+      itemSubtotal = menuItem.price;
+    }
+
+    const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
+
+    if (!levelOptions.includes(itemIceLevel)) {
+      itemIceLevel = 'Normal';
+    }
+
+    if (!levelOptions.includes(itemSugarLevel)) {
+      itemSugarLevel = 'Normal';
     }
 
     this.currentOrder.push({
