@@ -5,9 +5,3 @@ import {goto} from '$app/navigation';
 export function load() {
   throw redirect(302, '/kiosk/home');
 }
-
-setTimeout(function() {
-  //alert("Tap to continue, logging out in 30s");
-  orderManager.clearOrder();
-  goto('/kiosk/home');
-}, 60000); 
