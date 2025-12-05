@@ -10,10 +10,12 @@
     AppShell,
     AppShellHeader,
     Avatar,
+    Button,
     IconButton,
     initializeTheme,
     Modal,
     ModalBody,
+    ModalHeader,
     modalManager,
   } from '@immich/ui';
   import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
@@ -30,7 +32,7 @@
   const cartLabel: string = t('kiosk_cart');
   const orderLabel: string = t('kiosk_order');
 
-  const timeOutLength = 5;
+  const timeOutLength = 12;
   let timer = $derived(timeOutLength);
   let showModal = $derived(false);
 
@@ -76,11 +78,17 @@
     showModal = false;
   };
 
+  const resetTimerEvent = () => {
+    if (!showModal) {
+      resetTimer();
+    }
+  };
+
   const listenerSetup = () => {
     const events = ['mousemove', 'keydown', 'click', 'touchstart'];
-    events.forEach((ev) => window.addEventListener(ev, resetTimer));
+    events.forEach((ev) => window.addEventListener(ev, resetTimerEvent));
 
-    return () => events.forEach((ev) => window.removeEventListener(ev, resetTimer));
+    return () => events.forEach((ev) => window.removeEventListener(ev, resetTimerEvent));
   };
 
   function countD() {
@@ -89,11 +97,12 @@
 
     let countDown = setInterval(() => {
       --timer;
-      if (!showModal && timer <= 30) {
+      if (!showModal && timer <= 10) {
         showModal = true;
       }
       if (timer <= 0) {
         clearInterval(countDown);
+        listeners();
         orderManager.clearOrder();
         showModal = false;
         goto('/kiosk/home');
@@ -108,10 +117,12 @@
 
   function timeOut() {
     if (window.location.pathname !== '/kiosk/home') {
-      countD();
+      const runTimer = countD();
 
-      return countD();
-    }
+      return () => {
+        runTimer();
+      };
+    } else return null;
   }
 
   onMount(() => {
@@ -121,14 +132,12 @@
     }
 
     //timeout
-    const timeout = timeOut();
+    const time = timeOut();
 
-    return () => {
-      timeOut();
-    };
+    return time;
   });
 
-  onNavigate(() => timeOut());
+  onNavigate(() => timeOut);
 
   $effect(() => {
     const unsubscribe = colorblindMode.subscribe((mode) => {
@@ -210,9 +219,15 @@
     </div>
   </AppShellHeader>
   {#if showModal}
-    <Modal title="Are you still there?">
+    <Modal class="w-90 text-center">
+      <ModalHeader>
+        <div class="my-3 text-4xl">Are you still there?</div>
+      </ModalHeader>
       <ModalBody>
-        Your order will be cleared in {timer} seconds
+        <div class="flex flex-col justify-center text-3xl">
+          Your order will be cleared in {timer} seconds
+          <Button onclick={resetTimer} class="my-5">I'm still here!</Button>
+        </div>
       </ModalBody>
     </Modal>
   {/if}
