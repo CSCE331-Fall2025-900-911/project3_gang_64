@@ -1,4 +1,3 @@
-import { env } from '$env/dynamic/public';
 import { uploadImageToR2 } from '$lib/api/r2.remote';
 
 export function fileToBase64(file: File): Promise<string> {
@@ -20,5 +19,5 @@ export async function fileUpload(file: File): Promise<string> {
     throw new Error('Upload failed');
   }
 
-  return `${env.PUBLIC_R2_ENDPOINT}/${upload.key}`;
+  return `https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/${upload.key}`;
 }

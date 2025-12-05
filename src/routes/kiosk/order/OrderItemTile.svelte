@@ -1,8 +1,8 @@
 <script lang="ts">
   import { getIngredients, getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
+  import { td } from '$lib/contexts/translations.svelte';
   import type { MenuItem } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
-  import { td } from '$lib/contexts/translations.svelte';
   import { Heading, Icon, IconButton, modalManager, toastManager } from '@immich/ui';
   import { mdiImageOff, mdiPlus } from '@mdi/js';
   import CartToast from './CartToast.svelte';
@@ -45,11 +45,11 @@
 
 <div class="relative flex flex-col justify-between rounded-lg border-2 p-4">
   <div class="relative mb-5">
-    <div class="bg-level-2 flex h-50 w-full items-center justify-center rounded-md border object-cover">
+    <div class="bg-level-2 flex h-100 w-full items-start justify-center overflow-hidden rounded-2xl border">
       {#if item.imageUrl}
-        <img src={item.imageUrl} alt={td(item.name)} />
+        <img src={item.imageUrl} alt={td(item.name)} class="h-full w-full object-cover object-top" />
       {:else}
-        <Icon icon={mdiImageOff} size="96" class="" />
+        <Icon icon={mdiImageOff} size="96" class="h-full" />
       {/if}
     </div>
 

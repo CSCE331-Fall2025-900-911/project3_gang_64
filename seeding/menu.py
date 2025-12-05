@@ -43,32 +43,32 @@ ingredients = [
 # of items = 16
 items = [
     # Milky Series
-    Menu(Translation(en="Classic Pearl Milk Tea", es="Té con Leche y Perlas Clásico", de="Klassischer Perlen-Milchtee", fr="Thé au Lait aux Perles Classique"), Translation(en="Milky Series", es="Serie Láctea", de="Milchserie", fr="Série Laiteuse"), 5.80),
-    Menu(Translation(en="Taro Pearl Milk Tea", es="Té con Leche y Perlas de Taro", de="Taro-Perlen-Milchtee", fr="Thé au Lait aux Perles de Taro"), Translation(en="Milky Series", es="Serie Láctea", de="Milchserie", fr="Série Laiteuse"), 6.25),
+    Menu(Translation(en="Classic Pearl Milk Tea", es="Té con Leche y Perlas Clásico", de="Klassischer Perlen-Milchtee", fr="Thé au Lait aux Perles Classique"), Translation(en="Milky Series", es="Serie Láctea", de="Milchserie", fr="Série Laiteuse"), 5.80, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/90481017-9d8b-40a0-8567-b0a7903b03cd.jpeg"),
+    Menu(Translation(en="Taro Pearl Milk Tea", es="Té con Leche y Perlas de Taro", de="Taro-Perlen-Milchtee", fr="Thé au Lait aux Perles de Taro"), Translation(en="Milky Series", es="Serie Láctea", de="Milchserie", fr="Série Laiteuse"), 6.25, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/5336c161-4f07-48ac-b973-0f112a662cfc.jpeg"),
 
     # Fresh Brew
-    Menu(Translation(en="Classic Tea", es="Té Clásico", de="Klassischer Tee", fr="Thé Classique"), Translation(en="Fresh Brew", es="Infusión Fresca", de="Frischer Aufguss", fr="Infusion Fraîche"), 4.65),
-    Menu(Translation(en="Honey Tea", es="Té con Miel", de="Honig-Tee", fr="Thé au Miel"), Translation(en="Fresh Brew", es="Infusión Fresca", de="Frischer Aufguss", fr="Infusion Fraîche"), 4.85),
+    Menu(Translation(en="Classic Tea", es="Té Clásico", de="Klassischer Tee", fr="Thé Classique"), Translation(en="Fresh Brew", es="Infusión Fresca", de="Frischer Aufguss", fr="Infusion Fraîche"), 4.65, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/db180e83-5b37-42d4-81bb-985390380d10.jpeg"),
+    Menu(Translation(en="Honey Tea", es="Té con Miel", de="Honig-Tee", fr="Thé au Miel"), Translation(en="Fresh Brew", es="Infusión Fresca", de="Frischer Aufguss", fr="Infusion Fraîche"), 4.85, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/f2093c6e-ffee-4204-9687-eac963ab00b3.jpeg"),
 
     # Fruity Beverages
-    Menu(Translation(en="Mango Green Tea", es="Té Verde de Mango", de="Mango-Grüntee", fr="Thé Vert à la Mangue"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 5.80),
-    Menu(Translation(en="Passion Chess", es="Ajedrez de Maracuyá", de="Passionsfrucht-Schach", fr="Échecs de Fruit de la Passion"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 6.25),
-    Menu(Translation(en="Peach Tea w/ Honey Jelly", es="Té de Durazno con Gelatina de Miel", de="Pfirsich-Tee mit Honig-Gelee", fr="Thé à la Pêche avec Gelée de Miel"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 6.25),
+    Menu(Translation(en="Mango Green Tea", es="Té Verde de Mango", de="Mango-Grüntee", fr="Thé Vert à la Mangue"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 5.80, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/674af5be-9134-46a7-be52-0c90c92f59ec.jpeg"),
+    Menu(Translation(en="Passion Chess", es="Ajedrez de Maracuyá", de="Passionsfrucht-Schach", fr="Échecs de Fruit de la Passion"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 6.25, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/3e16d757-e9d5-4b4c-b90b-671af05bd4f7.jpeg"),
+    Menu(Translation(en="Peach Tea w/ Honey Jelly", es="Té de Durazno con Gelatina de Miel", de="Pfirsich-Tee mit Honig-Gelee", fr="Thé à la Pêche avec Gelée de Miel"), Translation(en="Fruity Beverage", es="Bebida Afrutada", de="Fruchtiges Getränk", fr="Boisson Fruitée"), 6.25, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/e9a0d911-fddb-437d-b662-908c94792f0d.jpeg"),
 
     # Non-Caffeinated
-    Menu(Translation(en="Tiger Boba", es="Boba Tigre", de="Tiger-Boba", fr="Boba Tigre"), Translation(en="Non-Caffeinated", es="Sin Cafeína", de="Koffeinfrei", fr="Sans Caféine"), 6.50),
-    Menu(Translation(en="Halo Halo", es="Halo Halo", de="Halo Halo", fr="Halo Halo"), Translation(en="Non-Caffeinated", es="Sin Cafeína", de="Koffeinfrei", fr="Sans Caféine"), 6.95),
+    Menu(Translation(en="Tiger Boba", es="Boba Tigre", de="Tiger-Boba", fr="Boba Tigre"), Translation(en="Non-Caffeinated", es="Sin Cafeína", de="Koffeinfrei", fr="Sans Caféine"), 6.50, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/e5316999-7d07-4d38-b672-c07d89ab25ce.png"),
+    Menu(Translation(en="Halo Halo", es="Halo Halo", de="Halo Halo", fr="Halo Halo"), Translation(en="Non-Caffeinated", es="Sin Cafeína", de="Koffeinfrei", fr="Sans Caféine"), 6.95, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/7bcd2370-722e-44c8-ae25-a5a9b375bb3d.webp"),
 
     # New Matcha Series
-    Menu(Translation(en="Matcha Pearl Milk Tea", es="Té con Leche y Perlas de Matcha", de="Matcha-Perlen-Milchtee", fr="Thé au Lait aux Perles de Matcha"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50),
-    Menu(Translation(en="Strawberry Matcha Fresh Milk", es="Leche Fresca de Matcha con Fresa", de="Erdbeer-Matcha-Frischmilch", fr="Lait Frais au Matcha et à la Fraise"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50),
-    Menu(Translation(en="Mango Matcha Fresh Milk", es="Leche Fresca de Matcha con Mango", de="Mango-Matcha-Frischmilch", fr="Lait Frais au Matcha et à la Mangue"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50),
+    Menu(Translation(en="Matcha Pearl Milk Tea", es="Té con Leche y Perlas de Matcha", de="Matcha-Perlen-Milchtee", fr="Thé au Lait aux Perles de Matcha"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/3f4bed35-0a68-4fa9-8a29-f8544c9a2739.png"),
+    Menu(Translation(en="Strawberry Matcha Fresh Milk", es="Leche Fresca de Matcha con Fresa", de="Erdbeer-Matcha-Frischmilch", fr="Lait Frais au Matcha et à la Fraise"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/efe3d01c-129a-4d84-be95-a358c5685745.png"),
+    Menu(Translation(en="Mango Matcha Fresh Milk", es="Leche Fresca de Matcha con Mango", de="Mango-Matcha-Frischmilch", fr="Lait Frais au Matcha et à la Mangue"), Translation(en="New Matcha Series", es="Nueva Serie Matcha", de="Neue Matcha-Serie", fr="Nouvelle Série Matcha"), 6.50, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/789fca44-8636-4cbe-947c-7ec9aab99680.png"),
 
     # Ice-Blended
-    Menu(Translation(en="Oreo w/ Pearl", es="Oreo con Perlas", de="Oreo mit Perlen", fr="Oreo aux Perles"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75),
-    Menu(Translation(en="Coffee w/ Ice Cream", es="Café con Helado", de="Kaffee mit Eiscreme", fr="Café à la Crème Glacée"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75),
-    Menu(Translation(en="Strawberry w/ Lychee Jelly & Ice Cream", es="Fresa con Gelatina de Lichi y Helado", de="Erdbeere mit Litschi-Gelee und Eiscreme", fr="Fraise avec Gelée de Litchi et Crème Glacée"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75),
-    Menu(Translation(en="Lava Flow", es="Flujo de Lava", de="Lavafluss", fr="Flux de Lave"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.95),
+    Menu(Translation(en="Oreo w/ Pearl", es="Oreo con Perlas", de="Oreo mit Perlen", fr="Oreo aux Perles"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/bec7035d-2b87-430a-8ee1-1dd7ac96bcce.jpeg"),
+    Menu(Translation(en="Coffee w/ Ice Cream", es="Café con Helado", de="Kaffee mit Eiscreme", fr="Café à la Crème Glacée"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/c9ec508b-1142-47fe-8d7a-656700821165.jpeg"),
+    Menu(Translation(en="Strawberry w/ Lychee Jelly & Ice Cream", es="Fresa con Gelatina de Lichi y Helado", de="Erdbeere mit Litschi-Gelee und Eiscreme", fr="Fraise avec Gelée de Litchi et Crème Glacée"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.75, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/94be56d1-83c0-4c7b-892a-befc2090eefd.png"),
+    Menu(Translation(en="Lava Flow", es="Flujo de Lava", de="Lavafluss", fr="Flux de Lave"), Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), 6.95, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/edf3b6da-9308-4120-b7b6-cac04b90312f.webp"),
 ]
 
 recipes = [
