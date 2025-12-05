@@ -6,7 +6,7 @@
   import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import { t } from '$lib/utils/utils';
-  import {
+  import { 
     AppShell,
     AppShellHeader,
     Avatar,
@@ -19,6 +19,16 @@
     modalManager,
   } from '@immich/ui';
   import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+    AppShellHeader, 
+    Avatar, 
+    IconButton, 
+    initializeTheme, 
+    ThemeSwitcher, 
+    Modal, 
+    ModalBody,
+    modalManager } from '@immich/ui';
+  import { mdiCartOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+  import { onMount } from 'svelte';
   import '../../app.css';
   import CartModal from './order/CartModal.svelte';
 
@@ -58,6 +68,9 @@
   function isColorblindMode(value: string): value is ColorblindMode {
     return modes.includes(value as ColorblindMode);
   }
+  const timeOutLength = 5;
+  let timer = $derived(timeOutLength);
+  let showModal = $derived(false);
 
   //timeout logic and set up
   const resetTimer = () => {
@@ -84,7 +97,7 @@
 
     let countDown = setInterval(() => {
       --timer;
-      if (!showModal && timer <= 10) {
+      if (!showModal && timer <= 30){
         showModal = true;
       }
       if (timer <= 0) {
@@ -206,15 +219,9 @@
     </div>
   </AppShellHeader>
   {#if showModal}
-    <Modal class="w-90 text-center">
-      <ModalHeader>
-        <div class="my-3 text-4xl">Are you still there?</div>
-      </ModalHeader>
+    <Modal title="Are you still there?">
       <ModalBody>
-        <div class="flex flex-col justify-center text-3xl">
-          Your order will be cleared in {timer} seconds
-          <Button onclick={resetTimer} class="my-5">I'm still here!</Button>
-        </div>
+        Your order will be cleared in {timer} seconds
       </ModalBody>
     </Modal>
   {/if}

@@ -1,16 +1,11 @@
 <script lang="ts">
   import { orderManager } from '$lib/managers/order_manager.svelte';
-  import { AppShell, Button, Heading, HStack, IconButton, modalManager, Text } from '@immich/ui';
+  import { AppShell, Button, Heading, HStack, IconButton, Modal, ModalBody, modalManager, Text } from '@immich/ui';
   import { mdiTrashCanOutline } from '@mdi/js';
   import OrderSubmitDialog from '../../kitchen/cashier/OrderSubmitDialog.svelte';
   import { t } from '$lib/utils/utils';
-  import { derived } from 'svelte/store';
-  import { onMount } from 'svelte';
-  import {goto} from '$app/navigation';
 
-  const timeOutLength = 6;
-  let timer = $derived(timeOutLength);
-  let countDown: ReturnType<typeof setInterval>;
+  
 
   function showSubmitDialog() {
     modalManager.show(OrderSubmitDialog);
@@ -23,35 +18,6 @@
   function duplicateItem(index: number) {
     orderManager.duplicateOrderEntry(index);
   }
-
-  const resetTimer = () => {
-    timer = timeOutLength;
-  }
-
-  const listenerSetup = () => {
-    const events = ["mousemove", "keydown", "click", "touchstart"];
-    events.forEach((ev) => window.addEventListener(ev, resetTimer));
-
-    return () => events.forEach((ev) => window.removeEventListener(ev, resetTimer));
-  }
-
-  onMount(() => {
-    const listeners = listenerSetup();
-
-    countDown = setInterval(()=> {
-      --timer;
-      if (timer <= 0) {
-        clearInterval(countDown);
-        orderManager.clearOrder();
-        //goto('/kiosk/home');
-      }
-    }, 1000);
-
-    return () => {
-      listeners();
-      clearInterval(countDown);
-    }
-  });
 
 </script>
 
