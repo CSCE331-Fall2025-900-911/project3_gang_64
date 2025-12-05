@@ -23,8 +23,8 @@ class OrderManager {
     menuItem: MenuItem,
     itemIngredients: Ingredient[] | null = null,
     itemSubtotal: number | null = null,
-    itemIceLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
-    itemSugarLevel: 'None' | 'Low' | 'Normal' | 'High' = 'Normal',
+    itemIceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
+    itemSugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
   ) {
     const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
 
@@ -48,7 +48,7 @@ class OrderManager {
       itemSubtotal = menuItem.price;
     }
 
-    const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
+    const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
 
     if (!levelOptions.includes(itemIceLevel)) {
       itemIceLevel = 'Normal';

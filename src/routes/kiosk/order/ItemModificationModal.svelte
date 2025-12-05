@@ -37,14 +37,36 @@
   // svelte-ignore state_referenced_locally
   let ingredientList = $state(baseItems);
   const markup = 0.5;
-  const levelOptions = ['None', 'Low', 'Normal', 'High'] as const;
-  type Level = 'None' | 'Low' | 'Normal' | 'High';
+  const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
+  type Level = 'None' | 'Less' | 'Normal' | 'Extra';
   let selectedIce = $state<Level>('Normal');
   let selectedSugar = $state<Level>('Normal');
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
   const positive = 1;
   const negative = -1;
+  let ingredientSelection = $state<Record<string, Level>>({});
+  $effect(() => {
+    for (const ing of baseItems) {
+      if (!ingredientSelection[ing.name]) {
+        ingredientSelection[ing.name] = 'Normal';
+      }
+    }
+  });
+
+  function selectOption(ing: Ingredient, option: Level) {
+    ingredientSelection[ing.name] = option;
+    removeOneIngredient(ing);
+    removeOneIngredient(ing);
+    switch (option) {
+      case 'Extra':
+        addOneIngredient(ing);
+        addOneIngredient(ing);
+        break;
+      default:
+        addOneIngredient(ing);
+    }
+  }
 
   async function handleAddToOrder() {
     loading = true;
@@ -85,8 +107,8 @@
     if (index !== -1) {
       ingredientList.splice(index, 1);
       ingredientList = [...ingredientList];
+      updatePricing(target, negative);
     }
-    updatePricing(target, negative);
   }
 
   function addOneIngredient(target: Ingredient) {
@@ -133,21 +155,42 @@
           <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
           <div class="w-full gap-2">
             {#each baseItems as ing}
-              {#if !ing.ice && !ing.topping}
-                {@const count = ingredientList.filter((i) => i.name == ing.name).length}
-                {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
-                {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
+              {#if !ing.category.includes('Ice')}
                 <div class="mb-2 flex items-center justify-between">
-                  <div class="flex flex-col">
-                    <Text>{td(ing.name)}</Text>
-                    <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
+                  <Text>{ing.name}</Text>
+
+                  <div class="flex flex-row">
+                    <Button
+                      class="w-1/3"
+                      shape="semi-round"
+                      size="tiny"
+                      color={ingredientSelection[ing.name] === 'Less' ? 'primary' : 'secondary'}
+                      onclick={() => selectOption(ing, 'Less')}
+                    >
+                      {t('kiosk_iceLevel_low')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/3"
+                      shape="semi-round"
+                      size="tiny"
+                      color={ingredientSelection[ing.name] === 'Normal' ? 'primary' : 'secondary'}
+                      onclick={() => selectOption(ing, 'Normal')}
+                    >
+                      {t('kiosk_iceLevel_normal')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/3"
+                      shape="semi-round"
+                      size="tiny"
+                      color={ingredientSelection[ing.name] === 'Extra' ? 'primary' : 'secondary'}
+                      onclick={() => selectOption(ing, 'Extra')}
+                    >
+                      <div class="flex flex-col items-center align-middle">
+                        {t('kiosk_iceLevel_high')}
+                        <Text size="tiny">+${(ing.unitPrice + markup).toFixed(2)}</Text>
+                      </div>
+                    </Button>
                   </div>
-                  <NumberStepper
-                    value={count}
-                    min={minAmt}
-                    max={maxAmt}
-                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
-                  />
                 </div>
               {/if}
             {/each}
