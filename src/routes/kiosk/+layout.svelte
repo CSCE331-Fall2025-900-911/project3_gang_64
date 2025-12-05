@@ -19,6 +19,8 @@
     modalManager,
   } from '@immich/ui';
   import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+  import '../../app.css';
+  import CartModal from './order/CartModal.svelte';
 
   let { children } = $props();
 
@@ -190,7 +192,7 @@
             size="medium"
             color="primary"
             onclick={openCart}
-            aria-label={shopModeLabel}
+            aria-label={t('kiosk_cart')}
           />
           <div class="absolute -top-1 -right-1">
             <Avatar

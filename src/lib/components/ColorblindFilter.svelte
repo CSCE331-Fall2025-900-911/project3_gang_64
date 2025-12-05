@@ -1,12 +1,3 @@
-<script lang="ts">
-  import { initializeColorblindMode } from '$lib/managers/accessibility.svelte';
-  import { onMount } from 'svelte';
-
-  onMount(() => {
-    initializeColorblindMode();
-  });
-</script>
-
 <svg width="0" height="0" style="position: absolute">
   <filter id="normal">
     <feColorMatrix
