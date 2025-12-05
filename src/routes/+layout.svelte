@@ -5,9 +5,7 @@
 
   let { data, children } = $props();
 
-  $effect(() => {
-    setTranslations(data.translations);
-  });
+  setTranslations(data.translations);
 </script>
 
 {@render children()}
