@@ -29,7 +29,7 @@
 
 <AppShell>
   <AppShellHeader>
-    <div class="flex w-full items-center justify-between p-4">
+    <div class="flex w-full items-center justify-between p-4" role="navigation">
       <img src={logo} alt={t('logoAlt')} class="h-6" />
       <div class="flex items-center gap-4">
         <IconButton
