@@ -204,7 +204,7 @@
             <div>
               <Heading size="small" class="mb-2">{t('kiosk_nutrition')}</Heading>
 
-              <div class="grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border bg-white p-3">
+              <div class="bg-level-2 grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border p-3">
                 <Text size="tiny">{t('kiosk_nutrition_calories')}: {total.calories.toFixed(1)}</Text>
                 <Text size="tiny">{t('kiosk_nutrition_fat')}: {total.fat_g.toFixed(1)}g</Text>
                 <Text size="tiny">{t('kiosk_nutrition_sodium')}: {total.sodium_g.toFixed(1)}g</Text>
@@ -216,7 +216,7 @@
             <div>
               <Heading size="small" class="mb-2">{t('kiosk_allergens')}</Heading>
 
-              <div class="grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border bg-white p-3">
+              <div class="bg-level-2 grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border p-3">
                 {#if allergenList.length > 0}
                   {#each allergenList as allergen}
                     <Text size="tiny">{td(allergen)}</Text>
