@@ -86,6 +86,7 @@ class OrderContent:
     menu_item_id: UUID
     ingredient_id: UUID
     order_entry_id: UUID
+    item_subtotal: float
 
 
 @dataclass

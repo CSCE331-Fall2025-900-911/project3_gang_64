@@ -90,6 +90,7 @@ export const orderContent = pgTable(
     menuItemId: uuid('menu_item_id').notNull(),
     ingredientId: uuid('ingredient_id').notNull(),
     orderEntryId: uuid('order_entry_id').notNull(),
+    itemSubtotal: doublePrecision().notNull(),
   },
   (table) => [
     foreignKey({
