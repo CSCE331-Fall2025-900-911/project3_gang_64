@@ -4,9 +4,15 @@
   import { getLastZTime, getAllZReportData, updateZTime } from '$lib/api/zreport.remote';
   import { td } from '$lib/contexts/translations.svelte';
 
-  let lastZTime = $state(await getLastZTime());
-  let zReportData = $state(await getAllZReportData(lastZTime));
-  let isLoading = $state(false);
+  let lastZTime = $state<any>();
+  let zReportData = $state<any>();
+  let isLoading = $state(true);
+
+  (async () => {
+    lastZTime = await getLastZTime();
+    zReportData = await getAllZReportData(lastZTime);
+    isLoading = false;
+  })();
 
   async function resetZTime() {
     isLoading = true;
