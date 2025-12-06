@@ -18,48 +18,19 @@
     ModalHeader,
     modalManager,
   } from '@immich/ui';
-  import { mdiCartOutline, mdiShoppingOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
-    AppShellHeader, 
-    Avatar, 
-    IconButton, 
-    initializeTheme, 
-    ThemeSwitcher, 
-    Modal, 
-    ModalBody,
-    ModalHeader,
-    modalManager,
-    Button } from '@immich/ui';
   import { mdiCartOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
   import { onMount } from 'svelte';
   import '../../app.css';
   import CartModal from './order/CartModal.svelte';
-  import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
-  import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
+  import { onNavigate, goto } from '$app/navigation';
 
   let { children } = $props();
 
   initializeTheme();
 
-  const orderUrl: string = '/kiosk/order';
-  const cartUrl: string = '/kiosk/cart';
-  const cartLabel: string = t('kiosk_cart');
-  const orderLabel: string = t('kiosk_order');
-
   const timeOutLength = 12;
   let timer = $derived(timeOutLength);
   let showModal = $derived(false);
-
-  const shopModeIcon = $derived.by(() => {
-    return page.url.pathname === cartUrl ? mdiShoppingOutline : mdiCartOutline;
-  });
-
-  const shopModeLabel = $derived.by(() => {
-    return page.url.pathname === cartUrl ? orderLabel : cartLabel;
-  });
-
-  const colorBlindModeLabel = $derived.by(() => {
-    return currentMode;
-  });
 
   function openCart() {
     modalManager.show(CartModal);
@@ -98,7 +69,8 @@
         listeners();
         orderManager.clearOrder();
         showModal = false;
-        goto('/kiosk/home');
+        window.location.href='/kiosk/home'
+
       }
     }, 1000);
 
