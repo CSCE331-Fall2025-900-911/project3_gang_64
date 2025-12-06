@@ -1,26 +1,29 @@
 <script lang="ts">
   import { Card, CardBody, CardHeader, CardTitle, Heading, Text, Label, Button, LoadingSpinner } from '@immich/ui';
   import { t } from '$lib/utils/utils';
-  import { getLastZTime, getAllZReportData, updateZTime } from '$lib/api/zreport.remote';
+  import { getLastZTime, getAllZReportData, updateZTime, canRunZReport } from '$lib/api/zreport.remote';
   import { td } from '$lib/contexts/translations.svelte';
 
   let lastZTime = $state<any>();
   let zReportData = $state<any>();
   let isLoading = $state(true);
+  let canRun = $state(false);
+  let hasGenerated = $state(false);
 
   (async () => {
-    lastZTime = await getLastZTime();
-    zReportData = await getAllZReportData(lastZTime);
+    canRun = await canRunZReport();
     isLoading = false;
   })();
 
-  async function resetZTime() {
+  async function generateZReport() {
+    if (!canRun || hasGenerated) return;
     isLoading = true;
-    await updateZTime();
-    // Invalidate the cache for query functions
-    await getLastZTime().refresh();
     lastZTime = await getLastZTime();
     zReportData = await getAllZReportData(lastZTime);
+    await updateZTime();
+    await getLastZTime().refresh();
+    hasGenerated = true;
+    canRun = false;
     isLoading = false;
   }
 </script>
@@ -48,6 +51,16 @@
         <div class="flex items-center justify-center py-8">
           <LoadingSpinner size="large" />
         </div>
+      {:else if !hasGenerated}
+        <div class="flex flex-col items-center justify-center gap-4 py-8">
+          {#if canRun}
+            <Button class="w-full" color="primary" onclick={generateZReport}
+              >{t('manager_reports_z_generate_button')}</Button
+            >
+          {:else}
+            <Text class="text-center">{t('manager_reports_z_already_generated')}</Text>
+          {/if}
+        </div>
       {:else}
         <div class="mt-4 grid grid-cols-2 gap-4">
           <Label class="text-base">{t('manager_reports_z_total_net_sales')}:</Label>
@@ -74,8 +87,6 @@
               <Label class="text-base">${totalSubtotal.toFixed(2)}</Label>
             {/each}
           </div>
-          <Button class="mt-6 w-full" color="primary" onclick={resetZTime}>{t('manager_reports_z_reset_button')}</Button
-          >
         </div>
       {/if}</CardBody
     >
