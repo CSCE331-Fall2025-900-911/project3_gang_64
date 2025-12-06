@@ -39,7 +39,16 @@ export const luxonDatetime = custom<DateTime>((input) => (input instanceof DateT
  * Creates a hash string for an order item based on menu item ID and ingredient IDs.
  * Used to identify identical order entries for quantity grouping.
  */
-export function itemHash(menuItem: { id: string }, ingredients: { id: string }[]): string {
-  const sortedIngredients = [...ingredients].sort((a, b) => a.id.localeCompare(b.id));
-  return `${menuItem.id}-${sortedIngredients.map((i) => i.id).join(',')}`;
+export function itemHash(
+  menuItem: { id: string },
+  ingredients: { id: string }[],
+  iceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
+  sugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
+  lessList: string[],
+): string {
+  const sortedIngredients = [...ingredients].map((i) => i.id).sort((a, b) => a.localeCompare(b));
+
+  const sortedLess = [...lessList].sort((a, b) => a.localeCompare(b));
+
+  return [menuItem.id, sortedIngredients.join(','), iceLevel, sugarLevel, sortedLess.join(',')].join('|');
 }

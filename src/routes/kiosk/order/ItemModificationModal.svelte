@@ -27,33 +27,58 @@
 
   interface Props {
     item: MenuItem;
+    currentIngredientList?: Ingredient[];
+    currentIceLevel?: string;
+    currentSugarLevel?: string;
+    currentLessList?: string[];
+    currentCartPrice?: number;
+    quantity?: number;
     states: { isAdded: boolean };
   }
 
-  let { onClose, item, states }: ModalProps & Props = $props();
+  let {
+    onClose,
+    item,
+    currentIngredientList = [],
+    currentIceLevel = '',
+    currentSugarLevel = '',
+    currentLessList = [],
+    currentCartPrice = item.price,
+    quantity = 1,
+    states,
+  }: ModalProps & Props = $props();
+
   toppingsManager.load();
+
   let loading = $state(false);
-  let currentPrice = $state(item.price);
-  let shownPrice = $state(item.price);
+  let currentPrice = $state(currentCartPrice);
+  let shownPrice = $state(currentCartPrice);
   let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
   // svelte-ignore state_referenced_locally
-  let ingredientList = $state(baseItems);
+  let ingredientList = $state(currentIngredientList.length == 0 ? baseItems : currentIngredientList);
   const toppingsList = $derived(toppingsManager.toppings);
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
-  let selectedIce = $state<Level>('Normal');
-  let selectedSugar = $state<Level>('Normal');
+  let selectedIce = $state<Level>((currentIceLevel.length === 0 ? 'Normal' : currentIceLevel) as Level);
+  let selectedSugar = $state<Level>((currentSugarLevel.length === 0 ? 'Normal' : currentSugarLevel) as Level);
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
   const positive = 1;
   const negative = -1;
   let ingredientSelection = $state<Record<string, Level>>({});
   $effect(() => {
+    if (baseItems.length === 0) return;
+
     for (const ing of baseItems) {
-      if (!ingredientSelection[ing.id]) {
-        ingredientSelection[ing.id] = 'Normal';
+      if (currentLessList.includes(ing.id)) {
+        ingredientSelection[ing.id] = 'Less';
+        continue;
       }
+
+      const count = ingredientList.filter((x) => x.id === ing.id).length;
+
+      ingredientSelection[ing.id] = count === 2 ? 'Extra' : 'Normal';
     }
   });
 
@@ -61,7 +86,12 @@
     ingredientSelection[ing.id] = option;
     removeOneIngredient(ing);
     removeOneIngredient(ing);
+    currentLessList = currentLessList.filter((x) => x !== ing.id);
     switch (option) {
+      case 'Less':
+        currentLessList.push(ing.id);
+        addOneIngredient(ing);
+        break;
       case 'Extra':
         addOneIngredient(ing);
         addOneIngredient(ing);
@@ -74,7 +104,15 @@
   async function handleAddToOrder() {
     loading = true;
     currentPrice = currentPrice >= item.price ? currentPrice : item.price;
-    await orderManager.addToOrder(item, ingredientList, currentPrice, selectedIce, selectedSugar);
+    await orderManager.addToOrder(
+      item,
+      ingredientList,
+      currentPrice,
+      selectedIce,
+      selectedSugar,
+      currentLessList,
+      quantity,
+    );
     loading = false;
 
     states.isAdded = true;
