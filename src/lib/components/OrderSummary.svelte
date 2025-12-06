@@ -49,6 +49,7 @@
   }
 
   async function showEditDialog(entry: OrderEntry, index: number) {
+    const originalQuantity = entry.quantity;
     const states = { isAdded: false };
     await modalManager.show(ItemModificationModal, {
       item: entry.menuItem,
@@ -62,7 +63,10 @@
     });
 
     if (states.isAdded) {
-      onRemoveEntry?.(index);
+      entry.quantity -= originalQuantity;
+      if (entry.quantity == 0) {
+        onRemoveEntry?.(index);
+      }
     }
   }
 </script>
