@@ -304,7 +304,7 @@
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
                         disabled={(ingredientList.length <= 1 ||
-                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)) &&
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length <= 2)) &&
                           ingredientSelection[ing.id] !== 'None'}
                       >
                         {t('kiosk_iceLevel_none')}
@@ -315,7 +315,9 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
-                        disabled={ingredientList.length == 10 && ingredientSelection[ing.id] !== 'Normal'}
+                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'None') ||
+                          (ingredientSelection[ing.id] === 'None' && ing.currentStock <= 0)) &&
+                          ingredientSelection[ing.id] !== 'Normal'}
                       >
                         {t('kiosk_iceLevel_normal')}
                       </Button>
@@ -325,9 +327,12 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
-                        disabled={(ingredientList.length == 10 ||
-                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None') ||
-                          ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock) &&
+                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'Normal') ||
+                          (ingredientList.length >= 9 && ingredientSelection[ing.id] === 'None') ||
+                          (ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock &&
+                            ingredientSelection[ing.id] === 'Normal') ||
+                          (ingredientSelection[ing.id] === 'None' &&
+                            ingredientList.filter((i) => i.id == ing.id).length + 1 >= ing.currentStock)) &&
                           ingredientSelection[ing.id] !== 'Extra'}
                       >
                         <div class="flex flex-col items-center align-middle">
