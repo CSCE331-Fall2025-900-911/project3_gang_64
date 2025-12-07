@@ -1,6 +1,7 @@
 <script lang="ts">
   import { td } from '$lib/contexts/translations.svelte';
   import type { OrderEntry } from '$lib/managers/order_manager.types';
+  import type { Ingredient } from '$lib/db/types';
   import { t } from '$lib/utils/utils';
   import { Button, Heading, HStack, IconButton, Stack, Text, modalManager, toastManager } from '@immich/ui';
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
@@ -87,6 +88,18 @@
       );
     }
   }
+
+  function outOfStock(ingList: Ingredient[], quantity: number): boolean {
+    for (const ing of ingList) {
+      const amountUsed = ingList.filter((i) => i.id === ing.id).length;
+      const required = amountUsed * quantity + amountUsed;
+      if (required > ing.currentStock) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 </script>
 
 <!-- Order Summary -->
@@ -114,7 +127,8 @@
           <Stack align="end" gap={2}>
             <Text size="large">${(entry.subtotal * entry.quantity).toFixed(2)}</Text>
             {#if editable && onUpdateQuantity}
-              <NumberStepper value={entry.quantity} min={1} onChange={(value) => onUpdateQuantity(i, value)} />
+              {@const max = outOfStock(entry.ingredients, entry.quantity) ? -Infinity : Infinity}
+              <NumberStepper value={entry.quantity} min={1} {max} onChange={(value) => onUpdateQuantity(i, value)} />
               <HStack gap={2}>
                 <IconButton
                   icon={mdiPencil}
