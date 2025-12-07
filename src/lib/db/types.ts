@@ -1,5 +1,17 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-valibot';
-import { customer, employee, ingredient, menu, order, orderContent, paymethod, recipe, translation } from './schema';
+import {
+  customer,
+  employee,
+  iceLevel,
+  ingredient,
+  menu,
+  order,
+  orderContent,
+  paymethod,
+  recipe,
+  sugarLevel,
+  translation,
+} from './schema';
 
 export const employeeSelectSchema = createSelectSchema(employee);
 export const employeeUpdateSchema = createUpdateSchema(employee);
@@ -46,7 +58,6 @@ export const BlankIngredient: NewIngredient = {
   orderStock: 0,
   category: '',
   topping: false,
-  ice: false,
   unitPrice: 0,
   calories: 0,
   fat_g: 0,
@@ -76,6 +87,8 @@ export type Order = typeof order.$inferSelect;
 export type NewOrder = typeof order.$inferInsert;
 
 export type PaymentMethod = (typeof paymethod.enumValues)[number];
+export type IceLevel = (typeof iceLevel.enumValues)[number];
+export type SugarLevel = (typeof sugarLevel.enumValues)[number];
 
 export type CreateOrUpdate<T> = { type: 'new' } | { type: 'edit'; item: T };
 

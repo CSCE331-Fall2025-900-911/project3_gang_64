@@ -15,6 +15,8 @@ import { luxonTimestamp } from './columns';
 
 export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
 export const role = pgEnum('role', ['manager', 'staff']);
+export const iceLevel = pgEnum('ice_level', ['None', 'Less', 'Normal', 'Extra']);
+export const sugarLevel = pgEnum('sugar_level', ['None', 'Less', 'Normal', 'Extra']);
 
 export const menu = pgTable(
   'menu',
@@ -91,6 +93,8 @@ export const orderContent = pgTable(
     ingredientId: uuid('ingredient_id').notNull(),
     orderEntryId: uuid('order_entry_id').notNull(),
     itemSubtotal: doublePrecision().notNull(),
+    iceLevel: iceLevel('ice_level').default('Normal').notNull(),
+    sugarLevel: sugarLevel('sugar_level').default('Normal').notNull(),
   },
   (table) => [
     foreignKey({
@@ -118,7 +122,6 @@ export const ingredient = pgTable(
     name: uuid('name').$defaultFn(uuidv4).notNull(),
     category: uuid('category').$defaultFn(uuidv4).notNull(),
     topping: boolean().default(false).notNull(),
-    ice: boolean().default(false).notNull(),
     currentStock: integer('current_stock').notNull(),
     orderStock: integer('order_stock').notNull(),
     unitPrice: doublePrecision('unit_price').notNull(),

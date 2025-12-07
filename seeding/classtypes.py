@@ -21,6 +21,18 @@ class PaymentMethod(Enum):
     CASH = "cash"
     CREDIT = "credit"
 
+class IceLevel(Enum):
+    NONE = "None"
+    LESS = "Less"
+    NORMAL = "Normal"
+    EXTRA = "Extra"
+
+class SugarLevel(Enum):
+    NONE = "None"
+    LESS = "Less"
+    NORMAL = "Normal"
+    EXTRA = "Extra"
+
 @dataclass
 class Employee:
     name: str
@@ -64,7 +76,6 @@ class Ingredient:
     order_stock: int
     unit_price: float
     topping: bool = False
-    ice: bool = False
     calories: int = 0
     fat_g: int = 0
     sodium_g: int = 0
@@ -87,6 +98,9 @@ class OrderContent:
     ingredient_id: UUID
     order_entry_id: UUID
     item_subtotal: float
+    ice_level: IceLevel = IceLevel.NORMAL
+    sugar_level: SugarLevel = SugarLevel.NORMAL
+
 
 
 @dataclass

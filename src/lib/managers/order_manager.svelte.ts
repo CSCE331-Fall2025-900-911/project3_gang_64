@@ -25,8 +25,8 @@ class OrderManager {
     itemSubtotal: number | null = null,
     itemIceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
     itemSugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
-    itemLessList: string[],
     itemQuantity: number,
+    itemIsCashier: boolean = false,
   ) {
     const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
 
@@ -34,16 +34,10 @@ class OrderManager {
       itemIngredients = baseItemIngredients;
     }
 
-    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemLessList);
+    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel);
 
     const existing = this.currentOrder.find((entry) => {
-      const existingHash = itemHash(
-        entry.menuItem,
-        entry.ingredients,
-        entry.iceLevel,
-        entry.sugarLevel,
-        entry.lessList,
-      );
+      const existingHash = itemHash(entry.menuItem, entry.ingredients, entry.iceLevel, entry.sugarLevel);
       return existingHash === currentHash;
     });
 
@@ -56,26 +50,17 @@ class OrderManager {
       itemSubtotal = menuItem.price;
     }
 
-    const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
-
-    if (!levelOptions.includes(itemIceLevel)) {
-      itemIceLevel = 'Normal';
-    }
-
-    if (!levelOptions.includes(itemSugarLevel)) {
-      itemSugarLevel = 'Normal';
-    }
-
-    itemLessList ??= [];
+    itemIceLevel ??= 'Normal';
+    itemSugarLevel ??= 'Normal';
 
     this.currentOrder.push({
       menuItem,
       ingredients: itemIngredients,
-      lessList: itemLessList,
       quantity: itemQuantity,
       subtotal: itemSubtotal,
       iceLevel: itemIceLevel,
       sugarLevel: itemSugarLevel,
+      isCashier: itemIsCashier,
     });
   }
 

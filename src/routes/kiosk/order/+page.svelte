@@ -6,6 +6,7 @@
   import { t } from '$lib/utils/utils';
   import { AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
+  import { localizeHref } from '$lib/i18n/runtime';
 
   let menu = await getCategorizedMenu();
 
@@ -28,11 +29,11 @@
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
       <NavbarItem
-        href={`/kiosk/order#${category}`}
+        href={localizeHref(`/kiosk/order#${category}`)}
         title={td(category) ?? ''}
         active={category === currentCategory.id}
       />
-    {/each}
+    {/each}s
   </AppShellSidebar>
 
   <div class="h-full w-full overflow-y-auto p-4">

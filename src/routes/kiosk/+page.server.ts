@@ -1,7 +1,6 @@
 import { redirect } from '@sveltejs/kit';
-import { orderManager } from '$lib/managers/order_manager.svelte';
-import {goto} from '$app/navigation';
+import { localizeHref } from '$lib/i18n/runtime';
 
 export function load() {
-  throw redirect(302, '/kiosk/home');
+  throw redirect(302, localizeHref('/kiosk/order'));
 }

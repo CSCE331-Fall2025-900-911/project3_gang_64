@@ -237,5 +237,16 @@
   "manager_customers_detail_orders": "Historial de pedidos",
   "manager_customers_detail_no_orders": "No se encontraron pedidos para este cliente",
   "manager_customers_view_details_aria": "Ver detalles del cliente",
-  "manager_orders_table_items": "Elementos"
+  "manager_orders_table_items": "Elementos",
+  "kiosk_editItem": "Editar artículo",
+  "kiosk_iceAndSugarLevel": "Niveles de hielo y azúcar",
+  "manager_reports_z_total_net_sales": "Ventas netas totales",
+  "manager_reports_z_tax": "Impuesto",
+  "manager_reports_z_total_sales": "Ventas totales",
+  "manager_reports_z_cash": "Dinero",
+  "manager_reports_z_credit": "Crédito",
+  "manager_reports_z_sales_categories": "Categorías de ventas",
+  "manager_reports_z_reset_button": "Restablecer informe Z",
+  "manager_reports_z_generate_button": "Generar informe Z",
+  "manager_reports_z_already_generated": "El informe Z ya se generó hoy. Vuelva mañana."
 }

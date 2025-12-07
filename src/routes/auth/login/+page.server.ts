@@ -1,5 +1,6 @@
 import { signIn } from '$lib/auth/auth';
 import { redirect } from '@sveltejs/kit';
+import { localizeHref } from '$lib/i18n/runtime';
 import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
@@ -7,7 +8,7 @@ export async function load(event: RequestEvent) {
 
   // If the user is already logged in, redirect to kitchen main page
   if (session?.user) {
-    redirect(302, '/kitchen');
+    redirect(302, localizeHref('/kitchen'));
   }
 
   return {};
