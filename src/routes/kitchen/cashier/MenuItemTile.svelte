@@ -30,7 +30,7 @@
 
   async function showSubmitDialog() {
     const states = { isAdded: false };
-    await modalManager.show(ItemModificationModal, { item, states });
+    await modalManager.show(ItemModificationModal, { item, isCashier: true, states });
   }
 </script>
 

@@ -19,7 +19,7 @@
     toastManager,
     ModalHeader,
   } from '@immich/ui';
-  import { mdiRestart } from '@mdi/js';
+  import { mdiRestart, mdiPlus, mdiListBox } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
   import NumberStepper from '$lib/components/NumberStepper.svelte';
@@ -29,9 +29,10 @@
     currentIngredientList?: Ingredient[];
     currentIceLevel?: string;
     currentSugarLevel?: string;
-    currentLessList?: string[];
     currentCartPrice?: number;
     quantity?: number;
+    isEdit?: boolean;
+    isCashier?: boolean;
     states: { isAdded: boolean };
   }
 
@@ -41,21 +42,22 @@
     currentIngredientList = [],
     currentIceLevel = '',
     currentSugarLevel = '',
-    currentLessList = [],
     currentCartPrice = item.price,
     quantity = 1,
+    isEdit = false,
+    isCashier = false,
     states,
   }: ModalProps & Props = $props();
 
   toppingsManager.load();
+  const toppingsList = $derived(toppingsManager.toppings);
+  let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
+  // svelte-ignore state_referenced_locally
+  let ingredientList = $state(currentIngredientList.length == 0 ? baseItems : currentIngredientList);
 
   let loading = $state(false);
   let currentPrice = $state(currentCartPrice);
   let shownPrice = $state(currentCartPrice);
-  let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
-  // svelte-ignore state_referenced_locally
-  let ingredientList = $state(currentIngredientList.length == 0 ? baseItems : currentIngredientList);
-  const toppingsList = $derived(toppingsManager.toppings);
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
@@ -70,14 +72,18 @@
     if (baseItems.length === 0) return;
 
     for (const ing of baseItems) {
-      if (currentLessList.includes(ing.id)) {
-        ingredientSelection[ing.id] = 'Less';
-        continue;
-      }
-
       const count = ingredientList.filter((x) => x.id === ing.id).length;
-
-      ingredientSelection[ing.id] = count === 2 ? 'Extra' : 'Normal';
+      switch (count) {
+        case 0:
+          ingredientSelection[ing.id] = 'None';
+          break;
+        case 1:
+          ingredientSelection[ing.id] = 'Normal';
+          break;
+        case 2:
+          ingredientSelection[ing.id] = 'Extra';
+          break;
+      }
     }
   });
   const total = $derived({
@@ -93,37 +99,39 @@
   );
   let showNutrition = $state(false);
 
+  //UI Stuff
+  const kioskIngredientUI = 'w-full gap-2';
+  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-2 w-full';
+  const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
+  const cashierIngredientStructureUI = 'mb-2 flex items-center flex-col';
+  const kioskBaseItemButtonsUI = 'flex flex-row';
+  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-85';
+  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row';
+
   function selectOption(ing: Ingredient, option: Level) {
     ingredientSelection[ing.id] = option;
     removeOneIngredient(ing);
     removeOneIngredient(ing);
-    currentLessList = currentLessList.filter((x) => x !== ing.id);
     switch (option) {
-      case 'Less':
-        currentLessList.push(ing.id);
+      case 'Normal':
         addOneIngredient(ing);
         break;
       case 'Extra':
         addOneIngredient(ing);
         addOneIngredient(ing);
         break;
-      default:
-        addOneIngredient(ing);
+    }
+
+    if (ingredientList.length <= 1) {
+      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+      return;
     }
   }
 
   async function handleAddToOrder() {
     loading = true;
     currentPrice = currentPrice >= item.price ? currentPrice : item.price;
-    await orderManager.addToOrder(
-      item,
-      ingredientList,
-      currentPrice,
-      selectedIce,
-      selectedSugar,
-      currentLessList,
-      quantity,
-    );
+    await orderManager.addToOrder(item, ingredientList, currentPrice, selectedIce, selectedSugar, quantity, isCashier);
     loading = false;
 
     states.isAdded = true;
@@ -186,7 +194,7 @@
   }
 </script>
 
-<Modal {onClose} closeOnBackdropClick size="large">
+<Modal {onClose} closeOnBackdropClick size={isCashier ? 'giant' : 'large'}>
   <ModalHeader>
     <div class="flex flex-col">
       <div class="flex items-center justify-between">
@@ -194,9 +202,38 @@
           <Heading size="large">{td(item.name)}</Heading>
           <Text>${shownPrice.toFixed(2)}</Text>
         </div>
-        <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
-          {t('kiosk_nutrition')}
-        </Button>
+        {#if !isCashier}
+          <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
+            {t('kiosk_nutrition')}
+          </Button>
+        {:else}
+          <div class="flex flex-row gap-2">
+            <IconButton
+              onclick={showNutritionInfo}
+              shape="round"
+              {loading}
+              icon={mdiListBox}
+              color="primary"
+              aria-label={t('kiosk_nutrition')}
+            />
+            <IconButton
+              onclick={restartModification}
+              shape="round"
+              {loading}
+              icon={mdiRestart}
+              color="secondary"
+              aria-label={t('kiosk_restartModification')}
+            />
+            <IconButton
+              onclick={handleAddToOrder}
+              shape="round"
+              {loading}
+              icon={mdiPlus}
+              color="danger"
+              aria-label={t('kiosk_addToCart')}
+            />
+          </div>
+        {/if}
       </div>
       {#if showNutrition}
         <div transition:slide|local class="mt-4">
@@ -239,21 +276,23 @@
         <div class="mr-4 ml-2 flex w-full flex-col">
           <div class="mb-4">
             <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
-            <div class="w-full gap-2">
-              {#each baseItems as ing}
+            <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
+              {#each baseItems as ing, i}
                 {#if !td(ing.category).toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
-                  <div class="mb-2 flex items-center justify-between">
+                  <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                     <Text>{td(ing.name)}</Text>
 
-                    <div class="flex flex-row">
+                    <div class={isCashier ? cashierBaseItemButtonsUI : kioskBaseItemButtonsUI}>
                       <Button
                         class="w-1/3"
                         shape="semi-round"
                         size="tiny"
-                        color={ingredientSelection[ing.id] === 'Less' ? 'primary' : 'secondary'}
-                        onclick={() => selectOption(ing, 'Less')}
+                        color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
+                        onclick={() => selectOption(ing, 'None')}
+                        disabled={ingredientList.length <= 1 ||
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)}
                       >
-                        {t('kiosk_iceLevel_low')}
+                        {t('kiosk_iceLevel_none')}
                       </Button>
                       <Button
                         class="ml-1 w-1/3"
@@ -283,83 +322,181 @@
             </div>
           </div>
 
-          <div class="mb-4">
-            <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
-            <div class="slider-container">
-              <input
-                type="range"
-                min="0"
-                max={levelOptions.length - 1}
-                step="1"
-                bind:value={selectedIceIndex}
-                oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
-              />
+          {#if !isCashier}
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  min="0"
+                  max={levelOptions.length - 1}
+                  step="1"
+                  bind:value={selectedIceIndex}
+                  oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
+                />
+              </div>
+              <div class="labels">
+                {#each levelOptions as option}
+                  <span>{option}</span>
+                {/each}
+              </div>
             </div>
-            <div class="labels">
-              {#each levelOptions as option}
-                <span>{option}</span>
-              {/each}
-            </div>
-          </div>
 
-          <div class="mb-4">
-            <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
-            <div class="slider-container">
-              <input
-                type="range"
-                min="0"
-                max={levelOptions.length - 1}
-                step="1"
-                bind:value={selectedSugarIndex}
-                oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
-              />
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  min="0"
+                  max={levelOptions.length - 1}
+                  step="1"
+                  bind:value={selectedSugarIndex}
+                  oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
+                />
+              </div>
+              <div class="labels">
+                {#each levelOptions as option}
+                  <span>{option}</span>
+                {/each}
+              </div>
             </div>
-            <div class="labels">
-              {#each levelOptions as option}
-                <span>{option}</span>
-              {/each}
+          {:else}
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
+              <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+                <div class="flex flex-col items-center">
+                  <Text>{t('kiosk_iceLevel')}</Text>
+                  <div class={cashierIceSugarItemButtonsUI}>
+                    <Button
+                      class="w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'None' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'None')}
+                    >
+                      {t('kiosk_iceLevel_none')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Less' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Less')}
+                    >
+                      {t('kiosk_iceLevel_low')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Normal' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Normal')}
+                    >
+                      {t('kiosk_iceLevel_normal')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Extra' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Extra')}
+                    >
+                      {t('kiosk_iceLevel_high')}
+                    </Button>
+                  </div>
+                </div>
+                <div class="flex flex-col items-center">
+                  <Text>{t('kiosk_sugarLevel')}</Text>
+                  <div class={cashierIceSugarItemButtonsUI}>
+                    <Button
+                      class="w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'None' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'None')}
+                    >
+                      {t('kiosk_sugarLevel_none')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Less' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Less')}
+                    >
+                      {t('kiosk_sugarLevel_low')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Normal' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Normal')}
+                    >
+                      {t('kiosk_sugarLevel_normal')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Extra' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Extra')}
+                    >
+                      {t('kiosk_sugarLevel_high')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          {/if}
 
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
-            <div class="w-full gap-2">
-              {#each toppingsList ?? [] as ing}
+            <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
+              {#each toppingsList ?? [] as ing, i}
                 {@const count = ingredientList.filter((i) => i.id == ing.id).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
-                <div class="mb-2 flex items-center justify-between">
-                  <div class="flex flex-col">
+                <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
+                  <div class={isCashier ? 'flex flex-col items-center' : 'flex flex-col'}>
                     <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
-                  <NumberStepper
-                    value={count}
-                    min={minAmt}
-                    max={maxAmt}
-                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
-                  />
+                  <div class={isCashier ? 'scale-75 transform' : ''}>
+                    <NumberStepper
+                      value={count}
+                      min={minAmt}
+                      max={maxAmt}
+                      onChange={(newValue) => changeIngredientsList(ing, newValue)}
+                    />
+                  </div>
                 </div>
               {/each}
             </div>
           </div>
         </div>
       </div>
-    </div></ModalBody
-  >
-  <ModalFooter>
-    <HStack class="mt-4 w-full" gap={2}>
-      <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
-        {t('kiosk_addToCart')}
-      </Button>
-      <IconButton
-        onclick={restartModification}
-        shape="round"
-        color="secondary"
-        class="w-1/10"
-        icon={mdiRestart}
-        aria-label={t('kiosk_restartModification')}
-      />
-    </HStack>
-  </ModalFooter>
+    </div>
+  </ModalBody>
+  {#if !isCashier}
+    <ModalFooter>
+      <HStack class="mt-4 w-full" gap={2}>
+        <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
+          {#if isEdit}
+            {t('kiosk_editItem')}
+          {:else}
+            {t('kiosk_addToCart')}
+          {/if}
+        </Button>
+        <IconButton
+          onclick={restartModification}
+          shape="round"
+          color="secondary"
+          class="w-1/10"
+          icon={mdiRestart}
+          aria-label={t('kiosk_restartModification')}
+        />
+      </HStack>
+    </ModalFooter>
+  {/if}
 </Modal>
