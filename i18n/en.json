@@ -187,7 +187,7 @@
   "manager_inventory_receive_label": "Receive Inventory",
   "manager_inventory_receive_btn": "Receive",
   "manager_inventory_order_label": "Order Inventory",
-  "manager_inventory_place_order_btn": "Place Order",
+  "manager_inventory_place_order_btn": "Order",
   "manager_inventory_close_btn": "Close",
   "manager_menu_items_title": "Menu Items",
   "manager_menu_items_search_placeholder": "Search",
