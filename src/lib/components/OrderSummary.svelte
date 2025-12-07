@@ -57,7 +57,6 @@
       currentIceLevel: entry.iceLevel,
       currentSugarLevel: entry.sugarLevel,
       currentCartPrice: entry.subtotal,
-      currentLessList: entry.lessList,
       quantity: entry.quantity,
       isEdit: true,
       isCashier: entry.isCashier,
@@ -90,7 +89,6 @@
                 {td(ingredient.name)}
                 {#if ingredient.count > 1}
                   (x{ingredient.count}){/if}
-                {#if entry.lessList.includes(ingredient.id)}({t('kiosk_iceLevel_low')}){/if}
               </Text>
             {/each}
           </div>

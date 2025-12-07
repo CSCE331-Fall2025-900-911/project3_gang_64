@@ -25,7 +25,6 @@ class OrderManager {
     itemSubtotal: number | null = null,
     itemIceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
     itemSugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
-    itemLessList: string[],
     itemQuantity: number,
     itemIsCashier: boolean = false,
   ) {
@@ -51,22 +50,12 @@ class OrderManager {
       itemSubtotal = menuItem.price;
     }
 
-    const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
-
-    if (!levelOptions.includes(itemIceLevel)) {
-      itemIceLevel = 'Normal';
-    }
-
-    if (!levelOptions.includes(itemSugarLevel)) {
-      itemSugarLevel = 'Normal';
-    }
-
-    itemLessList ??= [];
+    itemIceLevel ??= 'Normal';
+    itemSugarLevel ??= 'Normal';
 
     this.currentOrder.push({
       menuItem,
       ingredients: itemIngredients,
-      lessList: itemLessList,
       quantity: itemQuantity,
       subtotal: itemSubtotal,
       iceLevel: itemIceLevel,

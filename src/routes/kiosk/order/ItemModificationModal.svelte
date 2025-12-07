@@ -29,7 +29,6 @@
     currentIngredientList?: Ingredient[];
     currentIceLevel?: string;
     currentSugarLevel?: string;
-    currentLessList?: string[];
     currentCartPrice?: number;
     quantity?: number;
     isEdit?: boolean;
@@ -43,7 +42,6 @@
     currentIngredientList = [],
     currentIceLevel = '',
     currentSugarLevel = '',
-    currentLessList = [],
     currentCartPrice = item.price,
     quantity = 1,
     isEdit = false,
@@ -74,14 +72,18 @@
     if (baseItems.length === 0) return;
 
     for (const ing of baseItems) {
-      if (currentLessList.includes(ing.id)) {
-        ingredientSelection[ing.id] = 'Less';
-        continue;
-      }
-
       const count = ingredientList.filter((x) => x.id === ing.id).length;
-
-      ingredientSelection[ing.id] = count === 2 ? 'Extra' : 'Normal';
+      switch (count) {
+        case 0:
+          ingredientSelection[ing.id] = 'None';
+          break;
+        case 1:
+          ingredientSelection[ing.id] = 'Normal';
+          break;
+        case 2:
+          ingredientSelection[ing.id] = 'Extra';
+          break;
+      }
     }
   });
   const total = $derived({
@@ -110,34 +112,21 @@
     ingredientSelection[ing.id] = option;
     removeOneIngredient(ing);
     removeOneIngredient(ing);
-    currentLessList = currentLessList.filter((x) => x !== ing.id);
     switch (option) {
-      case 'Less':
-        currentLessList.push(ing.id);
+      case 'Normal':
         addOneIngredient(ing);
         break;
       case 'Extra':
         addOneIngredient(ing);
         addOneIngredient(ing);
         break;
-      default:
-        addOneIngredient(ing);
     }
   }
 
   async function handleAddToOrder() {
     loading = true;
     currentPrice = currentPrice >= item.price ? currentPrice : item.price;
-    await orderManager.addToOrder(
-      item,
-      ingredientList,
-      currentPrice,
-      selectedIce,
-      selectedSugar,
-      currentLessList,
-      quantity,
-      isCashier,
-    );
+    await orderManager.addToOrder(item, ingredientList, currentPrice, selectedIce, selectedSugar, quantity, isCashier);
     loading = false;
 
     states.isAdded = true;
@@ -293,10 +282,10 @@
                         class="w-1/3"
                         shape="semi-round"
                         size="tiny"
-                        color={ingredientSelection[ing.id] === 'Less' ? 'primary' : 'secondary'}
-                        onclick={() => selectOption(ing, 'Less')}
+                        color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
+                        onclick={() => selectOption(ing, 'None')}
                       >
-                        {t('kiosk_iceLevel_low')}
+                        {t('kiosk_iceLevel_none')}
                       </Button>
                       <Button
                         class="ml-1 w-1/3"
