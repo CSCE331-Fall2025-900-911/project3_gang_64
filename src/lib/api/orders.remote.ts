@@ -1,6 +1,6 @@
 import { command, query } from '$app/server';
 import { customer, ingredient, menu, order, orderContent } from '$lib/db/schema';
-import { orderInsertSchema, orderSelectSchema, type NewOrder } from '$lib/db/types';
+import { orderInsertSchema, orderSelectSchema, type NewOrder, type SugarLevel, type IceLevel } from '$lib/db/types';
 import { OrderEntrySchema } from '$lib/managers/order_manager.types';
 import { itemHash, luxonDatetime } from '$lib/utils/utils';
 import { desc, eq, sql } from 'drizzle-orm';
@@ -106,6 +106,8 @@ export const submitOrder = command(
             ingredientId: entryIngredient.id,
             orderEntryId: entryId,
             itemSubtotal: entry.subtotal,
+            iceLevel: entry.iceLevel,
+            sugarLevel: entry.sugarLevel,
           });
 
           // get current ingredient stock and decrement by 1
@@ -164,6 +166,8 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
       menuItemPrice: menu.price,
       ingredientId: orderContent.ingredientId,
       ingredientName: ingredient.name,
+      iceLevel: orderContent.iceLevel,
+      sugarLevel: orderContent.sugarLevel,
     })
     .from(orderContent)
     .innerJoin(menu, eq(orderContent.menuItemId, menu.id))
@@ -176,6 +180,8 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
     {
       menuItem: { id: string; name: string; price: number };
       ingredients: { id: string; name: string }[];
+      iceLevel: IceLevel;
+      sugarLevel: SugarLevel;
     }
   >();
 
@@ -188,6 +194,8 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
           price: content.menuItemPrice,
         },
         ingredients: [],
+        iceLevel: content.iceLevel,
+        sugarLevel: content.sugarLevel,
       });
     }
     entriesMap.get(content.orderEntryId)!.ingredients.push({
@@ -199,7 +207,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
   // Count quantity of identical entries (same menu item + same ingredients)
   const itemQuantities = new Map<string, number>();
   for (const entry of entriesMap.values()) {
-    const key = itemHash(entry.menuItem, entry.ingredients);
+    const key = itemHash(entry.menuItem, entry.ingredients, entry.iceLevel, entry.sugarLevel);
     itemQuantities.set(key, (itemQuantities.get(key) || 0) + 1);
   }
 

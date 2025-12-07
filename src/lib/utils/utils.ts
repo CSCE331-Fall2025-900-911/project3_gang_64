@@ -44,11 +44,8 @@ export function itemHash(
   ingredients: { id: string }[],
   iceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
   sugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
-  lessList: string[],
 ): string {
   const sortedIngredients = [...ingredients].map((i) => i.id).sort((a, b) => a.localeCompare(b));
 
-  const sortedLess = [...lessList].sort((a, b) => a.localeCompare(b));
-
-  return [menuItem.id, sortedIngredients.join(','), iceLevel, sugarLevel, sortedLess.join(',')].join('|');
+  return [menuItem.id, sortedIngredients.join(','), iceLevel, sugarLevel].join('|');
 }
