@@ -8,6 +8,6 @@ export const OrderEntrySchema = v.object({
   subtotal: v.number(),
   iceLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
   sugarLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
-  isCashier: v.boolean(),
+  isCashier: v.optional(v.boolean(), false),
 });
 export type OrderEntry = v.InferInput<typeof OrderEntrySchema>;
