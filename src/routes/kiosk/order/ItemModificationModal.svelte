@@ -121,6 +121,11 @@
         addOneIngredient(ing);
         break;
     }
+
+    if (ingredientList.length <= 1) {
+      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+      return;
+    }
   }
 
   async function handleAddToOrder() {
@@ -284,6 +289,8 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
+                        disabled={ingredientList.length <= 1 ||
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)}
                       >
                         {t('kiosk_iceLevel_none')}
                       </Button>
