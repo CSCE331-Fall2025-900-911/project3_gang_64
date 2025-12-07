@@ -100,11 +100,12 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-2 w-full';
+  const cashierIngredientUI =
+    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]';
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
-  const cashierIngredientStructureUI = 'mb-2 flex items-center flex-col';
+  const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
-  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-85';
+  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row min-w-0';
   const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row';
 
   function selectOption(ing: Ingredient, option: Level) {
@@ -304,7 +305,7 @@
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
                         disabled={(ingredientList.length <= 1 ||
-                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)) &&
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length <= 2)) &&
                           ingredientSelection[ing.id] !== 'None'}
                       >
                         {t('kiosk_iceLevel_none')}
@@ -315,7 +316,9 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
-                        disabled={ingredientList.length == 10 && ingredientSelection[ing.id] !== 'Normal'}
+                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'None') ||
+                          (ingredientSelection[ing.id] === 'None' && ing.currentStock <= 0)) &&
+                          ingredientSelection[ing.id] !== 'Normal'}
                       >
                         {t('kiosk_iceLevel_normal')}
                       </Button>
@@ -325,9 +328,12 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
-                        disabled={(ingredientList.length == 10 ||
-                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None') ||
-                          ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock) &&
+                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'Normal') ||
+                          (ingredientList.length >= 9 && ingredientSelection[ing.id] === 'None') ||
+                          (ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock &&
+                            ingredientSelection[ing.id] === 'Normal') ||
+                          (ingredientSelection[ing.id] === 'None' &&
+                            ingredientList.filter((i) => i.id == ing.id).length + 1 >= ing.currentStock)) &&
                           ingredientSelection[ing.id] !== 'Extra'}
                       >
                         <div class="flex flex-col items-center align-middle">
@@ -386,7 +392,7 @@
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
               <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-                <div class="flex flex-col items-start">
+                <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_iceLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>
@@ -429,7 +435,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-col items-start">
+                <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_sugarLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>
