@@ -3,10 +3,10 @@
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
   import { td } from '$lib/contexts/translations.svelte';
+  import { localizeHref } from '$lib/i18n/runtime';
   import { t } from '$lib/utils/utils';
   import { AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
-  import { localizeHref } from '$lib/i18n/runtime';
 
   let menu = await getCategorizedMenu();
 
@@ -33,7 +33,7 @@
         title={td(category) ?? ''}
         active={category === currentCategory.id}
       />
-    {/each}s
+    {/each}
   </AppShellSidebar>
 
   <div class="h-full w-full overflow-y-auto p-4">
