@@ -326,7 +326,8 @@
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
                         disabled={(ingredientList.length == 10 ||
-                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None')) &&
+                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None') ||
+                          ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock) &&
                           ingredientSelection[ing.id] !== 'Extra'}
                       >
                         <div class="flex flex-col items-center align-middle">
