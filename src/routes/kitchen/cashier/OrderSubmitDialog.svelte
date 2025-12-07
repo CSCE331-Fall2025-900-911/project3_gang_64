@@ -1,8 +1,9 @@
 <script lang="ts">
+  import OrderNumberModal from '$lib/components/OrderNumberModal.svelte';
   import { orderManager } from '$lib/managers/order_manager.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
-  import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, Stack, Text } from '@immich/ui';
+  import { Button, Field, HStack, Input, Modal, ModalBody, ModalFooter, modalManager, Stack, Text } from '@immich/ui';
   import { mdiInvoiceSend } from '@mdi/js';
 
   interface Props extends ModalProps {
@@ -20,7 +21,17 @@
     submittingOrder = true;
     await orderManager.submit(isCashier);
     submittingOrder = false;
+
+    await modalManager.show(OrderNumberModal, {
+      title: 'Order Submitted Successfully!',
+      description: isCashier ? t('order_number') : t('kiosk_orderNumber'),
+      number: (Math.floor(Math.random() * 100) + 1).toString(),
+    });
+
     onClose();
+    if (!isCashier) {
+      window.location.href = '/kiosk/home';
+    }
   };
 </script>
 
