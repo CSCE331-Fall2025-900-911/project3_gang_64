@@ -125,6 +125,9 @@
     if (ingredientList.length <= 1) {
       toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
       return;
+    } else if (ingredientList.length >= 10) {
+      toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+      return;
     }
   }
 
@@ -289,8 +292,9 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
-                        disabled={ingredientList.length <= 1 ||
-                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)}
+                        disabled={(ingredientList.length <= 1 ||
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)) &&
+                          ingredientSelection[ing.id] !== 'None'}
                       >
                         {t('kiosk_iceLevel_none')}
                       </Button>
@@ -300,6 +304,7 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
+                        disabled={ingredientList.length == 10 && ingredientSelection[ing.id] !== 'Normal'}
                       >
                         {t('kiosk_iceLevel_normal')}
                       </Button>
@@ -309,6 +314,9 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
+                        disabled={(ingredientList.length == 10 ||
+                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None')) &&
+                          ingredientSelection[ing.id] !== 'Extra'}
                       >
                         <div class="flex flex-col items-center align-middle">
                           {t('kiosk_iceLevel_high')}
