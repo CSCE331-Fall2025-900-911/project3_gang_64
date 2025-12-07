@@ -252,5 +252,18 @@
   "itemModEditSuccessToast_title": "Artikel bearbeitet",
   "itemModEditSuccessToast_description": "Ihr Eintrag wurde bearbeitet.",
   "itemModEditFailToast_title": "Bearbeitung abgebrochen",
-  "itemModEditFailToast_description": "Ihr Eintrag wurde nicht bearbeitet."
+  "itemModEditFailToast_description": "Ihr Eintrag wurde nicht bearbeitet.",
+  "stillthere_modal_title": "Bist du noch da?",
+  "stillthere_modal_button": "Ich bin immer noch hier!",
+  "common_close": "Schließen",
+  "stillthere_modal_message": "Ihre Bestellung wird in {seconds} Sekunden bearbeitet.",
+  "order_number": "Bestellnummer",
+  "kiosk_orderNumber": "Ihre Kiosk-Bestellnummer lautet:",
+  "manager_reports_x_hour_of_day": "Tageszeit",
+  "manager_reports_x_sales": "Verkäufe",
+  "manager_reports_x_cash": "Kasse",
+  "manager_reports_x_credit": "Kredit",
+  "manager_reports_x_tax_collected": "eingenommene Steuern",
+  "manager_reports_x_avg_items_per_order": "Durchschnittliche Anzahl Artikel pro Bestellung",
+  "manager_reports_x_avg_order_total": "Durchschnittlicher Bestellwert"
 }

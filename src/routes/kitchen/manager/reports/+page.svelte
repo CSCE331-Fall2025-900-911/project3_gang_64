@@ -1,30 +1,49 @@
 <script lang="ts">
   import { Card, CardBody, CardHeader, CardTitle, Heading, Text, Label, Button, LoadingSpinner } from '@immich/ui';
+  import { Table, TableHeader, TableHeaderCell, TableBody, TableRow, TableCell } from '$lib/components/Table';
   import { t } from '$lib/utils/utils';
   import { getLastZTime, getAllZReportData, updateZTime, canRunZReport } from '$lib/api/zreport.remote';
+  import { getXReportData } from '$lib/api/xreport.remote';
   import { td } from '$lib/contexts/translations.svelte';
 
   let lastZTime = $state<any>();
   let zReportData = $state<any>();
-  let isLoading = $state(true);
+  let xReportData = $state<any[]>([]);
+  let isLoadingZ = $state(true);
+  let isLoadingX = $state(true);
   let canRun = $state(false);
   let hasGenerated = $state(false);
+  let zReportRunToday = $state(false);
+
+  const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   (async () => {
     canRun = await canRunZReport();
-    isLoading = false;
+    isLoadingZ = false;
+  })();
+
+  (async () => {
+    xReportData = await getXReportData(clientTimezone);
+    isLoadingX = false;
   })();
 
   async function generateZReport() {
     if (!canRun || hasGenerated) return;
-    isLoading = true;
+    isLoadingZ = true;
     lastZTime = await getLastZTime();
     zReportData = await getAllZReportData(lastZTime);
     await updateZTime();
     await getLastZTime().refresh();
     hasGenerated = true;
     canRun = false;
-    isLoading = false;
+    isLoadingZ = false;
+  }
+
+  function formatHour(hour: number): string {
+    if (hour === 0) return '12:00 AM';
+    if (hour < 12) return `${hour}:00 AM`;
+    if (hour === 12) return '12:00 PM';
+    return `${hour - 12}:00 PM`;
   }
 </script>
 
@@ -36,7 +55,46 @@
       <CardTitle>{t('manager_reports_x_title')}</CardTitle>
     </CardHeader>
     <CardBody>
-      <Text>{t('manager_reports_x_info')}</Text>
+      {#if isLoadingX}
+        <div class="flex items-center justify-center py-8">
+          <LoadingSpinner size="large" />
+        </div>
+      {:else}
+        <div class="w-full overflow-x-auto">
+          <Table class="min-w-[700px]">
+            <TableHeader>
+              <TableHeaderCell width="flex-[1_1_100px] min-w-[80px]"
+                >{t('manager_reports_x_hour_of_day')}</TableHeaderCell
+              >
+              <TableHeaderCell width="flex-[1_1_100px] min-w-[80px]">{t('manager_reports_x_sales')}</TableHeaderCell>
+              <TableHeaderCell width="flex-[1_1_80px] min-w-[60px]">{t('manager_reports_x_cash')}</TableHeaderCell>
+              <TableHeaderCell width="flex-[1_1_80px] min-w-[60px]">{t('manager_reports_x_credit')}</TableHeaderCell>
+              <TableHeaderCell width="flex-[1_1_100px] min-w-[80px]"
+                >{t('manager_reports_x_tax_collected')}</TableHeaderCell
+              >
+              <TableHeaderCell width="flex-[1_1_120px] min-w-[100px]"
+                >{t('manager_reports_x_avg_items_per_order')}</TableHeaderCell
+              >
+              <TableHeaderCell width="flex-[1_1_110px] min-w-[90px]"
+                >{t('manager_reports_x_avg_order_total')}</TableHeaderCell
+              >
+            </TableHeader>
+            <TableBody class="max-h-[400px]">
+              {#each xReportData as row}
+                <TableRow>
+                  <TableCell width="flex-[1_1_100px] min-w-[80px]">{formatHour(row.hour)}</TableCell>
+                  <TableCell width="flex-[1_1_100px] min-w-[80px]">${row.sales.toFixed(2)}</TableCell>
+                  <TableCell width="flex-[1_1_80px] min-w-[60px]">{row.cashCount}</TableCell>
+                  <TableCell width="flex-[1_1_80px] min-w-[60px]">{row.creditCount}</TableCell>
+                  <TableCell width="flex-[1_1_100px] min-w-[80px]">${row.taxCollected.toFixed(2)}</TableCell>
+                  <TableCell width="flex-[1_1_120px] min-w-[100px]">{row.avgItemsPerOrder.toFixed(2)}</TableCell>
+                  <TableCell width="flex-[1_1_110px] min-w-[90px]">${row.avgOrderTotal.toFixed(2)}</TableCell>
+                </TableRow>
+              {/each}
+            </TableBody>
+          </Table>
+        </div>
+      {/if}
     </CardBody>
   </Card>
 
@@ -47,7 +105,7 @@
     <CardBody>
       <Text class="mb-4 text-base font-bold">{t('manager_reports_z_info')}</Text>
 
-      {#if isLoading}
+      {#if isLoadingZ}
         <div class="flex items-center justify-center py-8">
           <LoadingSpinner size="large" />
         </div>
