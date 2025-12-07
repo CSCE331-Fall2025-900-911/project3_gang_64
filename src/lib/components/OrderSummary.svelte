@@ -60,6 +60,7 @@
       currentLessList: entry.lessList,
       quantity: entry.quantity,
       isEdit: true,
+      isCashier: entry.isCashier,
       states,
     });
 

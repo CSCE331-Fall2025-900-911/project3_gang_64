@@ -27,6 +27,7 @@ class OrderManager {
     itemSugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
     itemLessList: string[],
     itemQuantity: number,
+    itemIsCashier: boolean = false,
   ) {
     const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
 
@@ -70,6 +71,7 @@ class OrderManager {
       subtotal: itemSubtotal,
       iceLevel: itemIceLevel,
       sugarLevel: itemSugarLevel,
+      isCashier: itemIsCashier,
     });
   }
 

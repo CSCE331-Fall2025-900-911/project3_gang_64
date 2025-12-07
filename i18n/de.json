@@ -238,5 +238,15 @@
   "manager_customers_detail_no_orders": "Für diesen Kunden wurden keine Bestellungen gefunden.",
   "manager_customers_view_details_aria": "Kundendetails anzeigen",
   "manager_orders_table_items": "Artikel",
-  "kiosk_editItem": "Element bearbeiten"
+  "kiosk_editItem": "Element bearbeiten",
+  "kiosk_iceAndSugarLevel": "Eis- und Zuckergehalt",
+  "manager_reports_z_total_net_sales": "Gesamtnettoumsatz",
+  "manager_reports_z_tax": "Steuer",
+  "manager_reports_z_total_sales": "Gesamtumsatz",
+  "manager_reports_z_cash": "Kasse",
+  "manager_reports_z_credit": "Kredit",
+  "manager_reports_z_sales_categories": "Verkaufskategorien",
+  "manager_reports_z_reset_button": "Z-Bericht zurücksetzen",
+  "manager_reports_z_generate_button": "Z-Bericht generieren",
+  "manager_reports_z_already_generated": "Der Z-Bericht wurde bereits für heute erstellt. Bitte kommen Sie morgen wieder."
 }

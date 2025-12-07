@@ -99,11 +99,12 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-  const cashierIngredientUI = 'grid grid-cols-3 gap-2 w-full';
+  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-2 w-full';
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
   const cashierIngredientStructureUI = 'mb-2 flex items-center flex-col';
   const kioskBaseItemButtonsUI = 'flex flex-row';
-  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-75';
+  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-85';
+  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row';
 
   function selectOption(ing: Ingredient, option: Level) {
     ingredientSelection[ing.id] = option;
@@ -135,6 +136,7 @@
       selectedSugar,
       currentLessList,
       quantity,
+      isCashier,
     );
     loading = false;
 
@@ -198,7 +200,7 @@
   }
 </script>
 
-<Modal {onClose} closeOnBackdropClick size="large">
+<Modal {onClose} closeOnBackdropClick size={isCashier ? 'giant' : 'large'}>
   <ModalHeader>
     <div class="flex flex-col">
       <div class="flex items-center justify-between">
@@ -239,7 +241,7 @@
           </div>
         {/if}
       </div>
-      {#if showNutrition && !isCashier}
+      {#if showNutrition}
         <div transition:slide|local class="mt-4">
           <div class="grid grid-cols-2 gap-8">
             <div>
@@ -283,13 +285,7 @@
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
               {#each baseItems as ing, i}
                 {#if !td(ing.category).toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
-                  <div
-                    class={isCashier
-                      ? cashierIngredientStructureUI +
-                        ' ' +
-                        (i % 3 === 0 ? 'justify-self-start' : i % 3 === 1 ? 'justify-self-center' : 'justify-self-end')
-                      : kioskIngredientStructureUI}
-                  >
+                  <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                     <Text>{td(ing.name)}</Text>
 
                     <div class={isCashier ? cashierBaseItemButtonsUI : kioskBaseItemButtonsUI}>
@@ -330,43 +326,133 @@
             </div>
           </div>
 
-          <div class="mb-4">
-            <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
-            <div class="slider-container">
-              <input
-                type="range"
-                min="0"
-                max={levelOptions.length - 1}
-                step="1"
-                bind:value={selectedIceIndex}
-                oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
-              />
+          {#if !isCashier}
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  min="0"
+                  max={levelOptions.length - 1}
+                  step="1"
+                  bind:value={selectedIceIndex}
+                  oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
+                />
+              </div>
+              <div class="labels">
+                {#each levelOptions as option}
+                  <span>{option}</span>
+                {/each}
+              </div>
             </div>
-            <div class="labels">
-              {#each levelOptions as option}
-                <span>{option}</span>
-              {/each}
-            </div>
-          </div>
 
-          <div class="mb-4">
-            <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
-            <div class="slider-container">
-              <input
-                type="range"
-                min="0"
-                max={levelOptions.length - 1}
-                step="1"
-                bind:value={selectedSugarIndex}
-                oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
-              />
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_sugarLevel')}</Heading>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  min="0"
+                  max={levelOptions.length - 1}
+                  step="1"
+                  bind:value={selectedSugarIndex}
+                  oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
+                />
+              </div>
+              <div class="labels">
+                {#each levelOptions as option}
+                  <span>{option}</span>
+                {/each}
+              </div>
             </div>
-            <div class="labels">
-              {#each levelOptions as option}
-                <span>{option}</span>
-              {/each}
+          {:else}
+            <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
+              <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+                <div class="flex flex-col items-center">
+                  <Text>{t('kiosk_iceLevel')}</Text>
+                  <div class={cashierIceSugarItemButtonsUI}>
+                    <Button
+                      class="w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'None' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'None')}
+                    >
+                      {t('kiosk_iceLevel_none')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Less' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Less')}
+                    >
+                      {t('kiosk_iceLevel_low')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Normal' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Normal')}
+                    >
+                      {t('kiosk_iceLevel_normal')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedIce === 'Extra' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedIce = 'Extra')}
+                    >
+                      {t('kiosk_iceLevel_high')}
+                    </Button>
+                  </div>
+                </div>
+                <div class="flex flex-col items-center">
+                  <Text>{t('kiosk_sugarLevel')}</Text>
+                  <div class={cashierIceSugarItemButtonsUI}>
+                    <Button
+                      class="w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'None' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'None')}
+                    >
+                      {t('kiosk_sugarLevel_none')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Less' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Less')}
+                    >
+                      {t('kiosk_sugarLevel_low')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Normal' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Normal')}
+                    >
+                      {t('kiosk_sugarLevel_normal')}
+                    </Button>
+                    <Button
+                      class="ml-1 w-1/4"
+                      shape="semi-round"
+                      size="tiny"
+                      color={selectedSugar === 'Extra' ? 'primary' : 'secondary'}
+                      onclick={() => (selectedSugar = 'Extra')}
+                    >
+                      {t('kiosk_sugarLevel_high')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          {/if}
 
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
@@ -375,13 +461,7 @@
                 {@const count = ingredientList.filter((i) => i.id == ing.id).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
-                <div
-                  class={isCashier
-                    ? cashierIngredientStructureUI +
-                      ' ' +
-                      (i % 3 === 0 ? 'justify-self-start' : i % 3 === 1 ? 'justify-self-center' : 'justify-self-end')
-                    : kioskIngredientStructureUI}
-                >
+                <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                   <div class={isCashier ? 'flex flex-col items-center' : 'flex flex-col'}>
                     <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>

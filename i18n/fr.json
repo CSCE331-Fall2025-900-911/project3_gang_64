@@ -238,5 +238,15 @@
   "manager_customers_detail_no_orders": "Aucune commande trouvée pour ce client",
   "manager_customers_view_details_aria": "Afficher les détails du client",
   "manager_orders_table_items": "Articles",
-  "kiosk_editItem": "Modifier l'élément"
+  "kiosk_editItem": "Modifier l'élément",
+  "kiosk_iceAndSugarLevel": "Niveaux de glace et de sucre",
+  "manager_reports_z_total_net_sales": "Ventes nettes totales",
+  "manager_reports_z_tax": "Impôt",
+  "manager_reports_z_total_sales": "Ventes totales",
+  "manager_reports_z_cash": "Espèces",
+  "manager_reports_z_credit": "Crédit",
+  "manager_reports_z_sales_categories": "Catégories de vente",
+  "manager_reports_z_reset_button": "Réinitialiser le rapport Z",
+  "manager_reports_z_generate_button": "Générer un rapport Z",
+  "manager_reports_z_already_generated": "Le rapport Z a déjà été généré aujourd'hui. Veuillez revenir demain."
 }

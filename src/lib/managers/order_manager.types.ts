@@ -9,5 +9,6 @@ export const OrderEntrySchema = v.object({
   subtotal: v.number(),
   iceLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
   sugarLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
+  isCashier: v.boolean(),
 });
 export type OrderEntry = v.InferInput<typeof OrderEntrySchema>;
