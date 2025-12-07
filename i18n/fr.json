@@ -252,5 +252,18 @@
   "itemModEditSuccessToast_title": "Article modifié",
   "itemModEditSuccessToast_description": "Votre article a été modifié.",
   "itemModEditFailToast_title": "Modification annulée",
-  "itemModEditFailToast_description": "Votre article n'a pas été modifié."
+  "itemModEditFailToast_description": "Votre article n'a pas été modifié.",
+  "stillthere_modal_title": "Vous êtes toujours là ?",
+  "stillthere_modal_button": "Je suis toujours là !",
+  "common_close": "Fermer",
+  "stillthere_modal_message": "Votre commande sera traitée dans {seconds} secondes.",
+  "order_number": "Numéro de commande",
+  "kiosk_orderNumber": "Votre numéro de commande au kiosque est :",
+  "manager_reports_x_hour_of_day": "Heure du jour",
+  "manager_reports_x_sales": "Ventes",
+  "manager_reports_x_cash": "Espèces",
+  "manager_reports_x_credit": "Crédit",
+  "manager_reports_x_tax_collected": "Impôt perçu",
+  "manager_reports_x_avg_items_per_order": "Nombre moyen d'articles par commande",
+  "manager_reports_x_avg_order_total": "Total moyen des commandes"
 }
