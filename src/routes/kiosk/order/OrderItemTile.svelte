@@ -21,7 +21,7 @@
     let tempStock = false;
     recipe.current?.forEach((ingredient) => {
       inventory.current?.forEach((stockItem) => {
-        if (stockItem.id === ingredient.id && stockItem.currentStock == 0) {
+        if (stockItem.id === ingredient.id && stockItem.currentStock <= 0) {
           tempStock = true;
           return;
         }
