@@ -3,11 +3,11 @@
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
   import { currentEmployee } from '$lib/auth/employee.svelte';
-  import { localizeHref } from '$lib/i18n/runtime';
-  import ColorblindFilter from '$lib/components/ColorblindFilter.svelte';
-  import UserModal from '$lib/components/UserModal.svelte';
   import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
+  import ColorblindFilter from '$lib/components/ColorblindFilter.svelte';
   import LanguageSelectModal from '$lib/components/LanguageSelectModal.svelte';
+  import UserModal from '$lib/components/UserModal.svelte';
+  import { locales, localizeHref } from '$lib/i18n/runtime';
   import { t } from '$lib/utils/utils';
   import {
     AppShell,
@@ -16,18 +16,13 @@
     Heading,
     HStack,
     IconButton,
-    initializeTheme,
     modalManager,
     Select,
     type SelectItem,
   } from '@immich/ui';
-  import { locales } from '$lib/i18n/runtime';
   import { mdiTranslate, mdiWheelchair } from '@mdi/js';
-  import '../../app.css';
 
   let { children } = $props();
-
-  initializeTheme();
 
   const modes: SelectItem[] = [
     { label: t('manager'), value: 'manager' },

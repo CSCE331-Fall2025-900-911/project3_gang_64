@@ -1,11 +1,14 @@
 <script>
   import { page } from '$app/state';
-  import { locales, localizeHref } from '$lib/i18n/runtime';
   import { setTranslations } from '$lib/contexts/translations.svelte';
-
+  import { locales, localizeHref } from '$lib/i18n/runtime';
+  import { initializeTheme } from '@immich/ui';
+  import '../app.css';
   let { data, children } = $props();
 
   setTranslations(data.translations);
+
+  initializeTheme();
 </script>
 
 {@render children()}

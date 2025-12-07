@@ -13,20 +13,16 @@
     Avatar,
     Button,
     IconButton,
-    initializeTheme,
     Modal,
     ModalBody,
-    ModalHeader,
+    ModalFooter,
     modalManager,
   } from '@immich/ui';
-  import { mdiCartOutline, mdiTranslate, mdiWheelchair } from '@mdi/js';
+  import { mdiCartOutline, mdiChatQuestion, mdiTranslate, mdiWheelchair } from '@mdi/js';
   import { onMount } from 'svelte';
-  import '../../app.css';
-  import CartModal from './order/CartModal.svelte';
+  import CartModal from './CartModal.svelte';
 
   let { children } = $props();
-
-  initializeTheme();
 
   const TIMEOUT_SECONDS = 30;
   const SHOW_MODAL_AT = 10;
@@ -93,10 +89,8 @@
   onMount(() => {
     let cleanupListeners: (() => void) | null = null;
 
-    if (window.location.pathname !== '/kiosk/home') {
-      cleanupListeners = setupActivityListeners();
-      startTimer();
-    }
+    cleanupListeners = setupActivityListeners();
+    startTimer();
 
     return () => {
       stopTimer();
@@ -166,16 +160,13 @@
     </div>
   </AppShellHeader>
   {#if showModal}
-    <Modal class="w-90 text-center">
-      <ModalHeader>
-        <div class="my-3 text-4xl">Are you still there?</div>
-      </ModalHeader>
+    <Modal title={t('stillthere_modal_title')} icon={mdiChatQuestion}>
       <ModalBody>
-        <div class="flex flex-col justify-center text-3xl">
-          Your order will be cleared in {timer} seconds
-          <Button onclick={handleStillHere} class="my-5">I'm still here!</Button>
-        </div>
+        <p class="mt-2">{t('stillthere_modal_message', { seconds: timer })}</p>
       </ModalBody>
+      <ModalFooter>
+        <Button onclick={handleStillHere} fullWidth>{t('stillthere_modal_button')}</Button>
+      </ModalFooter>
     </Modal>
   {/if}
 
