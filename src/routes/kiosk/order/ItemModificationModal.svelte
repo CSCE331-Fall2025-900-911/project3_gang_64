@@ -20,8 +20,7 @@
     ModalHeader,
   } from '@immich/ui';
   import { mdiRestart, mdiPlus, mdiListBox } from '@mdi/js';
-  import ItemModAddToast from './ItemModAddToast.svelte';
-  import ItemModDeleteToast from './ItemModDeleteToast.svelte';
+  import ItemModValidateToast from './ItemModValidateToast.svelte';
   import NumberStepper from '$lib/components/NumberStepper.svelte';
 
   interface Props {
@@ -123,7 +122,16 @@
     }
 
     if (ingredientList.length <= 1) {
-      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+      toastManager.custom(
+        { component: ItemModValidateToast, props: { isMax: false } },
+        { timeout: 5000, closable: true },
+      );
+      return;
+    } else if (ingredientList.length >= 10) {
+      toastManager.custom(
+        { component: ItemModValidateToast, props: { isMax: true } },
+        { timeout: 5000, closable: true },
+      );
       return;
     }
   }
@@ -149,14 +157,20 @@
       removeOneIngredient(ingredient);
 
       if (ingredientList.length <= 1) {
-        toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+        toastManager.custom(
+          { component: ItemModValidateToast, props: { isMax: false } },
+          { timeout: 5000, closable: true },
+        );
         return;
       }
     } else {
       addOneIngredient(ingredient);
 
       if (ingredientList.length == 10) {
-        toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+        toastManager.custom(
+          { component: ItemModValidateToast, props: { isMax: true } },
+          { timeout: 5000, closable: true },
+        );
         return;
       }
     }
@@ -289,8 +303,9 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
-                        disabled={ingredientList.length <= 1 ||
-                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)}
+                        disabled={(ingredientList.length <= 1 ||
+                          (ingredientSelection[ing.id] === 'Extra' && ingredientList.length === 2)) &&
+                          ingredientSelection[ing.id] !== 'None'}
                       >
                         {t('kiosk_iceLevel_none')}
                       </Button>
@@ -300,6 +315,7 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
+                        disabled={ingredientList.length == 10 && ingredientSelection[ing.id] !== 'Normal'}
                       >
                         {t('kiosk_iceLevel_normal')}
                       </Button>
@@ -309,6 +325,10 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
+                        disabled={(ingredientList.length == 10 ||
+                          (ingredientList.length == 9 && ingredientSelection[ing.id] === 'None') ||
+                          ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock) &&
+                          ingredientSelection[ing.id] !== 'Extra'}
                       >
                         <div class="flex flex-col items-center align-middle">
                           {t('kiosk_iceLevel_high')}
@@ -366,86 +386,90 @@
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
               <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-                <div class="flex flex-col items-center">
-                  <Text>{t('kiosk_iceLevel')}</Text>
-                  <div class={cashierIceSugarItemButtonsUI}>
-                    <Button
-                      class="w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedIce === 'None' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedIce = 'None')}
-                    >
-                      {t('kiosk_iceLevel_none')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedIce === 'Less' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedIce = 'Less')}
-                    >
-                      {t('kiosk_iceLevel_low')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedIce === 'Normal' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedIce = 'Normal')}
-                    >
-                      {t('kiosk_iceLevel_normal')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedIce === 'Extra' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedIce = 'Extra')}
-                    >
-                      {t('kiosk_iceLevel_high')}
-                    </Button>
+                <div class="flex flex-col items-start">
+                  <div class="flex flex-col items-center">
+                    <Text>{t('kiosk_iceLevel')}</Text>
+                    <div class={cashierIceSugarItemButtonsUI}>
+                      <Button
+                        class="w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedIce === 'None' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedIce = 'None')}
+                      >
+                        {t('kiosk_iceLevel_none')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedIce === 'Less' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedIce = 'Less')}
+                      >
+                        {t('kiosk_iceLevel_low')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedIce === 'Normal' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedIce = 'Normal')}
+                      >
+                        {t('kiosk_iceLevel_normal')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedIce === 'Extra' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedIce = 'Extra')}
+                      >
+                        {t('kiosk_iceLevel_high')}
+                      </Button>
+                    </div>
                   </div>
                 </div>
-                <div class="flex flex-col items-center">
-                  <Text>{t('kiosk_sugarLevel')}</Text>
-                  <div class={cashierIceSugarItemButtonsUI}>
-                    <Button
-                      class="w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedSugar === 'None' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedSugar = 'None')}
-                    >
-                      {t('kiosk_sugarLevel_none')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedSugar === 'Less' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedSugar = 'Less')}
-                    >
-                      {t('kiosk_sugarLevel_low')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedSugar === 'Normal' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedSugar = 'Normal')}
-                    >
-                      {t('kiosk_sugarLevel_normal')}
-                    </Button>
-                    <Button
-                      class="ml-1 w-1/4"
-                      shape="semi-round"
-                      size="tiny"
-                      color={selectedSugar === 'Extra' ? 'primary' : 'secondary'}
-                      onclick={() => (selectedSugar = 'Extra')}
-                    >
-                      {t('kiosk_sugarLevel_high')}
-                    </Button>
+                <div class="flex flex-col items-start">
+                  <div class="flex flex-col items-center">
+                    <Text>{t('kiosk_sugarLevel')}</Text>
+                    <div class={cashierIceSugarItemButtonsUI}>
+                      <Button
+                        class="w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSugar === 'None' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedSugar = 'None')}
+                      >
+                        {t('kiosk_sugarLevel_none')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSugar === 'Less' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedSugar = 'Less')}
+                      >
+                        {t('kiosk_sugarLevel_low')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSugar === 'Normal' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedSugar = 'Normal')}
+                      >
+                        {t('kiosk_sugarLevel_normal')}
+                      </Button>
+                      <Button
+                        class="ml-1 w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSugar === 'Extra' ? 'primary' : 'secondary'}
+                        onclick={() => (selectedSugar = 'Extra')}
+                      >
+                        {t('kiosk_sugarLevel_high')}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -464,7 +488,7 @@
                     <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
-                  <div class={isCashier ? 'scale-75 transform' : ''}>
+                  <div class={isCashier ? 'scale-85 transform' : ''}>
                     <NumberStepper
                       value={count}
                       min={minAmt}

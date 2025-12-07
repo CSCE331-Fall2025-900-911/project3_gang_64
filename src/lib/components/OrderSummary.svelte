@@ -2,10 +2,11 @@
   import { td } from '$lib/contexts/translations.svelte';
   import type { OrderEntry } from '$lib/managers/order_manager.types';
   import { t } from '$lib/utils/utils';
-  import { Button, Heading, HStack, IconButton, Stack, Text, modalManager } from '@immich/ui';
+  import { Button, Heading, HStack, IconButton, Stack, Text, modalManager, toastManager } from '@immich/ui';
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import NumberStepper from './NumberStepper.svelte';
   import ItemModificationModal from '../../routes/kiosk/order/ItemModificationModal.svelte';
+  import ItemModEditToast from '../../routes/kiosk/order/ItemModEditToast.svelte';
 
   interface Props {
     entries: OrderEntry[];
@@ -32,6 +33,7 @@
   }: Props = $props();
 
   const isValidOrder = $derived(entries.length > 0);
+  let loading = $state(false);
 
   // Group ingredients by id and count duplicates
   function groupIngredients(
@@ -49,6 +51,7 @@
   }
 
   async function showEditDialog(entry: OrderEntry, index: number) {
+    loading = true;
     const originalQuantity = entry.quantity;
     const states = { isAdded: false };
     await modalManager.show(ItemModificationModal, {
@@ -68,6 +71,20 @@
       if (entry.quantity == 0) {
         onRemoveEntry?.(index);
       }
+
+      loading = false;
+
+      toastManager.custom(
+        { component: ItemModEditToast, props: { isEdited: true } },
+        { timeout: 5000, closable: true },
+      );
+    } else {
+      loading = false;
+
+      toastManager.custom(
+        { component: ItemModEditToast, props: { isEdited: false } },
+        { timeout: 5000, closable: true },
+      );
     }
   }
 </script>
@@ -79,50 +96,52 @@
       <Text class="pt-2 text-center">{t('cart_noItems')}</Text>
     {/if}
 
-    {#each entries as entry, i}
-      <div class="mb-2 flex justify-between border-b pb-2">
-        <div>
-          <Heading size="small">{td(entry.menuItem.name)}</Heading>
-          <div class="gap-3 pl-4">
-            {#each groupIngredients(entry.ingredients) as ingredient}
-              <Text size="small" class="text-muted-foreground">
-                {td(ingredient.name)}
-                {#if ingredient.count > 1}
-                  (x{ingredient.count}){/if}
-              </Text>
-            {/each}
+    {#if !loading}
+      {#each entries as entry, i}
+        <div class="mb-2 flex justify-between border-b pb-2">
+          <div>
+            <Heading size="small">{td(entry.menuItem.name)}</Heading>
+            <div class="gap-3 pl-4">
+              {#each groupIngredients(entry.ingredients) as ingredient}
+                <Text size="small" class="text-muted-foreground">
+                  {td(ingredient.name)}
+                  {#if ingredient.count > 1}
+                    (x{ingredient.count}){/if}
+                </Text>
+              {/each}
+            </div>
           </div>
-        </div>
-        <Stack align="end" gap={2}>
-          <Text size="large">${(entry.subtotal * entry.quantity).toFixed(2)}</Text>
-          {#if editable && onUpdateQuantity}
-            <NumberStepper value={entry.quantity} min={1} onChange={(value) => onUpdateQuantity(i, value)} />
-            <HStack gap={2}>
-              <IconButton
-                icon={mdiPencil}
-                size="medium"
-                color="primary"
-                onclick={() => showEditDialog(entry, i)}
-                aria-label={t('cart_editItem')}
-              />
-              {#if onRemoveEntry}
+          <Stack align="end" gap={2}>
+            <Text size="large">${(entry.subtotal * entry.quantity).toFixed(2)}</Text>
+            {#if editable && onUpdateQuantity}
+              <NumberStepper value={entry.quantity} min={1} onChange={(value) => onUpdateQuantity(i, value)} />
+              <HStack gap={2}>
                 <IconButton
-                  icon={mdiTrashCan}
+                  icon={mdiPencil}
                   size="medium"
-                  color="danger"
-                  onclick={() => onRemoveEntry(i)}
-                  aria-label={t('cart_removeItem')}
+                  color="primary"
+                  onclick={() => showEditDialog(entry, i)}
+                  aria-label={t('cart_editItem')}
                 />
+                {#if onRemoveEntry}
+                  <IconButton
+                    icon={mdiTrashCan}
+                    size="medium"
+                    color="danger"
+                    onclick={() => onRemoveEntry(i)}
+                    aria-label={t('cart_removeItem')}
+                  />
+                {/if}
+              </HStack>
+            {:else if !editable}
+              {#if entry.quantity > 1}
+                <Text size="small" class="text-muted-foreground">x{entry.quantity}</Text>
               {/if}
-            </HStack>
-          {:else if !editable}
-            {#if entry.quantity > 1}
-              <Text size="small" class="text-muted-foreground">x{entry.quantity}</Text>
             {/if}
-          {/if}
-        </Stack>
-      </div>
-    {/each}
+          </Stack>
+        </div>
+      {/each}
+    {/if}
   </div>
 
   <!-- Order Summary -->
