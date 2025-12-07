@@ -4,9 +4,10 @@ import * as v from 'valibot';
 export const OrderEntrySchema = v.object({
   menuItem: menuItemSelectSchema,
   ingredients: v.array(ingredientSelectSchema),
+  lessList: v.array(v.string()),
   quantity: v.number(),
   subtotal: v.number(),
-  iceLevel: v.optional(v.picklist(['None', 'Low', 'Normal', 'High']), 'Normal'),
-  sugarLevel: v.optional(v.picklist(['None', 'Low', 'Normal', 'High']), 'Normal'),
+  iceLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
+  sugarLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
 });
 export type OrderEntry = v.InferInput<typeof OrderEntrySchema>;

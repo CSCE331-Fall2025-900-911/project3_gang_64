@@ -2,8 +2,8 @@
   import { page } from '$app/state';
   import { getCategorizedMenu } from '$lib/api/menu.remote';
   import favicon from '$lib/assets/favicon.svg';
-  import { t } from '$lib/utils/utils';
   import { td } from '$lib/contexts/translations.svelte';
+  import { t } from '$lib/utils/utils';
   import { AppShellSidebar, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
@@ -24,7 +24,7 @@
   <title>{t('kiosk_order_title')}</title>
 </svelte:head>
 
-<div class="flex h-full overflow-hidden">
+<div class="flex h-full overflow-hidden" role="main">
   <AppShellSidebar class="gap-2 pt-2 pr-4">
     {#each Object.keys(menu) as category}
       <NavbarItem

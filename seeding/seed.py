@@ -110,9 +110,9 @@ def export_sales_csv(customers: list[Customer], orders: list[Order], order_conte
 
     with open("csv/order_contents.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id"])
+        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id", "item_subtotal"])
         for content in order_contents:
-            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id])
+            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id, content.item_subtotal])
 
 def export_employees_csv():
     with open("csv/employees.csv", "w", newline="") as f:
@@ -148,7 +148,7 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
         # All ingredients for the same menu item entry share the same order_entry_id
         entry_id = uuid.uuid4()
         for i in ingredients:
-            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id))
+            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id, item_subtotal=round(menu_item.price, 2)))
 
     # round to 2 decimal places
     price = round(price, 2)

@@ -2,9 +2,10 @@
   import { td } from '$lib/contexts/translations.svelte';
   import type { OrderEntry } from '$lib/managers/order_manager.types';
   import { t } from '$lib/utils/utils';
-  import { Button, Heading, HStack, IconButton, Stack, Text } from '@immich/ui';
+  import { Button, Heading, HStack, IconButton, Stack, Text, modalManager } from '@immich/ui';
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import NumberStepper from './NumberStepper.svelte';
+  import ItemModificationModal from '../../routes/kiosk/order/ItemModificationModal.svelte';
 
   interface Props {
     entries: OrderEntry[];
@@ -33,16 +34,40 @@
   const isValidOrder = $derived(entries.length > 0);
 
   // Group ingredients by id and count duplicates
-  function groupIngredients(ingredients: { id: string; name: string }[]): { name: string; count: number }[] {
-    const counts = new Map<string, { name: string; count: number }>();
+  function groupIngredients(
+    ingredients: { id: string; name: string }[],
+  ): { id: string; name: string; count: number }[] {
+    const counts = new Map<string, { id: string; name: string; count: number }>();
     for (const ing of ingredients) {
       if (counts.has(ing.id)) {
         counts.get(ing.id)!.count++;
       } else {
-        counts.set(ing.id, { name: ing.name, count: 1 });
+        counts.set(ing.id, { id: ing.id, name: ing.name, count: 1 });
       }
     }
     return Array.from(counts.values());
+  }
+
+  async function showEditDialog(entry: OrderEntry, index: number) {
+    const originalQuantity = entry.quantity;
+    const states = { isAdded: false };
+    await modalManager.show(ItemModificationModal, {
+      item: entry.menuItem,
+      currentIngredientList: entry.ingredients,
+      currentIceLevel: entry.iceLevel,
+      currentSugarLevel: entry.sugarLevel,
+      currentCartPrice: entry.subtotal,
+      currentLessList: entry.lessList,
+      quantity: entry.quantity,
+      states,
+    });
+
+    if (states.isAdded) {
+      entry.quantity -= originalQuantity;
+      if (entry.quantity == 0) {
+        onRemoveEntry?.(index);
+      }
+    }
   }
 </script>
 
@@ -63,6 +88,7 @@
                 {td(ingredient.name)}
                 {#if ingredient.count > 1}
                   (x{ingredient.count}){/if}
+                {#if entry.lessList.includes(ingredient.id)}({t('kiosk_iceLevel_low')}){/if}
               </Text>
             {/each}
           </div>
@@ -76,7 +102,7 @@
                 icon={mdiPencil}
                 size="medium"
                 color="primary"
-                onclick={() => alert('TODO: Edit functionality not yet implemented')}
+                onclick={() => showEditDialog(entry, i)}
                 aria-label={t('cart_editItem')}
               />
               {#if onRemoveEntry}

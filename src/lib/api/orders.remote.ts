@@ -105,6 +105,7 @@ export const submitOrder = command(
             menuItemId: entry.menuItem.id,
             ingredientId: entryIngredient.id,
             orderEntryId: entryId,
+            itemSubtotal: entry.subtotal,
           });
 
           // get current ingredient stock and decrement by 1
