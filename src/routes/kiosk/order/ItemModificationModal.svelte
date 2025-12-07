@@ -277,8 +277,8 @@
           <div class="mb-4">
             <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
-              {#each baseItems as ing, i}
-                {#if !td(ing.category).toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
+              {#each baseItems as ing}
+                {#if !ing.category.toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
                   <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                     <Text>{td(ing.name)}</Text>
 
@@ -336,9 +336,10 @@
                 />
               </div>
               <div class="labels">
-                {#each levelOptions as option}
-                  <span>{option}</span>
-                {/each}
+                <Text>{t('kiosk_sugarLevel_none')}</Text>
+                <Text>{t('kiosk_sugarLevel_low')}</Text>
+                <Text>{t('kiosk_sugarLevel_normal')}</Text>
+                <Text>{t('kiosk_sugarLevel_high')}</Text>
               </div>
             </div>
 
@@ -355,9 +356,10 @@
                 />
               </div>
               <div class="labels">
-                {#each levelOptions as option}
-                  <span>{option}</span>
-                {/each}
+                <Text>{t('kiosk_iceLevel_none')}</Text>
+                <Text>{t('kiosk_iceLevel_low')}</Text>
+                <Text>{t('kiosk_iceLevel_normal')}</Text>
+                <Text>{t('kiosk_iceLevel_high')}</Text>
               </div>
             </div>
           {:else}
@@ -453,7 +455,7 @@
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
-              {#each toppingsList ?? [] as ing, i}
+              {#each toppingsList ?? [] as ing}
                 {@const count = ingredientList.filter((i) => i.id == ing.id).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
