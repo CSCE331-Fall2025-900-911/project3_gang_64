@@ -100,11 +100,12 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-2 w-full';
+  const cashierIngredientUI =
+    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]';
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
-  const cashierIngredientStructureUI = 'mb-2 flex items-center flex-col';
+  const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
-  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-85';
+  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row min-w-0';
   const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row';
 
   function selectOption(ing: Ingredient, option: Level) {
@@ -391,7 +392,7 @@
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
               <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-                <div class="flex flex-col items-start">
+                <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_iceLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>
@@ -434,7 +435,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="flex flex-col items-start">
+                <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_sugarLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>
