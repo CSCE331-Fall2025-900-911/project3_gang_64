@@ -2,10 +2,11 @@
   import { td } from '$lib/contexts/translations.svelte';
   import type { OrderEntry } from '$lib/managers/order_manager.types';
   import { t } from '$lib/utils/utils';
-  import { Button, Heading, HStack, IconButton, Stack, Text, modalManager } from '@immich/ui';
+  import { Button, Heading, HStack, IconButton, Stack, Text, modalManager, toastManager } from '@immich/ui';
   import { mdiPencil, mdiTrashCan } from '@mdi/js';
   import NumberStepper from './NumberStepper.svelte';
   import ItemModificationModal from '../../routes/kiosk/order/ItemModificationModal.svelte';
+  import ItemModEditToast from '../../routes/kiosk/order/ItemModEditToast.svelte';
 
   interface Props {
     entries: OrderEntry[];
@@ -68,6 +69,16 @@
       if (entry.quantity == 0) {
         onRemoveEntry?.(index);
       }
+
+      toastManager.custom(
+        { component: ItemModEditToast, props: { isEdited: true } },
+        { timeout: 5000, closable: true },
+      );
+    } else {
+      toastManager.custom(
+        { component: ItemModEditToast, props: { isEdited: false } },
+        { timeout: 5000, closable: true },
+      );
     }
   }
 </script>

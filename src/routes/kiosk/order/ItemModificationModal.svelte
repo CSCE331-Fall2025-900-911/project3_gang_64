@@ -20,8 +20,7 @@
     ModalHeader,
   } from '@immich/ui';
   import { mdiRestart, mdiPlus, mdiListBox } from '@mdi/js';
-  import ItemModAddToast from './ItemModAddToast.svelte';
-  import ItemModDeleteToast from './ItemModDeleteToast.svelte';
+  import ItemModValidateToast from './ItemModValidateToast.svelte';
   import NumberStepper from '$lib/components/NumberStepper.svelte';
 
   interface Props {
@@ -123,10 +122,16 @@
     }
 
     if (ingredientList.length <= 1) {
-      toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+      toastManager.custom(
+        { component: ItemModValidateToast, props: { isMax: false } },
+        { timeout: 5000, closable: true },
+      );
       return;
     } else if (ingredientList.length >= 10) {
-      toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+      toastManager.custom(
+        { component: ItemModValidateToast, props: { isMax: true } },
+        { timeout: 5000, closable: true },
+      );
       return;
     }
   }
@@ -152,14 +157,20 @@
       removeOneIngredient(ingredient);
 
       if (ingredientList.length <= 1) {
-        toastManager.custom({ component: ItemModDeleteToast, props: {} }, { timeout: 5000, closable: true });
+        toastManager.custom(
+          { component: ItemModValidateToast, props: { isMax: false } },
+          { timeout: 5000, closable: true },
+        );
         return;
       }
     } else {
       addOneIngredient(ingredient);
 
       if (ingredientList.length == 10) {
-        toastManager.custom({ component: ItemModAddToast, props: {} }, { timeout: 5000, closable: true });
+        toastManager.custom(
+          { component: ItemModValidateToast, props: { isMax: true } },
+          { timeout: 5000, closable: true },
+        );
         return;
       }
     }

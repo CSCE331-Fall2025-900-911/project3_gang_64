@@ -248,5 +248,9 @@
   "manager_reports_z_sales_categories": "Verkaufskategorien",
   "manager_reports_z_reset_button": "Z-Bericht zurücksetzen",
   "manager_reports_z_generate_button": "Z-Bericht generieren",
-  "manager_reports_z_already_generated": "Der Z-Bericht wurde bereits für heute erstellt. Bitte kommen Sie morgen wieder."
+  "manager_reports_z_already_generated": "Der Z-Bericht wurde bereits für heute erstellt. Bitte kommen Sie morgen wieder.",
+  "itemModEditSuccessToast_title": "Artikel bearbeitet",
+  "itemModEditSuccessToast_description": "Ihr Eintrag wurde bearbeitet.",
+  "itemModEditFailToast_title": "Bearbeitung abgebrochen",
+  "itemModEditFailToast_description": "Ihr Eintrag wurde nicht bearbeitet."
 }

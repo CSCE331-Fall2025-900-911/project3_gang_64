@@ -248,5 +248,9 @@
   "manager_reports_z_sales_categories": "Catégories de vente",
   "manager_reports_z_reset_button": "Réinitialiser le rapport Z",
   "manager_reports_z_generate_button": "Générer un rapport Z",
-  "manager_reports_z_already_generated": "Le rapport Z a déjà été généré aujourd'hui. Veuillez revenir demain."
+  "manager_reports_z_already_generated": "Le rapport Z a déjà été généré aujourd'hui. Veuillez revenir demain.",
+  "itemModEditSuccessToast_title": "Article modifié",
+  "itemModEditSuccessToast_description": "Votre article a été modifié.",
+  "itemModEditFailToast_title": "Modification annulée",
+  "itemModEditFailToast_description": "Votre article n'a pas été modifié."
 }

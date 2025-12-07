@@ -248,5 +248,9 @@
   "manager_reports_z_sales_categories": "Categorías de ventas",
   "manager_reports_z_reset_button": "Restablecer informe Z",
   "manager_reports_z_generate_button": "Generar informe Z",
-  "manager_reports_z_already_generated": "El informe Z ya se generó hoy. Vuelva mañana."
+  "manager_reports_z_already_generated": "El informe Z ya se generó hoy. Vuelva mañana.",
+  "itemModEditSuccessToast_title": "Artículo editado",
+  "itemModEditSuccessToast_description": "Su artículo ha sido editado.",
+  "itemModEditFailToast_title": "Edición cancelada",
+  "itemModEditFailToast_description": "Su artículo no ha sido editado"
 }
