@@ -59,6 +59,7 @@
       currentCartPrice: entry.subtotal,
       currentLessList: entry.lessList,
       quantity: entry.quantity,
+      isEdit: true,
       states,
     });
 

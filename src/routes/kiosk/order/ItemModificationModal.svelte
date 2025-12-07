@@ -19,7 +19,7 @@
     toastManager,
     ModalHeader,
   } from '@immich/ui';
-  import { mdiRestart } from '@mdi/js';
+  import { mdiRestart, mdiPlus, mdiListBox } from '@mdi/js';
   import ItemModAddToast from './ItemModAddToast.svelte';
   import ItemModDeleteToast from './ItemModDeleteToast.svelte';
   import NumberStepper from '$lib/components/NumberStepper.svelte';
@@ -32,6 +32,8 @@
     currentLessList?: string[];
     currentCartPrice?: number;
     quantity?: number;
+    isEdit?: boolean;
+    isCashier?: boolean;
     states: { isAdded: boolean };
   }
 
@@ -44,18 +46,20 @@
     currentLessList = [],
     currentCartPrice = item.price,
     quantity = 1,
+    isEdit = false,
+    isCashier = false,
     states,
   }: ModalProps & Props = $props();
 
   toppingsManager.load();
+  const toppingsList = $derived(toppingsManager.toppings);
+  let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
+  // svelte-ignore state_referenced_locally
+  let ingredientList = $state(currentIngredientList.length == 0 ? baseItems : currentIngredientList);
 
   let loading = $state(false);
   let currentPrice = $state(currentCartPrice);
   let shownPrice = $state(currentCartPrice);
-  let baseItems = $derived(getIngredientsForMenuItem(item.id).current ?? []);
-  // svelte-ignore state_referenced_locally
-  let ingredientList = $state(currentIngredientList.length == 0 ? baseItems : currentIngredientList);
-  const toppingsList = $derived(toppingsManager.toppings);
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
@@ -92,6 +96,14 @@
     Array.from(new Set(ingredientList.flatMap((ing) => (Array.isArray(ing.allergen) ? ing.allergen : [])))).sort(),
   );
   let showNutrition = $state(false);
+
+  //UI Stuff
+  const kioskIngredientUI = 'w-full gap-2';
+  const cashierIngredientUI = 'grid grid-cols-3 gap-2 w-full';
+  const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
+  const cashierIngredientStructureUI = 'mb-2 flex items-center flex-col';
+  const kioskBaseItemButtonsUI = 'flex flex-row';
+  const cashierBaseItemButtonsUI = 'mt-1 flex flex-row transform scale-75';
 
   function selectOption(ing: Ingredient, option: Level) {
     ingredientSelection[ing.id] = option;
@@ -194,11 +206,40 @@
           <Heading size="large">{td(item.name)}</Heading>
           <Text>${shownPrice.toFixed(2)}</Text>
         </div>
-        <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
-          {t('kiosk_nutrition')}
-        </Button>
+        {#if !isCashier}
+          <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
+            {t('kiosk_nutrition')}
+          </Button>
+        {:else}
+          <div class="flex flex-col">
+            <IconButton
+              onclick={showNutritionInfo}
+              shape="round"
+              {loading}
+              icon={mdiListBox}
+              color="primary"
+              aria-label={t('kiosk_nutrition')}
+            />
+            <IconButton
+              onclick={restartModification}
+              shape="round"
+              {loading}
+              icon={mdiRestart}
+              color="secondary"
+              aria-label={t('kiosk_restartModification')}
+            />
+            <IconButton
+              onclick={handleAddToOrder}
+              shape="round"
+              {loading}
+              icon={mdiPlus}
+              color="danger"
+              aria-label={t('kiosk_addToCart')}
+            />
+          </div>
+        {/if}
       </div>
-      {#if showNutrition}
+      {#if showNutrition && !isCashier}
         <div transition:slide|local class="mt-4">
           <div class="grid grid-cols-2 gap-8">
             <div>
@@ -239,13 +280,19 @@
         <div class="mr-4 ml-2 flex w-full flex-col">
           <div class="mb-4">
             <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
-            <div class="w-full gap-2">
-              {#each baseItems as ing}
+            <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
+              {#each baseItems as ing, i}
                 {#if !td(ing.category).toLowerCase().includes('ice') && !toppingsList?.some((x) => x.id == ing.id)}
-                  <div class="mb-2 flex items-center justify-between">
+                  <div
+                    class={isCashier
+                      ? cashierIngredientStructureUI +
+                        ' ' +
+                        (i % 3 === 0 ? 'justify-self-start' : i % 3 === 1 ? 'justify-self-center' : 'justify-self-end')
+                      : kioskIngredientStructureUI}
+                  >
                     <Text>{td(ing.name)}</Text>
 
-                    <div class="flex flex-row">
+                    <div class={isCashier ? cashierBaseItemButtonsUI : kioskBaseItemButtonsUI}>
                       <Button
                         class="w-1/3"
                         shape="semi-round"
@@ -323,43 +370,57 @@
 
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
-            <div class="w-full gap-2">
-              {#each toppingsList ?? [] as ing}
+            <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
+              {#each toppingsList ?? [] as ing, i}
                 {@const count = ingredientList.filter((i) => i.id == ing.id).length}
                 {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
-                <div class="mb-2 flex items-center justify-between">
-                  <div class="flex flex-col">
+                <div
+                  class={isCashier
+                    ? cashierIngredientStructureUI +
+                      ' ' +
+                      (i % 3 === 0 ? 'justify-self-start' : i % 3 === 1 ? 'justify-self-center' : 'justify-self-end')
+                    : kioskIngredientStructureUI}
+                >
+                  <div class={isCashier ? 'flex flex-col items-center' : 'flex flex-col'}>
                     <Text>{td(ing.name)}</Text>
                     <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
-                  <NumberStepper
-                    value={count}
-                    min={minAmt}
-                    max={maxAmt}
-                    onChange={(newValue) => changeIngredientsList(ing, newValue)}
-                  />
+                  <div class={isCashier ? 'scale-75 transform' : ''}>
+                    <NumberStepper
+                      value={count}
+                      min={minAmt}
+                      max={maxAmt}
+                      onChange={(newValue) => changeIngredientsList(ing, newValue)}
+                    />
+                  </div>
                 </div>
               {/each}
             </div>
           </div>
         </div>
       </div>
-    </div></ModalBody
-  >
-  <ModalFooter>
-    <HStack class="mt-4 w-full" gap={2}>
-      <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
-        {t('kiosk_addToCart')}
-      </Button>
-      <IconButton
-        onclick={restartModification}
-        shape="round"
-        color="secondary"
-        class="w-1/10"
-        icon={mdiRestart}
-        aria-label={t('kiosk_restartModification')}
-      />
-    </HStack>
-  </ModalFooter>
+    </div>
+  </ModalBody>
+  {#if !isCashier}
+    <ModalFooter>
+      <HStack class="mt-4 w-full" gap={2}>
+        <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
+          {#if isEdit}
+            {t('kiosk_editItem')}
+          {:else}
+            {t('kiosk_addToCart')}
+          {/if}
+        </Button>
+        <IconButton
+          onclick={restartModification}
+          shape="round"
+          color="secondary"
+          class="w-1/10"
+          icon={mdiRestart}
+          aria-label={t('kiosk_restartModification')}
+        />
+      </HStack>
+    </ModalFooter>
+  {/if}
 </Modal>

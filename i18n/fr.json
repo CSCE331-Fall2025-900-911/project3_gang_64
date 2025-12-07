@@ -237,5 +237,6 @@
   "manager_customers_detail_orders": "Historique des commandes",
   "manager_customers_detail_no_orders": "Aucune commande trouvée pour ce client",
   "manager_customers_view_details_aria": "Afficher les détails du client",
-  "manager_orders_table_items": "Articles"
+  "manager_orders_table_items": "Articles",
+  "kiosk_editItem": "Modifier l'élément"
 }

@@ -237,5 +237,6 @@
   "manager_customers_detail_orders": "Historial de pedidos",
   "manager_customers_detail_no_orders": "No se encontraron pedidos para este cliente",
   "manager_customers_view_details_aria": "Ver detalles del cliente",
-  "manager_orders_table_items": "Elementos"
+  "manager_orders_table_items": "Elementos",
+  "kiosk_editItem": "Editar artículo"
 }
