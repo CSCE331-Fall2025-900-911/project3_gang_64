@@ -1,5 +1,6 @@
 import { redirect } from '@sveltejs/kit';
+import { localizeHref } from '$lib/i18n/runtime';
 
 export function load() {
-  redirect(302, '/kitchen/cashier');
+  redirect(302, localizeHref('/kitchen/cashier'));
 }
