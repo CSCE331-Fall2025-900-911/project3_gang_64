@@ -34,16 +34,10 @@ class OrderManager {
       itemIngredients = baseItemIngredients;
     }
 
-    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemLessList);
+    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel);
 
     const existing = this.currentOrder.find((entry) => {
-      const existingHash = itemHash(
-        entry.menuItem,
-        entry.ingredients,
-        entry.iceLevel,
-        entry.sugarLevel,
-        entry.lessList,
-      );
+      const existingHash = itemHash(entry.menuItem, entry.ingredients, entry.iceLevel, entry.sugarLevel);
       return existingHash === currentHash;
     });
 
