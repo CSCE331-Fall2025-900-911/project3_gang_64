@@ -211,7 +211,7 @@
             {t('kiosk_nutrition')}
           </Button>
         {:else}
-          <div class="flex flex-col">
+          <div class="flex flex-row gap-2">
             <IconButton
               onclick={showNutritionInfo}
               shape="round"
