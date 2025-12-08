@@ -1,6 +1,6 @@
 import { command, query } from '$app/server';
 import { customer, ingredient, menu, order, orderContent } from '$lib/db/schema';
-import { orderInsertSchema, orderSelectSchema, type NewOrder, type SugarLevel, type IceLevel } from '$lib/db/types';
+import { orderInsertSchema, orderSelectSchema, type IceLevel, type NewOrder, type SugarLevel } from '$lib/db/types';
 import { OrderEntrySchema } from '$lib/managers/order_manager.types';
 import { itemHash, luxonDatetime } from '$lib/utils/utils';
 import { desc, eq, sql } from 'drizzle-orm';
@@ -94,13 +94,24 @@ export const submitOrder = command(
 
     const createdOrder = await db.insert(order).values(newOrder).returning();
 
-    // Add order content entries
+    // Collect all order content entries and ingredient decrements
+    const orderContentValues: {
+      orderId: string;
+      menuItemId: string;
+      ingredientId: string;
+      orderEntryId: string;
+      itemSubtotal: number;
+      iceLevel: (typeof submittedOrder)[number]['iceLevel'];
+      sugarLevel: (typeof submittedOrder)[number]['sugarLevel'];
+    }[] = [];
+    const ingredientDecrements = new Map<string, number>();
+
     for (const entry of submittedOrder) {
       for (let i = 0; i < entry.quantity; i++) {
         const entryId = uuidv4();
 
         for (const entryIngredient of entry.ingredients) {
-          await db.insert(orderContent).values({
+          orderContentValues.push({
             orderId: createdOrder[0].id,
             menuItemId: entry.menuItem.id,
             ingredientId: entryIngredient.id,
@@ -110,24 +121,23 @@ export const submitOrder = command(
             sugarLevel: entry.sugarLevel,
           });
 
-          // get current ingredient stock and decrement by 1
-          const currentIngredient = await db
-            .select()
-            .from(ingredient)
-            .where(eq(ingredient.id, entryIngredient.id))
-            .limit(1);
-
-          if (currentIngredient.length === 0) {
-            throw new Error(`Ingredient with ID ${entryIngredient.id} not found`);
-          }
-
-          // decrement the ingredient quantity
-          await db
-            .update(ingredient)
-            .set({ currentStock: currentIngredient[0].currentStock - 1 })
-            .where(eq(ingredient.id, entryIngredient.id));
+          // Track ingredient decrements
+          ingredientDecrements.set(entryIngredient.id, (ingredientDecrements.get(entryIngredient.id) || 0) + 1);
         }
       }
+    }
+
+    // Bulk insert all order content entries
+    if (orderContentValues.length > 0) {
+      await db.insert(orderContent).values(orderContentValues);
+    }
+
+    // Bulk update ingredient stock levels
+    for (const [ingredientId, decrementAmount] of ingredientDecrements) {
+      await db
+        .update(ingredient)
+        .set({ currentStock: sql`${ingredient.currentStock} - ${decrementAmount}` })
+        .where(eq(ingredient.id, ingredientId));
     }
 
     return createdOrder[0];
