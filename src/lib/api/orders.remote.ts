@@ -3,10 +3,10 @@ import { customer, ingredient, menu, order, orderContent } from '$lib/db/schema'
 import {
   orderInsertSchema,
   orderSelectSchema,
-  type NewOrder,
-  type SugarLevel,
   type IceLevel,
+  type NewOrder,
   type SizeLevel,
+  type SugarLevel,
 } from '$lib/db/types';
 import { OrderEntrySchema } from '$lib/managers/order_manager.types';
 import { itemHash, luxonDatetime } from '$lib/utils/utils';
@@ -110,6 +110,7 @@ export const submitOrder = command(
       itemSubtotal: number;
       iceLevel: (typeof submittedOrder)[number]['iceLevel'];
       sugarLevel: (typeof submittedOrder)[number]['sugarLevel'];
+      sizeLevel: (typeof submittedOrder)[number]['sizeLevel'];
     }[] = [];
     const ingredientDecrements = new Map<string, number>();
 
