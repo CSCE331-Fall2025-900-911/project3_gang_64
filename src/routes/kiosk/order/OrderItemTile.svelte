@@ -59,9 +59,9 @@
       </div>
     {/if}
   </div>
-  <Heading size="large" class="mb-2">{td(item.name)}</Heading>
+  <Heading size="large" class="mb-2 font-semibold">{td(item.name)}</Heading>
   <div class="mt-2 flex items-center justify-between">
-    <Heading size="medium" fontWeight="normal">${item.price.toFixed(2)}</Heading>
+    <Heading size="large" fontWeight="normal">${item.price.toFixed(2)}</Heading>
     <IconButton
       icon={mdiPlus}
       size="large"

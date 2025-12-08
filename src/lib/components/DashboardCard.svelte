@@ -29,7 +29,7 @@
 <div class="w-1/3 rounded-xl border bg-subtle p-6">
   <div class="flex items-start justify-between">
     <div class="flex-1">
-      <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+      <p class="text-lg font-medium text-gray-600 dark:text-gray-400">{title}</p>
       {#if loading}
         <div class="mt-2 flex items-center">
           <LoadingSpinner />
@@ -41,7 +41,7 @@
           {value}
         </h2>
         {#if percentChange !== undefined}
-          <p class="mt-2 text-xs {percentChangeColor}">
+          <p class="mt-2 text-lg {percentChangeColor}">
             {percentChangeSign}{percentChange.toFixed(2)}%
             <span class="text-gray-500">vs last week</span>
           </p>
