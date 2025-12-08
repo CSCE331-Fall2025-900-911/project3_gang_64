@@ -60,6 +60,7 @@
       currentIngredientList: entry.ingredients,
       currentIceLevel: entry.iceLevel,
       currentSugarLevel: entry.sugarLevel,
+      currentSizeLevel: entry.sizeLevel,
       currentCartPrice: entry.subtotal,
       quantity: entry.quantity,
       isEdit: true,
@@ -100,6 +101,21 @@
 
     return false;
   }
+
+  function getSizeLabel(size: 'Small' | 'Medium' | 'Large' | 'Extra Large' | undefined): string {
+    switch (size) {
+      case 'Small':
+        return '(S)';
+      case 'Medium':
+        return '(M)';
+      case 'Large':
+        return '(L)';
+      case 'Extra Large':
+        return '(XL)';
+      default:
+        return '(S)';
+    }
+  }
 </script>
 
 <!-- Order Summary -->
@@ -113,7 +129,7 @@
       {#each entries as entry, i}
         <div class="mb-2 flex justify-between border-b pb-2">
           <div>
-            <Heading size="small">{td(entry.menuItem.name)}</Heading>
+            <Heading size="small">{td(entry.menuItem.name)} {getSizeLabel(entry.sizeLevel)}</Heading>
             <div class="gap-3 pl-4">
               {#each groupIngredients(entry.ingredients) as ingredient}
                 <Text size="small" class="text-muted-foreground">

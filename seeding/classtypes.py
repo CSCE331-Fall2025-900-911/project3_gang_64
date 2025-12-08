@@ -32,6 +32,12 @@ class SugarLevel(Enum):
     LESS = "Less"
     NORMAL = "Normal"
     EXTRA = "Extra"
+    
+class SizeLevel(Enum):
+    SMALL = "Small"
+    MEDIUM = "Medium"
+    LARGE = "Large"
+    EXTRALARGE = "Extra Large"
 
 @dataclass
 class Employee:
@@ -100,6 +106,7 @@ class OrderContent:
     item_subtotal: float
     ice_level: IceLevel = IceLevel.NORMAL
     sugar_level: SugarLevel = SugarLevel.NORMAL
+    size_level: SizeLevel = SizeLevel.SMALL
 
 
 

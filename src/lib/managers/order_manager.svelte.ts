@@ -25,6 +25,7 @@ class OrderManager {
     itemSubtotal: number | null = null,
     itemIceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
     itemSugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
+    itemSizeLevel: 'Small' | 'Medium' | 'Large' | 'Extra Large' = 'Small',
     itemQuantity: number,
     itemIsCashier: boolean = false,
   ) {
@@ -34,10 +35,16 @@ class OrderManager {
       itemIngredients = baseItemIngredients;
     }
 
-    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel);
+    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemSizeLevel);
 
     const existing = this.currentOrder.find((entry) => {
-      const existingHash = itemHash(entry.menuItem, entry.ingredients, entry.iceLevel, entry.sugarLevel);
+      const existingHash = itemHash(
+        entry.menuItem,
+        entry.ingredients,
+        entry.iceLevel,
+        entry.sugarLevel,
+        entry.sizeLevel,
+      );
       return existingHash === currentHash;
     });
 
@@ -52,6 +59,7 @@ class OrderManager {
 
     itemIceLevel ??= 'Normal';
     itemSugarLevel ??= 'Normal';
+    itemSizeLevel ??= 'Small';
 
     this.currentOrder.push({
       menuItem,
@@ -60,6 +68,7 @@ class OrderManager {
       subtotal: itemSubtotal,
       iceLevel: itemIceLevel,
       sugarLevel: itemSugarLevel,
+      sizeLevel: itemSizeLevel,
       isCashier: itemIsCashier,
     });
   }

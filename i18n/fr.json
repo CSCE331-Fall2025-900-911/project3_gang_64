@@ -267,4 +267,8 @@
   "manager_reports_x_avg_items_per_order": "Nombre moyen d'articles par commande",
   "manager_reports_x_avg_order_total": "Total moyen des commandes",
   "kiosk_timeOut": "Cliquez n'importe où pour commencer"
+  "kiosk_size_small": "Petit",
+  "kiosk_size_medium": "Moyen",
+  "kiosk_size_large": "Grand",
+  "kiosk_size_xlarge": "Très grand"
 }
