@@ -222,11 +222,11 @@
           </Button>
         {:else}
           <div class="flex flex-row gap-2">
-            <div class="flex flex-row">
-              <Text class="text-2xl">Cost:</Text>
-        <div class="bg-white px-2 py-1 mx-2 rounded-full">
-          <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
-        </div>
+            <div class="flex flex-row items-center">
+              <Text class="text-2xl">{t('cost')}:</Text>
+              <div class="mx-2 rounded-full bg-white px-2 py-1">
+                <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
+              </div>
             </div>
             <IconButton
               onclick={showNutritionInfo}
@@ -353,8 +353,8 @@
             </div>
           </div>
 
-          <div class="w-full h-1 mb-3 bg-(--immich-ui-primary-600)"></div>
-          
+          <div class="mb-3 h-1 w-full bg-(--immich-ui-primary-600)"></div>
+
           {#if !isCashier}
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
@@ -489,7 +489,7 @@
             </div>
           {/if}
 
-          <div class="w-full h-1 mb-3 bg-(--immich-ui-primary-600)"></div>
+          <div class="mb-3 h-1 w-full bg-(--immich-ui-primary-600)"></div>
 
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
@@ -522,10 +522,12 @@
   {#if !isCashier}
     <ModalFooter>
       <HStack class="mt-4 w-full" gap={2}>
-        <Text class="text-2xl">Cost: </Text>
-        <div class="bg-(--immich-ui-primary-500) px-2 py-1 rounded-full">
-          <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
-        </div>
+        <HStack>
+          <Text class="text-2xl">{t('cost')}:</Text>
+          <div class="rounded-full bg-(--immich-ui-primary-500) px-2 py-1">
+            <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
+          </div>
+        </HStack>
         <Button onclick={handleAddToOrder} shape="round" color="success" class="w-9/10" {loading}>
           {#if isEdit}
             {t('kiosk_editItem')}
