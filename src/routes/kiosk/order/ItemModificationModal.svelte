@@ -100,8 +100,8 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-  const cashierIngredientUI =
-    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]';
+  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-5 w-full';
+  const cashierIceSugarUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(250px,1fr))] gap-5 w-full';
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
   const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
@@ -213,9 +213,8 @@
   <ModalHeader>
     <div class="flex flex-col">
       <div class="flex items-center justify-between">
-        <div class="flex flex-col">
+        <div class="flex flex-row">
           <Heading size="large">{td(item.name)}</Heading>
-          <Text>${shownPrice.toFixed(2)}</Text>
         </div>
         {#if !isCashier}
           <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
@@ -223,6 +222,12 @@
           </Button>
         {:else}
           <div class="flex flex-row gap-2">
+            <div class="flex flex-row">
+              <Text class="text-2xl">Cost:</Text>
+        <div class="bg-white px-2 py-1 mx-2 rounded-full">
+          <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
+        </div>
+            </div>
             <IconButton
               onclick={showNutritionInfo}
               shape="round"
@@ -244,7 +249,7 @@
               shape="round"
               {loading}
               icon={mdiPlus}
-              color="danger"
+              color="success"
               aria-label={t('kiosk_addToCart')}
             />
           </div>
@@ -257,12 +262,12 @@
               <Heading size="small" class="mb-2">{t('kiosk_nutrition')}</Heading>
 
               <div class="bg-level-2 grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border p-3">
-                <Text size="tiny">{t('kiosk_nutrition_calories')}: {total.calories.toFixed(1)}</Text>
-                <Text size="tiny">{t('kiosk_nutrition_fat')}: {total.fat_g.toFixed(1)}g</Text>
-                <Text size="tiny">{t('kiosk_nutrition_sodium')}: {total.sodium_g.toFixed(1)}g</Text>
-                <Text size="tiny">{t('kiosk_nutrition_carbs')}: {total.carbs_g.toFixed(1)}g</Text>
-                <Text size="tiny">{t('kiosk_nutrition_sugar')}: {total.sugar_g.toFixed(1)}g</Text>
-                <Text size="tiny">{t('kiosk_nutrition_caffeine')}: {total.caffeine_mg.toFixed(1)}mg</Text>
+                <Text size="small">{t('kiosk_nutrition_calories')}: {total.calories.toFixed(1)}</Text>
+                <Text size="small">{t('kiosk_nutrition_fat')}: {total.fat_g.toFixed(1)}g</Text>
+                <Text size="small">{t('kiosk_nutrition_sodium')}: {total.sodium_g.toFixed(1)}g</Text>
+                <Text size="small">{t('kiosk_nutrition_carbs')}: {total.carbs_g.toFixed(1)}g</Text>
+                <Text size="small">{t('kiosk_nutrition_sugar')}: {total.sugar_g.toFixed(1)}g</Text>
+                <Text size="small">{t('kiosk_nutrition_caffeine')}: {total.caffeine_mg.toFixed(1)}mg</Text>
               </div>
             </div>
             <div>
@@ -271,10 +276,10 @@
               <div class="bg-level-2 grid grid-cols-3 gap-x-4 gap-y-2 rounded-lg border p-3">
                 {#if allergenList.length > 0}
                   {#each allergenList as allergen}
-                    <Text size="tiny">{td(allergen)}</Text>
+                    <Text size="small">{td(allergen)}</Text>
                   {/each}
                 {:else}
-                  <Text size="tiny" class="text-muted-foreground col-span-3">
+                  <Text size="small" class="text-muted-foreground col-span-3">
                     {t('kiosk_allergens_none')}
                   </Text>
                 {/if}
@@ -299,9 +304,9 @@
 
                     <div class={isCashier ? cashierBaseItemButtonsUI : kioskBaseItemButtonsUI}>
                       <Button
-                        class="w-1/3"
+                        class="w-1/3 py-1"
                         shape="semi-round"
-                        size="tiny"
+                        size="small"
                         color={ingredientSelection[ing.id] === 'None' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'None')}
                         disabled={(ingredientList.length <= 1 ||
@@ -311,9 +316,9 @@
                         {t('kiosk_iceLevel_none')}
                       </Button>
                       <Button
-                        class="ml-1 w-1/3"
+                        class="ml-1 w-1/3 py-1"
                         shape="semi-round"
-                        size="tiny"
+                        size="small"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
                         disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'None') ||
@@ -325,7 +330,7 @@
                       <Button
                         class="ml-1 w-1/3"
                         shape="semi-round"
-                        size="tiny"
+                        size="small"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
                         disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'Normal') ||
@@ -348,6 +353,8 @@
             </div>
           </div>
 
+          <div class="w-full h-1 mb-3 bg-(--immich-ui-primary-600)"></div>
+          
           {#if !isCashier}
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
@@ -361,7 +368,7 @@
                   oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
                 />
               </div>
-              <div class="labels">
+              <div class="labels !text-base">
                 <Text>{t('kiosk_sugarLevel_none')}</Text>
                 <Text>{t('kiosk_sugarLevel_low')}</Text>
                 <Text>{t('kiosk_sugarLevel_normal')}</Text>
@@ -381,7 +388,7 @@
                   oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
                 />
               </div>
-              <div class="labels">
+              <div class="labels !text-base">
                 <Text>{t('kiosk_iceLevel_none')}</Text>
                 <Text>{t('kiosk_iceLevel_low')}</Text>
                 <Text>{t('kiosk_iceLevel_normal')}</Text>
@@ -391,8 +398,8 @@
           {:else}
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
-              <div class="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-                <div class="flex flex-col items-center">
+              <div class={cashierIceSugarUI}>
+                <div class="flex flex-col items-start">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_iceLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>
@@ -482,6 +489,8 @@
             </div>
           {/if}
 
+          <div class="w-full h-1 mb-3 bg-(--immich-ui-primary-600)"></div>
+
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
@@ -492,7 +501,7 @@
                 <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                   <div class={isCashier ? 'flex flex-col items-center' : 'flex flex-col'}>
                     <Text>{td(ing.name)}</Text>
-                    <Text size="tiny">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
+                    <Text size="small">(+${(ing.unitPrice + markup).toFixed(2)})</Text>
                   </div>
                   <div class={isCashier ? 'scale-85 transform' : ''}>
                     <NumberStepper
@@ -513,7 +522,11 @@
   {#if !isCashier}
     <ModalFooter>
       <HStack class="mt-4 w-full" gap={2}>
-        <Button onclick={handleAddToOrder} shape="round" color="danger" class="w-9/10" {loading}>
+        <Text class="text-2xl">Cost: </Text>
+        <div class="bg-(--immich-ui-primary-500) px-2 py-1 rounded-full">
+          <Text class="text-2xl text-black">${shownPrice.toFixed(2)}</Text>
+        </div>
+        <Button onclick={handleAddToOrder} shape="round" color="success" class="w-9/10" {loading}>
           {#if isEdit}
             {t('kiosk_editItem')}
           {:else}
