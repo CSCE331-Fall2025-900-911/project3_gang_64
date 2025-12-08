@@ -12,8 +12,20 @@
 
   let { onClose, isCashier }: Props = $props();
 
+  let isValidEmail = $derived.by(() => {
+    const email = orderManager.customerEmail.trim();
+    if (email.length === 0) {
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  });
+
   const isValid = $derived(
-    orderManager.customerName.trim().length > 0 && orderManager.currentOrder.length > 0 && orderManager.paymentMethod,
+    isValidEmail &&
+      orderManager.customerName.trim().length > 0 &&
+      orderManager.currentOrder.length > 0 &&
+      orderManager.paymentMethod,
   );
   let submittingOrder = $state(false);
 
@@ -43,6 +55,9 @@
       </Field>
       <Field label={t('order_label_email')}>
         <Input placeholder={t('order_placeholder_email')} bind:value={orderManager.customerEmail} />
+        {#if orderManager.customerEmail.trim().length > 0 && !isValidEmail}
+          <Text color="danger" size="small">{t('order_invalid_email')}</Text>
+        {/if}
       </Field>
       <Text>{t('order_paymentMethod')}</Text>
       <HStack gap={4}>

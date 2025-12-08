@@ -191,6 +191,7 @@
   "stillthere_modal_button": "I'm still here!",
   "manager_inventory_order_label": "Order Inventory",
   "manager_inventory_place_order_btn": "Order",
+  "order_invalid_email": "Please enter a valid email address.",
   "common_close": "Close",
   "stillthere_modal_message": "Your order will be cleared in {seconds} seconds.",
   "manager_inventory_close_btn": "Close",
