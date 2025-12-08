@@ -1,12 +1,12 @@
 <script lang="ts">
   import { getIngredientsForMenuItem } from '$lib/api/ingredient.remote';
-  import { slide } from 'svelte/transition';
+  import NumberStepper from '$lib/components/NumberStepper.svelte';
+  import { td } from '$lib/contexts/translations.svelte';
   import type { Ingredient, MenuItem } from '$lib/db/types';
   import { orderManager } from '$lib/managers/order_manager.svelte';
+  import { toppingsManager } from '$lib/managers/toppings.svelte';
   import type { ModalProps } from '$lib/utils/utils';
   import { t } from '$lib/utils/utils';
-  import { td } from '$lib/contexts/translations.svelte';
-  import { toppingsManager } from '$lib/managers/toppings.svelte';
   import {
     Button,
     HStack,
@@ -15,13 +15,13 @@
     Modal,
     ModalBody,
     ModalFooter,
+    ModalHeader,
     Text,
     toastManager,
-    ModalHeader,
   } from '@immich/ui';
-  import { mdiRestart, mdiPlus, mdiListBox } from '@mdi/js';
+  import { mdiListBox, mdiPlus, mdiRestart } from '@mdi/js';
+  import { slide } from 'svelte/transition';
   import ItemModValidateToast from './ItemModValidateToast.svelte';
-  import NumberStepper from '$lib/components/NumberStepper.svelte';
 
   interface Props {
     item: MenuItem;
@@ -128,7 +128,7 @@
         { timeout: 5000, closable: true },
       );
       return;
-    } else if (ingredientList.length >= 10) {
+    } else if (ingredientList.length >= 100) {
       toastManager.custom(
         { component: ItemModValidateToast, props: { isMax: true } },
         { timeout: 5000, closable: true },
@@ -167,7 +167,7 @@
     } else {
       addOneIngredient(ingredient);
 
-      if (ingredientList.length == 10) {
+      if (ingredientList.length == 100) {
         toastManager.custom(
           { component: ItemModValidateToast, props: { isMax: true } },
           { timeout: 5000, closable: true },
@@ -316,7 +316,7 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Normal' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Normal')}
-                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'None') ||
+                        disabled={((ingredientList.length >= 100 && ingredientSelection[ing.id] === 'None') ||
                           (ingredientSelection[ing.id] === 'None' && ing.currentStock <= 0)) &&
                           ingredientSelection[ing.id] !== 'Normal'}
                       >
@@ -328,7 +328,7 @@
                         size="tiny"
                         color={ingredientSelection[ing.id] === 'Extra' ? 'primary' : 'secondary'}
                         onclick={() => selectOption(ing, 'Extra')}
-                        disabled={((ingredientList.length >= 10 && ingredientSelection[ing.id] === 'Normal') ||
+                        disabled={((ingredientList.length >= 100 && ingredientSelection[ing.id] === 'Normal') ||
                           (ingredientList.length >= 9 && ingredientSelection[ing.id] === 'None') ||
                           (ingredientList.filter((i) => i.id == ing.id).length >= ing.currentStock &&
                             ingredientSelection[ing.id] === 'Normal') ||
@@ -487,7 +487,7 @@
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
               {#each toppingsList ?? [] as ing}
                 {@const count = ingredientList.filter((i) => i.id == ing.id).length}
-                {@const maxAmt = ingredientList.length >= 10 ? -Infinity : ing.currentStock}
+                {@const maxAmt = ingredientList.length >= 100 ? -Infinity : ing.currentStock}
                 {@const minAmt = ingredientList.length <= 1 ? Infinity : 0}
                 <div class={isCashier ? cashierIngredientStructureUI : kioskIngredientStructureUI}>
                   <div class={isCashier ? 'flex flex-col items-center' : 'flex flex-col'}>
