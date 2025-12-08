@@ -273,5 +273,11 @@
   "manager_inventory_usage_table_name": "Ingredient Name",
   "manager_inventory_usage_table_category": "Category",
   "manager_inventory_usage_table_usage": "Usage Count",
-  "manager_inventory_usage_no_data": "No inventory usage data for the selected date"
+  "manager_inventory_usage_no_data": "No inventory usage data for the selected date",
+  "manager_reports_sales_title": "Sales Report",
+  "manager_reports_what_sells": "What Sells Together",
+  "manager_reports_what_sells_error": "Error loading data",
+  "manager_reports_what_sells_empty": "No data found for selected time period",
+  "manager_reports_what_sells_pair": "Item Pair",
+  "manager_reports_what_sells_count": "Times Ordered Together"
 }

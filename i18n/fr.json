@@ -266,9 +266,18 @@
   "manager_reports_x_tax_collected": "Impôt perçu",
   "manager_reports_x_avg_items_per_order": "Nombre moyen d'articles par commande",
   "manager_reports_x_avg_order_total": "Total moyen des commandes",
-  "kiosk_timeOut": "Cliquez n'importe où pour commencer"
+  "kiosk_timeOut": "Cliquez n'importe où pour commencer",
   "kiosk_size_small": "Petit",
   "kiosk_size_medium": "Moyen",
   "kiosk_size_large": "Grand",
-  "kiosk_size_xlarge": "Très grand"
+  "kiosk_size_xlarge": "Très grand",
+  "kiosk_size_label": "Taille",
+  "cost": "Coût",
+  "order_invalid_email": "S'il vous plaît, mettez une adresse email valide.",
+  "manager_reports_sales_title": "Rapport des ventes",
+  "manager_reports_what_sells": "Ce qui se vend ensemble",
+  "manager_reports_what_sells_error": "Erreur lors du chargement des données",
+  "manager_reports_what_sells_empty": "Aucune donnée trouvée pour la période sélectionnée",
+  "manager_reports_what_sells_pair": "Paire d'articles",
+  "manager_reports_what_sells_count": "Temps ordonnés ensemble"
 }
