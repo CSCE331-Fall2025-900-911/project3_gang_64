@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@immich/ui':
+    hash: 0262011d993070a1f2adaecd316233fdf26ae740d1cd2b03748f94fcc23b46e6
+    path: patches/@immich__ui.patch
+
 importers:
 
   .:
@@ -19,7 +24,7 @@ importers:
         version: 1.11.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)
       '@immich/ui':
         specifier: ^0.45.1
-        version: 0.45.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
+        version: 0.45.1(patch_hash=0262011d993070a1f2adaecd316233fdf26ae740d1cd2b03748f94fcc23b46e6)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -2994,7 +2999,7 @@ snapshots:
     dependencies:
       svelte: 5.42.1
 
-  '@immich/ui@0.45.1(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
+  '@immich/ui@0.45.1(patch_hash=0262011d993070a1f2adaecd316233fdf26ae740d1cd2b03748f94fcc23b46e6)(@sveltejs/kit@2.47.3(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(vite@7.1.12(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.42.1)(tailwindcss@4.1.16)':
     dependencies:
       '@immich/svelte-markdown-preprocess': 0.1.0(svelte@5.42.1)
       '@internationalized/date': 3.10.0

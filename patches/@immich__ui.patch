@@ -1,0 +1,59 @@
+diff --git a/dist/components/AppShell/AppShellSidebar.svelte b/dist/components/AppShell/AppShellSidebar.svelte
+index 802f458d2f22d6c844f3c51355a8bc920ae46ba8..d179f64f65270c5f6df9958554b786a0265c10c3 100644
+--- a/dist/components/AppShell/AppShellSidebar.svelte
++++ b/dist/components/AppShell/AppShellSidebar.svelte
+@@ -1,9 +1,9 @@
+ <script lang="ts">
+-  import Scrollable from '../Scrollable/Scrollable.svelte';
++  import { type Snippet } from 'svelte';
+   import { ChildKey, zIndex } from '../../constants.js';
+   import Child from '../../internal/Child.svelte';
+   import { cleanClass } from '../../utilities/internal.js';
+-  import { type Snippet } from 'svelte';
++  import Scrollable from '../Scrollable/Scrollable.svelte';
+ 
+   type Props = {
+     class?: string;
+@@ -21,6 +21,7 @@
+       open ? `${zIndex.AppShellSidebar} w-[min(100vw,16rem)]` : 'w-[0px] border-e-0',
+       className,
+     )}
++    role="main"
+   >
+     {@render children?.()}
+   </Scrollable>
+diff --git a/dist/components/Scrollable/Scrollable.svelte b/dist/components/Scrollable/Scrollable.svelte
+index 31bff85b458cdafcdb5a52eec4ecd484c2edfdf7..b108f6ad03ce06c6a41e305733cf94834041d648 100644
+--- a/dist/components/Scrollable/Scrollable.svelte
++++ b/dist/components/Scrollable/Scrollable.svelte
+@@ -1,7 +1,7 @@
+ <script lang="ts">
+   import { afterNavigate } from '$app/navigation';
+-  import { cleanClass } from '../../utilities/internal.js';
+   import type { Snippet } from 'svelte';
++  import { cleanClass } from '../../utilities/internal.js';
+ 
+   type Props = {
+     class?: string;
+@@ -9,10 +9,10 @@
+     transition?: TransitionEvent;
+     ref?: HTMLDivElement;
+     resetOnNavigate?: boolean;
++    role?: string;
+   };
+ 
+-  let { resetOnNavigate = false, class: className, children, ref = $bindable() }: Props = $props();
+-
++  let { resetOnNavigate = false, class: className, children, ref = $bindable(), role }: Props = $props();
+   afterNavigate(() => {
+     if (resetOnNavigate) {
+       ref?.scrollTo(0, 0);
+@@ -20,7 +20,7 @@
+   });
+ </script>
+ 
+-<div bind:this={ref} class={cleanClass('immich-scrollbar h-full w-full overflow-auto', className)}>
++<div bind:this={ref} class={cleanClass('immich-scrollbar h-full w-full overflow-auto', className)} {role}>
+   {@render children?.()}
+ </div>
+ 

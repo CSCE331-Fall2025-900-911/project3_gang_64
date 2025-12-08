@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onNavigate } from '$app/navigation';
+  import { goto, onNavigate } from '$app/navigation';
   import favicon from '$lib/assets/favicon.svg';
   import logo from '$lib/assets/logo.png';
   import AccessibiltyModal from '$lib/components/AccessibiltyModal.svelte';
@@ -21,7 +21,6 @@
   import { mdiCartOutline, mdiChatQuestion, mdiTranslate, mdiWheelchair } from '@mdi/js';
   import { onMount } from 'svelte';
   import CartModal from './CartModal.svelte';
-  import { goto } from '$app/navigation';
 
   let { children } = $props();
 
@@ -63,7 +62,7 @@
         stopTimer();
         orderManager.clearOrder();
         showModal = false;
-        goto("/kiosk/home");
+        goto('/kiosk/home');
       }
     }, 1000);
   }
@@ -121,7 +120,7 @@
 
 <AppShell>
   <AppShellHeader>
-    <div class="flex w-full items-center justify-between p-4" role="navigation">
+    <div class="flex w-full items-center justify-between p-4" role="banner">
       <img src={logo} alt={t('logoAlt')} class="h-6" />
       <div class="flex items-center gap-4">
         <IconButton
