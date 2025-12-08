@@ -106,13 +106,8 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-<<<<<<< HEAD
-  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-5 w-full';
-  const cashierIceSugarUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(250px,1fr))] gap-5 w-full';
-=======
   const cashierIngredientUI =
     'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]';
->>>>>>> 836f346 (feat: added sizes to item mod)
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
   const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
