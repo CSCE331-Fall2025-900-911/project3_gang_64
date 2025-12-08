@@ -266,5 +266,18 @@
   "manager_reports_x_tax_collected": "eingenommene Steuern",
   "manager_reports_x_avg_items_per_order": "Durchschnittliche Anzahl Artikel pro Bestellung",
   "manager_reports_x_avg_order_total": "Durchschnittlicher Bestellwert",
-  "kiosk_timeOut": "Klicken Sie irgendwo, um zu beginnen."
+  "kiosk_timeOut": "Klicken Sie irgendwo, um zu beginnen.",
+  "kiosk_size_small": "Klein",
+  "kiosk_size_medium": "Medium",
+  "kiosk_size_large": "Groß",
+  "kiosk_size_xlarge": "Extra groß",
+  "kiosk_size_label": "Größe",
+  "cost": "Kosten",
+  "order_invalid_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+  "manager_reports_sales_title": "Verkaufsbericht",
+  "manager_reports_what_sells": "Was sich zusammen verkauft",
+  "manager_reports_what_sells_error": "Fehler beim Laden der Daten",
+  "manager_reports_what_sells_empty": "Für den ausgewählten Zeitraum wurden keine Daten gefunden.",
+  "manager_reports_what_sells_pair": "Artikelpaar",
+  "manager_reports_what_sells_count": "Zeiten in der richtigen Reihenfolge"
 }

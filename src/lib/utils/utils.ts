@@ -44,8 +44,9 @@ export function itemHash(
   ingredients: { id: string }[],
   iceLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
   sugarLevel: 'None' | 'Less' | 'Normal' | 'Extra' = 'Normal',
+  sizeLevel: 'Small' | 'Medium' | 'Large' | 'Extra Large' = 'Small',
 ): string {
   const sortedIngredients = [...ingredients].map((i) => i.id).sort((a, b) => a.localeCompare(b));
 
-  return [menuItem.id, sortedIngredients.join(','), iceLevel, sugarLevel].join('|');
+  return [menuItem.id, sortedIngredients.join(','), iceLevel, sugarLevel, sizeLevel].join('|');
 }

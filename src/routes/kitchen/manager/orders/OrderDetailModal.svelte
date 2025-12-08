@@ -52,6 +52,7 @@
       subtotal: entry.menuItem.price,
       iceLevel: 'Normal' as const,
       sugarLevel: 'Normal' as const,
+      sizeLevel: 'Small' as const,
     })) || [],
   );
 </script>

@@ -28,6 +28,7 @@
     currentIngredientList?: Ingredient[];
     currentIceLevel?: string;
     currentSugarLevel?: string;
+    currentSizeLevel?: string;
     currentCartPrice?: number;
     quantity?: number;
     isEdit?: boolean;
@@ -41,6 +42,7 @@
     currentIngredientList = [],
     currentIceLevel = '',
     currentSugarLevel = '',
+    currentSizeLevel = '',
     currentCartPrice = item.price,
     quantity = 1,
     isEdit = false,
@@ -60,10 +62,14 @@
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
+  const sizeOptions = ['Small', 'Medium', 'Large', 'Extra Large'] as const;
+  type Size = 'Small' | 'Medium' | 'Large' | 'Extra Large';
   let selectedIce = $state<Level>((currentIceLevel.length === 0 ? 'Normal' : currentIceLevel) as Level);
   let selectedSugar = $state<Level>((currentSugarLevel.length === 0 ? 'Normal' : currentSugarLevel) as Level);
+  let selectedSize = $state<Size>((currentSizeLevel.length === 0 ? 'Small' : currentSizeLevel) as Size);
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
+  let selectedSizeIndex = $derived(sizeOptions.indexOf(selectedSize));
   const positive = 1;
   const negative = -1;
   let ingredientSelection = $state<Record<string, Level>>({});
@@ -100,13 +106,15 @@
 
   //UI Stuff
   const kioskIngredientUI = 'w-full gap-2';
-  const cashierIngredientUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(180px,1fr))] gap-5 w-full';
-  const cashierIceSugarUI = 'grid [grid-template-columns:repeat(auto-fill,minmax(250px,1fr))] gap-5 w-full';
+  const cashierIngredientUI =
+    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(240px,1fr))]';
   const kioskIngredientStructureUI = 'mb-2 flex items-center justify-between';
   const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
   const cashierBaseItemButtonsUI = 'mt-1 flex flex-row min-w-0';
-  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row';
+  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row transform scale-80';
+  const cashierSizeIceSugarUI =
+    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(260px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]';
 
   function selectOption(ing: Ingredient, option: Level) {
     ingredientSelection[ing.id] = option;
@@ -140,7 +148,16 @@
   async function handleAddToOrder() {
     loading = true;
     currentPrice = currentPrice >= item.price ? currentPrice : item.price;
-    await orderManager.addToOrder(item, ingredientList, currentPrice, selectedIce, selectedSugar, quantity, isCashier);
+    await orderManager.addToOrder(
+      item,
+      ingredientList,
+      currentPrice,
+      selectedIce,
+      selectedSugar,
+      selectedSize,
+      quantity,
+      isCashier,
+    );
     loading = false;
 
     states.isAdded = true;
@@ -199,6 +216,36 @@
     }
 
     currentPrice += target.unitPrice * direction;
+    shownPrice = currentPrice >= item.price ? currentPrice : item.price;
+  }
+
+  function updateSize(size: 'Small' | 'Medium' | 'Large' | 'Extra Large') {
+    switch (selectedSize) {
+      case 'Medium':
+        currentPrice -= 1;
+        break;
+      case 'Large':
+        currentPrice -= 2;
+        break;
+      case 'Extra Large':
+        currentPrice -= 3;
+        break;
+    }
+
+    selectedSize = size;
+
+    switch (selectedSize) {
+      case 'Medium':
+        currentPrice += 1;
+        break;
+      case 'Large':
+        currentPrice += 2;
+        break;
+      case 'Extra Large':
+        currentPrice += 3;
+        break;
+    }
+
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
@@ -357,6 +404,26 @@
 
           {#if !isCashier}
             <div class="mb-4">
+              <Heading size="small" class="mb-2">{t('kiosk_size_label')}</Heading>
+              <div class="slider-container">
+                <input
+                  type="range"
+                  min="0"
+                  max={sizeOptions.length - 1}
+                  step="1"
+                  bind:value={selectedSizeIndex}
+                  oninput={() => updateSize(sizeOptions[selectedSizeIndex])}
+                />
+              </div>
+              <div class="labels">
+                <Text>{t('kiosk_size_small')}</Text>
+                <Text>{t('kiosk_size_medium')} (+$1.00)</Text>
+                <Text>{t('kiosk_size_large')} (+$2.00)</Text>
+                <Text>{t('kiosk_size_xlarge')} (+$3.00)</Text>
+              </div>
+            </div>
+
+            <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
               <div class="slider-container">
                 <input
@@ -398,8 +465,54 @@
           {:else}
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
-              <div class={cashierIceSugarUI}>
-                <div class="flex flex-col items-start">
+              <div class={cashierSizeIceSugarUI}>
+                <div class="flex flex-col items-center">
+                  <div class="flex flex-col items-center">
+                    <Text>{t('kiosk_size_label')}</Text>
+                    <div class={cashierIceSugarItemButtonsUI}>
+                      <Button
+                        class="w-1/4"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSize === 'Small' ? 'primary' : 'secondary'}
+                        onclick={() => updateSize('Small')}
+                      >
+                        {t('kiosk_size_small')}
+                      </Button>
+                      <Button
+                        class="ml-1 flex w-1/4 flex-col"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSize === 'Medium' ? 'primary' : 'secondary'}
+                        onclick={() => updateSize('Medium')}
+                      >
+                        {t('kiosk_size_medium')}
+                        <Text size="tiny">+$1.00</Text>
+                      </Button>
+                      <Button
+                        class="ml-1 flex w-1/4 flex-col"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSize === 'Large' ? 'primary' : 'secondary'}
+                        onclick={() => updateSize('Large')}
+                      >
+                        {t('kiosk_size_large')}
+                        <Text size="tiny">+$2.00</Text>
+                      </Button>
+                      <Button
+                        class="ml-1 flex w-1/4 flex-col"
+                        shape="semi-round"
+                        size="small"
+                        color={selectedSize === 'Extra Large' ? 'primary' : 'secondary'}
+                        onclick={() => updateSize('Extra Large')}
+                      >
+                        {t('kiosk_size_xlarge')}
+                        <Text size="tiny">+$3.00</Text>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_iceLevel')}</Text>
                     <div class={cashierIceSugarItemButtonsUI}>

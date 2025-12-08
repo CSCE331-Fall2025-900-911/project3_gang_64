@@ -110,9 +110,9 @@ def export_sales_csv(customers: list[Customer], orders: list[Order], order_conte
 
     with open("csv/order_contents.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id", "item_subtotal", "ice_level", "sugar_level"])
+        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id", "item_subtotal", "ice_level", "sugar_level", "size_level"])
         for content in order_contents:
-            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id, content.item_subtotal, content.ice_level.value, content.sugar_level.value])
+            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id, content.item_subtotal, content.ice_level.value, content.sugar_level.value, content.size_level.value])
 
 def export_employees_csv():
     with open("csv/employees.csv", "w", newline="") as f:
@@ -153,11 +153,15 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
             [SugarLevel.NONE, SugarLevel.LESS, SugarLevel.NORMAL, SugarLevel.EXTRA],
             weights=[0.1, 0.2, 0.5, 0.2],
         )[0]
+        size_level = random.choices(
+            [SizeLevel.SMALL, SizeLevel.MEDIUM, SizeLevel.LARGE, SizeLevel.EXTRALARGE],
+            weights=[0.1, 0.2, 0.5, 0.2],
+        )[0]
 
         # All ingredients for the same menu item entry share the same order_entry_id
         entry_id = uuid.uuid4()
         for i in ingredients:
-            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id, item_subtotal=round(menu_item.price, 2), sugar_level=sugar_level, ice_level=ice_level))
+            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id, item_subtotal=round(menu_item.price, 2), sugar_level=sugar_level, ice_level=ice_level, size_level=size_level))
 
     # round to 2 decimal places
     price = round(price, 2)

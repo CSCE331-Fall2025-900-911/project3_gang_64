@@ -17,6 +17,7 @@ export const paymethod = pgEnum('paymethod', ['cash', 'credit']);
 export const role = pgEnum('role', ['manager', 'staff']);
 export const iceLevel = pgEnum('ice_level', ['None', 'Less', 'Normal', 'Extra']);
 export const sugarLevel = pgEnum('sugar_level', ['None', 'Less', 'Normal', 'Extra']);
+export const sizeLevel = pgEnum('size_level', ['Small', 'Medium', 'Large', 'Extra Large']);
 
 export const menu = pgTable(
   'menu',
@@ -95,6 +96,7 @@ export const orderContent = pgTable(
     itemSubtotal: doublePrecision().notNull(),
     iceLevel: iceLevel('ice_level').default('Normal').notNull(),
     sugarLevel: sugarLevel('sugar_level').default('Normal').notNull(),
+    sizeLevel: sizeLevel('size_level').default('Small').notNull(),
   },
   (table) => [
     foreignKey({
