@@ -27,7 +27,7 @@
       : undefined,
   );
 
-  let orders = $derived(getOrders({ limit: 10 }));
+  let orders = getOrders({ limit: 10, page: 0 });
 
   function getPaymentMethodIcon(method: PaymentMethod) {
     switch (method) {
