@@ -21,6 +21,7 @@
   import { mdiCartOutline, mdiChatQuestion, mdiTranslate, mdiWheelchair } from '@mdi/js';
   import { onMount } from 'svelte';
   import CartModal from './CartModal.svelte';
+  import { goto } from '$app/navigation';
 
   let { children } = $props();
 
@@ -62,7 +63,7 @@
         stopTimer();
         orderManager.clearOrder();
         showModal = false;
-        window.location.href = '/kiosk/home';
+        goto("/kiosk/home");
       }
     }, 1000);
   }

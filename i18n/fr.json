@@ -265,5 +265,6 @@
   "manager_reports_x_credit": "Crédit",
   "manager_reports_x_tax_collected": "Impôt perçu",
   "manager_reports_x_avg_items_per_order": "Nombre moyen d'articles par commande",
-  "manager_reports_x_avg_order_total": "Total moyen des commandes"
+  "manager_reports_x_avg_order_total": "Total moyen des commandes",
+  "kiosk_timeOut": "Cliquez n'importe où pour commencer"
 }
