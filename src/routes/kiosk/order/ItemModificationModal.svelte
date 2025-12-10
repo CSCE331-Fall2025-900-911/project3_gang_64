@@ -9,6 +9,7 @@
   import { t } from '$lib/utils/utils';
   import {
     Button,
+    Field,
     HStack,
     Heading,
     IconButton,
@@ -16,8 +17,10 @@
     ModalBody,
     ModalFooter,
     ModalHeader,
+    Select,
     Text,
     toastManager,
+    type SelectItem,
   } from '@immich/ui';
   import { mdiListBox, mdiPlus, mdiRestart } from '@mdi/js';
   import { slide } from 'svelte/transition';
@@ -64,9 +67,18 @@
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
   const sizeOptions = ['Small', 'Medium', 'Large', 'Extra Large'] as const;
   type Size = 'Small' | 'Medium' | 'Large' | 'Extra Large';
+  const sizeSelectItems: SelectItem[] = [
+    { label: t('kiosk_size_small'), value: 'Small' },
+    { label: `${t('kiosk_size_medium')} (+$1.00)`, value: 'Medium' },
+    { label: `${t('kiosk_size_large')} (+$2.00)`, value: 'Large' },
+    { label: `${t('kiosk_size_xlarge')} (+$3.00)`, value: 'Extra Large' },
+  ];
   let selectedIce = $state<Level>((currentIceLevel.length === 0 ? 'Normal' : currentIceLevel) as Level);
   let selectedSugar = $state<Level>((currentSugarLevel.length === 0 ? 'Normal' : currentSugarLevel) as Level);
   let selectedSize = $state<Size>((currentSizeLevel.length === 0 ? 'Small' : currentSizeLevel) as Size);
+  let selectedSizeItem = $derived<SelectItem>(
+    sizeSelectItems.find((item) => item.value === selectedSize) ?? sizeSelectItems[0],
+  );
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
   let selectedSizeIndex = $derived(sizeOptions.indexOf(selectedSize));
@@ -249,6 +261,10 @@
     shownPrice = currentPrice >= item.price ? currentPrice : item.price;
   }
 
+  function handleSizeSelectChange(selected: SelectItem) {
+    updateSize(selected.value as Size);
+  }
+
   function restartModification() {
     ingredientList = getIngredientsForMenuItem(item.id).current ?? [];
     currentPrice = item.price;
@@ -341,7 +357,11 @@
     <div class="relative">
       <div class="flex flex-row">
         <div class="mr-4 ml-2 flex w-full flex-col">
-          <div class="mb-4">
+          <Field label={t('kiosk_size_label')} class="w-1/2">
+            <Select data={sizeSelectItems} value={selectedSizeItem} onChange={handleSizeSelectChange} />
+          </Field>
+
+          <div class="my-4">
             <Heading size="small" class="mb-2">{t('kiosk_baseItems')}</Heading>
             <div class={isCashier ? cashierIngredientUI : kioskIngredientUI}>
               {#each baseItems as ing}
@@ -466,52 +486,6 @@
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceAndSugarLevel')}</Heading>
               <div class={cashierSizeIceSugarUI}>
-                <div class="flex flex-col items-center">
-                  <div class="flex flex-col items-center">
-                    <Text>{t('kiosk_size_label')}</Text>
-                    <div class={cashierIceSugarItemButtonsUI}>
-                      <Button
-                        class="w-1/4"
-                        shape="semi-round"
-                        size="small"
-                        color={selectedSize === 'Small' ? 'primary' : 'secondary'}
-                        onclick={() => updateSize('Small')}
-                      >
-                        {t('kiosk_size_small')}
-                      </Button>
-                      <Button
-                        class="ml-1 flex w-1/4 flex-col"
-                        shape="semi-round"
-                        size="small"
-                        color={selectedSize === 'Medium' ? 'primary' : 'secondary'}
-                        onclick={() => updateSize('Medium')}
-                      >
-                        {t('kiosk_size_medium')}
-                        <Text size="tiny">+$1.00</Text>
-                      </Button>
-                      <Button
-                        class="ml-1 flex w-1/4 flex-col"
-                        shape="semi-round"
-                        size="small"
-                        color={selectedSize === 'Large' ? 'primary' : 'secondary'}
-                        onclick={() => updateSize('Large')}
-                      >
-                        {t('kiosk_size_large')}
-                        <Text size="tiny">+$2.00</Text>
-                      </Button>
-                      <Button
-                        class="ml-1 flex w-1/4 flex-col"
-                        shape="semi-round"
-                        size="small"
-                        color={selectedSize === 'Extra Large' ? 'primary' : 'secondary'}
-                        onclick={() => updateSize('Extra Large')}
-                      >
-                        {t('kiosk_size_xlarge')}
-                        <Text size="tiny">+$3.00</Text>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
                 <div class="flex flex-col items-center">
                   <div class="flex flex-col items-center">
                     <Text>{t('kiosk_iceLevel')}</Text>
