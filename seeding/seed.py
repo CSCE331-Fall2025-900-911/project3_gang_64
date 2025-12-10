@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
     # get days going back 39 weeks
     dates: list[datetime] = []
-    now = datetime.now()
+    now = datetime.now() - timedelta(days=2)
     for i in range(WEEKS * 7):
         dates.append(now - timedelta(days=i))
 

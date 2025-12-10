@@ -67,6 +67,9 @@ items = [
     Menu(name=Translation(en="Coffee w/ Ice Cream", es="Café con Helado", de="Kaffee mit Eiscreme", fr="Café à la Crème Glacée"), category=Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), price=6.75, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/c9ec508b-1142-47fe-8d7a-656700821165.jpeg"),
     Menu(name=Translation(en="Strawberry w/ Lychee Jelly & Ice Cream", es="Fresa con Gelatina de Lichi y Helado", de="Erdbeere mit Litschi-Gelee und Eiscreme", fr="Fraise avec Gelée de Litchi et Crème Glacée"), category=Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), price=6.75, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/94be56d1-83c0-4c7b-892a-befc2090eefd.png"),
     Menu(name=Translation(en="Lava Flow", es="Flujo de Lava", de="Lavafluss", fr="Flux de Lave"), category=Translation(en="Ice-Blended", es="Mezclado con Hielo", de="Mit Eis Gemischt", fr="Mélangé avec Glace"), price=6.95, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/edf3b6da-9308-4120-b7b6-cac04b90312f.webp"),
+
+    # Seasonal Specials
+    Menu(name=Translation(en="Brown Sugar Boba", es="Boba de Azúcar Morena", de="Brauner Zucker-Boba", fr="Boba au Sucre Brun"), category=Translation(en="Seasonal Specials", es="Especiales de Temporada", de="Saisonale Spezialitäten", fr="Spécialités Saisonnières"), price=6.95, image_url="https://pub-2af9e072394d4d859d3f92c6c319bc13.r2.dev/0625ad52-f91d-422a-915e-869ac53bf7c0.jpeg"),
 ]
 
 recipes = [
@@ -157,4 +160,10 @@ recipes = [
     Recipe(menu_item_id=items[15].id, ingredient_id=ingredients[8].id, quantity=1),   # Coconut Milk
     Recipe(menu_item_id=items[15].id, ingredient_id=ingredients[21].id, quantity=1),  # Pineapple Juice
     Recipe(menu_item_id=items[15].id, ingredient_id=ingredients[20].id, quantity=1),  # Strawberry Purée
+
+    # Brown Sugar Coffee
+    Recipe(menu_item_id=items[16].id, ingredient_id=ingredients[5].id, quantity=1),   # Coffee
+    Recipe(menu_item_id=items[16].id, ingredient_id=ingredients[15].id, quantity=1),  # Brown Sugar Syrup
+    Recipe(menu_item_id=items[16].id, ingredient_id=ingredients[6].id, quantity=1),   # Whole Milk
+    Recipe(menu_item_id=items[16].id, ingredient_id=ingredients[24].id, quantity=1),  # Brown Sugar Pearls
 ]
