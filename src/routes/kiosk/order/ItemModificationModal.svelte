@@ -124,9 +124,8 @@
   const cashierIngredientStructureUI = 'mb-2 flex flex-col items-center min-w-0 max-w-full overflow-hidden';
   const kioskBaseItemButtonsUI = 'flex flex-row';
   const cashierBaseItemButtonsUI = 'mt-1 flex flex-row min-w-0';
-  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row transform scale-80';
-  const cashierSizeIceSugarUI =
-    'grid gap-2 w-full auto-rows-auto [grid-template-columns:repeat(auto-fill,minmax(240px,1fr))] sm:[grid-template-columns:repeat(auto-fill,minmax(260px,1fr))] md:[grid-template-columns:repeat(auto-fill,minmax(280px,1fr))]';
+  const cashierIceSugarItemButtonsUI = 'mt-1 flex flex-row h-15';
+  const cashierSizeIceSugarUI = 'flex flex-row justify-between w-full px-12';
 
   function selectOption(ing: Ingredient, option: Level) {
     ingredientSelection[ing.id] = option;
