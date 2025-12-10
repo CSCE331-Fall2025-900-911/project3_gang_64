@@ -279,5 +279,10 @@
   "manager_reports_what_sells_error": "Fehler beim Laden der Daten",
   "manager_reports_what_sells_empty": "Für den ausgewählten Zeitraum wurden keine Daten gefunden.",
   "manager_reports_what_sells_pair": "Artikelpaar",
-  "manager_reports_what_sells_count": "Zeiten in der richtigen Reihenfolge"
+  "manager_reports_what_sells_count": "Zeiten in der richtigen Reihenfolge",
+  "accessibility_off": "Aus",
+  "accessibility_on": "An",
+  "accessibility_protanopia": "Protanopie",
+  "accessibility_deuteranopia": "Deuteranopie",
+  "accessibility_tritanopia": "Tritanopie"
 }

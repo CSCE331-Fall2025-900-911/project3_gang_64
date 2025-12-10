@@ -12,7 +12,7 @@ deploy:
 repl +ARGS='':
     psql -d gang_64_db {{ARGS}}
 
-translate LCL:
+translate LCL='de,es,fr':
     pnpm dlx @inlang/cli machine translate --project ./project.inlang --locale "en" --targetLocales "{{LCL}}"
 
 reset-db:

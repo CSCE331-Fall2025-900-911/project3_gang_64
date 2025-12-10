@@ -19,10 +19,10 @@
   let { onClose }: ModalProps = $props();
 
   const selectorModes: SelectItem[] = [
-    { label: 'Off', value: 'off' },
-    { label: 'Protanopia', value: 'protanopia' },
-    { label: 'Deuteranopia', value: 'deuteranopia' },
-    { label: 'Tritanopia', value: 'tritanopia' },
+    { label: t('accessibility_off'), value: 'off' },
+    { label: t('accessibility_protanopia'), value: 'protanopia' },
+    { label: t('accessibility_deuteranopia'), value: 'deuteranopia' },
+    { label: t('accessibility_tritanopia'), value: 'tritanopia' },
   ];
 
   function onModeChange(selected: SelectItem) {

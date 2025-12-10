@@ -279,5 +279,10 @@
   "manager_reports_what_sells_error": "Error loading data",
   "manager_reports_what_sells_empty": "No data found for selected time period",
   "manager_reports_what_sells_pair": "Item Pair",
-  "manager_reports_what_sells_count": "Times Ordered Together"
+  "manager_reports_what_sells_count": "Times Ordered Together",
+  "accessibility_off": "Off",
+  "accessibility_on": "On",
+  "accessibility_protanopia": "Protanopia",
+  "accessibility_deuteranopia": "Deuteranopia",
+  "accessibility_tritanopia": "Tritanopia"
 }
