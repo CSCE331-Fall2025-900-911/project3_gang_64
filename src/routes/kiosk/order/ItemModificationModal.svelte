@@ -73,6 +73,12 @@
     { label: `${t('kiosk_size_large')} (+$2.00)`, value: 'Large' },
     { label: `${t('kiosk_size_xlarge')} (+$3.00)`, value: 'Extra Large' },
   ];
+  const sizeNutritionMultiplier: Record<Size, number> = {
+    Small: 1.0,
+    Medium: 1.2,
+    Large: 1.5,
+    'Extra Large': 2.0,
+  };
   let selectedIce = $state<Level>((currentIceLevel.length === 0 ? 'Normal' : currentIceLevel) as Level);
   let selectedSugar = $state<Level>((currentSugarLevel.length === 0 ? 'Normal' : currentSugarLevel) as Level);
   let selectedSize = $state<Size>((currentSizeLevel.length === 0 ? 'Small' : currentSizeLevel) as Size);
@@ -104,12 +110,12 @@
     }
   });
   const total = $derived({
-    calories: ingredientList.reduce((s, i) => s + (i.calories ?? 0), 0),
-    fat_g: ingredientList.reduce((s, i) => s + (i.fat_g ?? 0), 0),
-    sodium_g: ingredientList.reduce((s, i) => s + (i.sodium_g ?? 0), 0),
-    carbs_g: ingredientList.reduce((s, i) => s + (i.carbs_g ?? 0), 0),
-    sugar_g: ingredientList.reduce((s, i) => s + (i.sugar_g ?? 0), 0),
-    caffeine_mg: ingredientList.reduce((s, i) => s + (i.caffiene_mg ?? 0), 0),
+    calories: ingredientList.reduce((s, i) => s + (i.calories ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
+    fat_g: ingredientList.reduce((s, i) => s + (i.fat_g ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
+    sodium_g: ingredientList.reduce((s, i) => s + (i.sodium_g ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
+    carbs_g: ingredientList.reduce((s, i) => s + (i.carbs_g ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
+    sugar_g: ingredientList.reduce((s, i) => s + (i.sugar_g ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
+    caffeine_mg: ingredientList.reduce((s, i) => s + (i.caffiene_mg ?? 0), 0) * sizeNutritionMultiplier[selectedSize],
   });
   const allergenList = $derived(
     Array.from(new Set(ingredientList.flatMap((ing) => (Array.isArray(ing.allergen) ? ing.allergen : [])))).sort(),
@@ -422,26 +428,6 @@
           <div class="mb-3 h-1 w-full bg-(--immich-ui-primary-600)"></div>
 
           {#if !isCashier}
-            <div class="mb-4">
-              <Heading size="small" class="mb-2">{t('kiosk_size_label')}</Heading>
-              <div class="slider-container">
-                <input
-                  type="range"
-                  min="0"
-                  max={sizeOptions.length - 1}
-                  step="1"
-                  bind:value={selectedSizeIndex}
-                  oninput={() => updateSize(sizeOptions[selectedSizeIndex])}
-                />
-              </div>
-              <div class="labels">
-                <Text>{t('kiosk_size_small')}</Text>
-                <Text>{t('kiosk_size_medium')} (+$1.00)</Text>
-                <Text>{t('kiosk_size_large')} (+$2.00)</Text>
-                <Text>{t('kiosk_size_xlarge')} (+$3.00)</Text>
-              </div>
-            </div>
-
             <div class="mb-4">
               <Heading size="small" class="mb-2">{t('kiosk_iceLevel')}</Heading>
               <div class="slider-container">
