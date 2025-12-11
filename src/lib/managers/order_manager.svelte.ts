@@ -32,11 +32,20 @@ class OrderManager {
   ) {
     const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
 
+    const constSelectedHot = selectedHot;
+
     if (!itemIngredients) {
       itemIngredients = baseItemIngredients;
     }
 
-    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemSizeLevel, selectedHot);
+    const currentHash = itemHash(
+      menuItem,
+      itemIngredients,
+      itemIceLevel,
+      itemSugarLevel,
+      itemSizeLevel,
+      constSelectedHot,
+    );
 
     const existing = this.currentOrder.find((entry) => {
       const existingHash = itemHash(
@@ -45,7 +54,7 @@ class OrderManager {
         entry.iceLevel,
         entry.sugarLevel,
         entry.sizeLevel,
-        entry.isHot,
+        constSelectedHot,
       );
       return existingHash === currentHash;
     });
