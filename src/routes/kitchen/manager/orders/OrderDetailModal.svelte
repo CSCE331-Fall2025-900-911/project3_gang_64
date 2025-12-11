@@ -36,6 +36,7 @@
       },
       ingredients: entry.ingredients.map((ing) => ({
         ...ing,
+        topping: false,
         currentStock: 0,
         orderStock: 0,
         category: '',
@@ -46,13 +47,13 @@
         carbs_g: 0,
         sugar_g: 0,
         caffiene_mg: 0,
-        allergen: [],
+        allergen: [] as string[],
       })),
       quantity: entry.quantity,
       subtotal: entry.menuItem.price,
-      iceLevel: 'Normal' as const,
-      sugarLevel: 'Normal' as const,
-      sizeLevel: 'Small' as const,
+      iceLevel: entry.iceLevel,
+      sugarLevel: entry.sugarLevel,
+      sizeLevel: entry.sizeLevel,
     })) || [],
   );
 </script>

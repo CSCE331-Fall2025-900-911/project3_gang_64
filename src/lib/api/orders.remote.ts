@@ -1,5 +1,5 @@
 import { command, query } from '$app/server';
-import { customer, ingredient, menu, order, orderContent } from '$lib/db/schema';
+import { customer, ingredient, menu, order, orderContent, sugarLevel } from '$lib/db/schema';
 import {
   orderInsertSchema,
   orderSelectSchema,
@@ -182,7 +182,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
       orderEntryId: orderContent.orderEntryId,
       menuItemId: orderContent.menuItemId,
       menuItemName: menu.name,
-      menuItemPrice: menu.price,
+      menuItemPrice: orderContent.itemSubtotal,
       ingredientId: orderContent.ingredientId,
       ingredientName: ingredient.name,
       iceLevel: orderContent.iceLevel,
@@ -243,6 +243,9 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
       entries.push({
         menuItem: entry.menuItem,
         ingredients: entry.ingredients,
+        sizeLevel: entry.sizeLevel,
+        iceLevel: entry.iceLevel,
+        sugarLevel: entry.sugarLevel,
         quantity: itemQuantities.get(hash) || 1,
       });
     }
