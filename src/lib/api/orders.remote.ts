@@ -249,7 +249,14 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
   const seenEntries = new Set<string>();
   const entries = [];
   for (const entry of entriesMap.values()) {
-    const hash = itemHash(entry.menuItem, entry.ingredients);
+    const hash = itemHash(
+      entry.menuItem,
+      entry.ingredients,
+      entry.iceLevel,
+      entry.sugarLevel,
+      entry.sizeLevel,
+      entry.isHot,
+    );
     if (!seenEntries.has(hash)) {
       seenEntries.add(hash);
       entries.push({
