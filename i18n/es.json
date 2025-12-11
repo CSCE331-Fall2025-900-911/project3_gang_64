@@ -284,5 +284,11 @@
   "accessibility_on": "En",
   "accessibility_protanopia": "Protanopía",
   "accessibility_deuteranopia": "Deuteranopia",
-  "accessibility_tritanopia": "Tritanopía"
+  "accessibility_tritanopia": "Tritanopía",
+  "orderSummary_ice": "Hielo",
+  "orderSummary_sugar": "Azúcar",
+  "orderSummary_none": "No",
+  "orderSummary_less": "Menos",
+  "orderSummary_normal": "Normal",
+  "orderSummary_extra": "Extra"
 }

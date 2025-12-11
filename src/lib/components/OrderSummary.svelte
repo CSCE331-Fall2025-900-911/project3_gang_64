@@ -116,6 +116,21 @@
         return '(S)';
     }
   }
+
+  function getIceSugarLabel(level: 'None' | 'Less' | 'Normal' | 'Extra' | undefined): string {
+    switch (level) {
+      case 'None':
+        return t('orderSummary_none');
+      case 'Less':
+        return t('orderSummary_less');
+      case 'Normal':
+        return t('orderSummary_normal');
+      case 'Extra':
+        return t('orderSummary_extra');
+      default:
+        return t('orderSummary_normal');
+    }
+  }
 </script>
 
 <!-- Order Summary -->
@@ -138,6 +153,8 @@
                     (x{ingredient.count}){/if}
                 </Text>
               {/each}
+              <Text size="small">{getIceSugarLabel(entry.iceLevel)} {t('orderSummary_ice')}</Text>
+              <Text size="small">{getIceSugarLabel(entry.sugarLevel)} {t('orderSummary_sugar')}</Text>
             </div>
           </div>
           <Stack align="end" gap={2}>
