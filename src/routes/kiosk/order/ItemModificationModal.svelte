@@ -425,7 +425,7 @@
             </div>
           </div>
 
-          <div class="mb-3 h-1 w-full bg-(--immich-ui-primary-600)"></div>
+          <div class="mb-3 h-1 w-full bg-primary-600"></div>
 
           {#if !isCashier}
             <div class="mb-4">
@@ -440,7 +440,7 @@
                   oninput={() => (selectedIce = levelOptions[selectedIceIndex])}
                 />
               </div>
-              <div class="labels !text-base">
+              <div class="labels text-base!">
                 <Text>{t('kiosk_sugarLevel_none')}</Text>
                 <Text>{t('kiosk_sugarLevel_low')}</Text>
                 <Text>{t('kiosk_sugarLevel_normal')}</Text>
@@ -460,7 +460,7 @@
                   oninput={() => (selectedSugar = levelOptions[selectedSugarIndex])}
                 />
               </div>
-              <div class="labels !text-base">
+              <div class="labels text-base!">
                 <Text>{t('kiosk_iceLevel_none')}</Text>
                 <Text>{t('kiosk_iceLevel_low')}</Text>
                 <Text>{t('kiosk_iceLevel_normal')}</Text>
@@ -561,7 +561,7 @@
             </div>
           {/if}
 
-          <div class="mb-3 h-1 w-full bg-(--immich-ui-primary-600)"></div>
+          <div class="mb-3 h-1 w-full bg-primary-600"></div>
 
           <div class="mb-2">
             <Heading size="small" class="mb-2">{t('kiosk_toppings')}</Heading>
