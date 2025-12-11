@@ -290,5 +290,7 @@
   "orderSummary_none": "Non",
   "orderSummary_less": "Moins",
   "orderSummary_normal": "Normale",
-  "orderSummary_extra": "Supplémentaire"
+  "orderSummary_extra": "Supplémentaire",
+  "kiosk_makeHot": "Faire chauffer",
+  "kiosk_hot": "Chaud"
 }

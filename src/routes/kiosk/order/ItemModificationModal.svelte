@@ -22,7 +22,7 @@
     toastManager,
     type SelectItem,
   } from '@immich/ui';
-  import { mdiListBox, mdiPlus, mdiRestart } from '@mdi/js';
+  import { mdiListBox, mdiPlus, mdiRestart, mdiThermometerHigh } from '@mdi/js';
   import { slide } from 'svelte/transition';
   import ItemModValidateToast from './ItemModValidateToast.svelte';
 
@@ -36,6 +36,7 @@
     quantity?: number;
     isEdit?: boolean;
     isCashier?: boolean;
+    currentIsHot?: boolean;
     states: { isAdded: boolean };
   }
 
@@ -50,6 +51,7 @@
     quantity = 1,
     isEdit = false,
     isCashier = false,
+    currentIsHot = false,
     states,
   }: ModalProps & Props = $props();
 
@@ -65,7 +67,6 @@
   const markup = 0.5;
   const levelOptions = ['None', 'Less', 'Normal', 'Extra'] as const;
   type Level = 'None' | 'Less' | 'Normal' | 'Extra';
-  const sizeOptions = ['Small', 'Medium', 'Large', 'Extra Large'] as const;
   type Size = 'Small' | 'Medium' | 'Large' | 'Extra Large';
   const sizeSelectItems: SelectItem[] = [
     { label: t('kiosk_size_small'), value: 'Small' },
@@ -79,6 +80,12 @@
     Large: 1.5,
     'Extra Large': 2.0,
   };
+  let selectedHot = $state<boolean>(currentIsHot);
+  $effect(() => {
+    if (selectedIce !== 'None') {
+      selectedHot = false;
+    }
+  });
   let selectedIce = $state<Level>((currentIceLevel.length === 0 ? 'Normal' : currentIceLevel) as Level);
   let selectedSugar = $state<Level>((currentSugarLevel.length === 0 ? 'Normal' : currentSugarLevel) as Level);
   let selectedSize = $state<Size>((currentSizeLevel.length === 0 ? 'Small' : currentSizeLevel) as Size);
@@ -87,7 +94,6 @@
   );
   let selectedIceIndex = $derived(levelOptions.indexOf(selectedIce));
   let selectedSugarIndex = $derived(levelOptions.indexOf(selectedSugar));
-  let selectedSizeIndex = $derived(sizeOptions.indexOf(selectedSize));
   const positive = 1;
   const negative = -1;
   let ingredientSelection = $state<Record<string, Level>>({});
@@ -174,6 +180,7 @@
       selectedSize,
       quantity,
       isCashier,
+      selectedHot,
     );
     loading = false;
 
@@ -275,6 +282,14 @@
     currentPrice = item.price;
     shownPrice = item.price;
   }
+
+  function makeHot() {
+    selectedHot = !selectedHot;
+    if (selectedHot) {
+      selectedIce = 'None';
+      selectedIceIndex = 0;
+    }
+  }
 </script>
 
 <Modal {onClose} closeOnBackdropClick size={isCashier ? 'giant' : 'large'}>
@@ -285,9 +300,14 @@
           <Heading size="large">{td(item.name)}</Heading>
         </div>
         {#if !isCashier}
-          <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
-            {t('kiosk_nutrition')}
-          </Button>
+          <div class="flex flex-row gap-2">
+            <Button onclick={makeHot} shape="semi-round" color={selectedHot ? 'danger' : 'secondary'} {loading}>
+              {t('kiosk_makeHot')}
+            </Button>
+            <Button onclick={showNutritionInfo} shape="semi-round" {loading}>
+              {t('kiosk_nutrition')}
+            </Button>
+          </div>
         {:else}
           <div class="flex flex-row gap-2">
             <div class="flex flex-row items-center">
@@ -303,6 +323,14 @@
               icon={mdiListBox}
               color="primary"
               aria-label={t('kiosk_nutrition')}
+            />
+            <IconButton
+              onclick={makeHot}
+              shape="round"
+              {loading}
+              icon={mdiThermometerHigh}
+              color={selectedHot ? 'danger' : 'secondary'}
+              aria-label={t('kiosk_makeHot')}
             />
             <IconButton
               onclick={restartModification}

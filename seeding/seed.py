@@ -110,9 +110,9 @@ def export_sales_csv(customers: list[Customer], orders: list[Order], order_conte
 
     with open("csv/order_contents.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id", "item_subtotal", "ice_level", "sugar_level", "size_level"])
+        writer.writerow(["order_id", "menu_item_id", "ingredient_id", "order_entry_id", "item_subtotal", "ice_level", "sugar_level", "size_level", "is_hot"])
         for content in order_contents:
-            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id, content.item_subtotal, content.ice_level.value, content.sugar_level.value, content.size_level.value])
+            writer.writerow([content.order_id, content.menu_item_id, content.ingredient_id, content.order_entry_id, content.item_subtotal, content.ice_level.value, content.sugar_level.value, content.size_level.value, content.is_hot])
 
 def export_employees_csv():
     with open("csv/employees.csv", "w", newline="") as f:
@@ -145,10 +145,17 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
 
         price += menu_item.price
         
-        ice_level = random.choices(
+        is_hot = random.choices(
+            [True, False],
+            weights=[0.1, .9],
+        )[0]
+        if(is_hot):
+            ice_level = IceLevel.NONE
+        else:
+            ice_level = random.choices(
             [IceLevel.NONE, IceLevel.LESS, IceLevel.NORMAL, IceLevel.EXTRA],
             weights=[0.1, 0.2, 0.5, 0.2],
-        )[0]
+            )[0]
         sugar_level = random.choices(
             [SugarLevel.NONE, SugarLevel.LESS, SugarLevel.NORMAL, SugarLevel.EXTRA],
             weights=[0.1, 0.2, 0.5, 0.2],
@@ -161,7 +168,7 @@ def generateRandomOrder(clock: datetime, existing_emails: set[str]):
         # All ingredients for the same menu item entry share the same order_entry_id
         entry_id = uuid.uuid4()
         for i in ingredients:
-            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id, item_subtotal=round(menu_item.price, 2), sugar_level=sugar_level, ice_level=ice_level, size_level=size_level))
+            orderItems.append(OrderContent(order_id=order_id, menu_item_id=menu_item.id, ingredient_id=i.id, order_entry_id=entry_id, item_subtotal=round(menu_item.price, 2), sugar_level=sugar_level, ice_level=ice_level, size_level=size_level, is_hot=is_hot))
 
     # round to 2 decimal places
     price = round(price, 2)
