@@ -107,6 +107,7 @@ class OrderContent:
     ice_level: IceLevel = IceLevel.NORMAL
     sugar_level: SugarLevel = SugarLevel.NORMAL
     size_level: SizeLevel = SizeLevel.SMALL
+    is_hot: bool = False
 
 
 

@@ -97,6 +97,7 @@ export const orderContent = pgTable(
     iceLevel: iceLevel('ice_level').default('Normal').notNull(),
     sugarLevel: sugarLevel('sugar_level').default('Normal').notNull(),
     sizeLevel: sizeLevel('size_level').default('Small').notNull(),
+    isHot: boolean('is_hot').default(false).notNull(),
   },
   (table) => [
     foreignKey({

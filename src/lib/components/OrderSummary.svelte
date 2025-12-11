@@ -65,6 +65,7 @@
       quantity: entry.quantity,
       isEdit: true,
       isCashier: entry.isCashier,
+      currentIsHot: entry.isHot,
       states,
     });
 
@@ -144,7 +145,11 @@
       {#each entries as entry, i}
         <div class="mb-2 flex justify-between border-b pb-2">
           <div>
-            <Heading size="small">{td(entry.menuItem.name)} {getSizeLabel(entry.sizeLevel)}</Heading>
+            <Heading size="small"
+              >{td(entry.menuItem.name)}
+              {getSizeLabel(entry.sizeLevel)}
+              {entry.isHot ? '(' + t('kiosk_hot') + ')' : ''}</Heading
+            >
             <div class="gap-3 pl-4">
               {#each groupIngredients(entry.ingredients) as ingredient}
                 <Text size="small" class="text-muted-foreground">

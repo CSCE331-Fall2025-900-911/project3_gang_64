@@ -111,6 +111,7 @@ export const submitOrder = command(
       iceLevel: (typeof submittedOrder)[number]['iceLevel'];
       sugarLevel: (typeof submittedOrder)[number]['sugarLevel'];
       sizeLevel: (typeof submittedOrder)[number]['sizeLevel'];
+      isHot: boolean;
     }[] = [];
     const ingredientDecrements = new Map<string, number>();
 
@@ -128,6 +129,7 @@ export const submitOrder = command(
             iceLevel: entry.iceLevel,
             sugarLevel: entry.sugarLevel,
             sizeLevel: entry.sizeLevel,
+            isHot: entry.isHot,
           });
 
           // Track ingredient decrements
@@ -188,6 +190,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
       iceLevel: orderContent.iceLevel,
       sugarLevel: orderContent.sugarLevel,
       sizeLevel: orderContent.sizeLevel,
+      isHot: orderContent.isHot,
     })
     .from(orderContent)
     .innerJoin(menu, eq(orderContent.menuItemId, menu.id))
@@ -203,6 +206,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
       iceLevel: IceLevel;
       sugarLevel: SugarLevel;
       sizeLevel: SizeLevel;
+      isHot: boolean;
     }
   >();
 
@@ -218,6 +222,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
         iceLevel: content.iceLevel,
         sugarLevel: content.sugarLevel,
         sizeLevel: content.sizeLevel,
+        isHot: content.isHot,
       });
     }
     entriesMap.get(content.orderEntryId)!.ingredients.push({
@@ -229,7 +234,14 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
   // Count quantity of identical entries (same menu item + same ingredients)
   const itemQuantities = new Map<string, number>();
   for (const entry of entriesMap.values()) {
-    const key = itemHash(entry.menuItem, entry.ingredients, entry.iceLevel, entry.sugarLevel, entry.sizeLevel);
+    const key = itemHash(
+      entry.menuItem,
+      entry.ingredients,
+      entry.iceLevel,
+      entry.sugarLevel,
+      entry.sizeLevel,
+      entry.isHot,
+    );
     itemQuantities.set(key, (itemQuantities.get(key) || 0) + 1);
   }
 
@@ -246,6 +258,7 @@ export const getOrderDetails = query(orderSelectSchema.entries.id, async (orderI
         sizeLevel: entry.sizeLevel,
         iceLevel: entry.iceLevel,
         sugarLevel: entry.sugarLevel,
+        isHot: entry.isHot,
         quantity: itemQuantities.get(hash) || 1,
       });
     }

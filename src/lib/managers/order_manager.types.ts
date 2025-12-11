@@ -10,5 +10,6 @@ export const OrderEntrySchema = v.object({
   sugarLevel: v.optional(v.picklist(['None', 'Less', 'Normal', 'Extra']), 'Normal'),
   sizeLevel: v.optional(v.picklist(['Small', 'Medium', 'Large', 'Extra Large']), 'Small'),
   isCashier: v.optional(v.boolean(), false),
+  isHot: v.optional(v.boolean(), false),
 });
 export type OrderEntry = v.InferInput<typeof OrderEntrySchema>;

@@ -28,6 +28,7 @@ class OrderManager {
     itemSizeLevel: 'Small' | 'Medium' | 'Large' | 'Extra Large' = 'Small',
     itemQuantity: number,
     itemIsCashier: boolean = false,
+    selectedHot: boolean = false,
   ) {
     const baseItemIngredients = await getIngredientsForMenuItem(menuItem.id);
 
@@ -35,7 +36,7 @@ class OrderManager {
       itemIngredients = baseItemIngredients;
     }
 
-    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemSizeLevel);
+    const currentHash = itemHash(menuItem, itemIngredients, itemIceLevel, itemSugarLevel, itemSizeLevel, selectedHot);
 
     const existing = this.currentOrder.find((entry) => {
       const existingHash = itemHash(
@@ -44,6 +45,7 @@ class OrderManager {
         entry.iceLevel,
         entry.sugarLevel,
         entry.sizeLevel,
+        entry.isHot,
       );
       return existingHash === currentHash;
     });
@@ -70,6 +72,7 @@ class OrderManager {
       sugarLevel: itemSugarLevel,
       sizeLevel: itemSizeLevel,
       isCashier: itemIsCashier,
+      isHot: selectedHot,
     });
   }
 

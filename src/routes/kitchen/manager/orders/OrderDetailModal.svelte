@@ -54,6 +54,7 @@
       iceLevel: entry.iceLevel,
       sugarLevel: entry.sugarLevel,
       sizeLevel: entry.sizeLevel,
+      isHot: entry.isHot,
     })) || [],
   );
 </script>
