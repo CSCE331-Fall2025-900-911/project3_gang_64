@@ -1,3 +1,7 @@
 seeding/csv/*.csv linguist-generated=true
 seeding/csv/*.csv -diff -merge
 *.csv filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
