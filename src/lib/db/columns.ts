@@ -15,7 +15,7 @@ export const luxonTimestamp = customType<{
     const ms = Math.floor(Number(us) / 1000);
 
     const iso = `${datePart}T${sec}.${String(ms).padStart(3, '0')}`;
-    const date = DateTime.fromISO(iso);
+    const date = DateTime.fromISO(iso, { zone: 'utc' }).setZone('America/Chicago');
 
     return date;
   },
