@@ -1,7 +1,7 @@
-import { getLocale } from '$lib/i18n/runtime';
-import { createTranslation, updateTranslation, findTranslationByText } from '$lib/api/translate.remote';
 import { translateToLocales } from '$lib/api/googletranslate.remote';
+import { createTranslation, findTranslationByText, updateTranslation } from '$lib/api/translate.remote';
 import type { NewTranslation } from '$lib/db/types';
+import { getLocale } from '$lib/i18n/runtime';
 
 let translations = $state<Record<string, Record<string, string>>>({});
 
@@ -66,9 +66,9 @@ export async function updateExistingTranslation(id: string | undefined, text: st
 
 export async function checkForExistingTranslation(text: string): Promise<string | null> {
   const locale = getLocale() as 'en' | 'es' | 'de' | 'fr';
-  if (await findTranslationByText({ text, locale })) {
-    const existingId = await findTranslationByText({ text, locale });
-    return existingId;
+  const translation = await findTranslationByText({ text, locale });
+  if (translation) {
+    return translation;
   }
   return null;
 }
