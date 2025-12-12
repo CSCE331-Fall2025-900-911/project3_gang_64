@@ -77,6 +77,8 @@
                 <TableHeaderCell width="w-3/12">{t('manager_orders_table_payment_method')}</TableHeaderCell>
                 <TableHeaderCell width="w-2/12">{t('manager_orders_table_actions')}</TableHeaderCell>
               </TableHeader>
+              <!-- divider -->
+              <div class="bg-level-3 my-1 h-px"></div>
               <TableBody>
                 {#each customer.orders as order}
                   <TableRow>
