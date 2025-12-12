@@ -5,19 +5,10 @@
   import { td } from '$lib/contexts/translations.svelte';
   import { localizeHref } from '$lib/i18n/runtime';
   import { t } from '$lib/utils/utils';
-  import { AppShellSidebar, NavbarItem } from '@immich/ui';
+  import { AppShellSidebar, LoadingSpinner, NavbarItem } from '@immich/ui';
   import MenuGroup from './MenuGroup.svelte';
 
-  let menu = await getCategorizedMenu();
-
-  let currentCategory = $derived.by(() => {
-    const hash = decodeURI(page.url.hash);
-    const id = hash ? hash.substring(1) : Object.keys(menu)[0];
-    return {
-      id,
-      items: menu[id] ?? [],
-    };
-  });
+  let menuPromise = getCategorizedMenu();
 </script>
 
 <svelte:head>
@@ -25,20 +16,34 @@
   <title>{t('kiosk_order_title')}</title>
 </svelte:head>
 
-<div class="flex h-full overflow-hidden" role="main">
-  <AppShellSidebar class="gap-2 pt-2 pr-4">
-    {#each Object.keys(menu) as category}
-      <NavbarItem
-        href={localizeHref(`/kiosk/order#${category}`)}
-        title={td(category) ?? ''}
-        active={category === currentCategory.id}
-      />
-    {/each}
-  </AppShellSidebar>
-
-  <div class="h-full w-full overflow-y-auto p-4">
-    {#if currentCategory.items}
-      <MenuGroup {...currentCategory} />
-    {/if}
+{#await menuPromise}
+  <div class="flex h-full w-full items-center justify-center" role="main">
+    <LoadingSpinner size="large" />
   </div>
-</div>
+{:then menu}
+  {@const currentCategory = (() => {
+    const hash = decodeURI(page.url.hash);
+    const id = hash ? hash.substring(1) : Object.keys(menu)[0];
+    return {
+      id,
+      items: menu[id] ?? [],
+    };
+  })()}
+  <div class="flex h-full overflow-hidden" role="main">
+    <AppShellSidebar class="gap-2 pt-2 pr-4">
+      {#each Object.keys(menu) as category}
+        <NavbarItem
+          href={localizeHref(`/kiosk/order#${category}`)}
+          title={td(category) ?? ''}
+          active={category === currentCategory.id}
+        />
+      {/each}
+    </AppShellSidebar>
+
+    <div class="h-full w-full overflow-y-auto p-4">
+      {#if currentCategory.items}
+        <MenuGroup {...currentCategory} />
+      {/if}
+    </div>
+  </div>
+{/await}
