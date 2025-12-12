@@ -292,5 +292,6 @@
   "orderSummary_normal": "Normal",
   "orderSummary_extra": "Extra",
   "kiosk_makeHot": "Heiß zubereiten",
-  "kiosk_hot": "Heiß"
+  "kiosk_hot": "Heiß",
+  "kiosk_tapToBegin": "Zum Starten tippen"
 }

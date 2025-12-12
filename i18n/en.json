@@ -26,6 +26,7 @@
   "signInWithGoogle_googleLogoAlt": "Google logo",
   "authLayout_title": "ShareTea | Authentication",
   "kiosk_timeOut": "Click Anywhere to Begin",
+  "kiosk_tapToBegin": "Tap to Begin",
   "kiosk_cart": "Cart",
   "profit": "Profit",
   "kiosk_order": "Order",

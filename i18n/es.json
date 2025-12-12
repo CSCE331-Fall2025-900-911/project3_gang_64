@@ -292,5 +292,6 @@
   "orderSummary_normal": "Normal",
   "orderSummary_extra": "Extra",
   "kiosk_makeHot": "Hacer caliente",
-  "kiosk_hot": "Caliente"
+  "kiosk_hot": "Caliente",
+  "kiosk_tapToBegin": "Toque para comenzar"
 }
